@@ -1,6 +1,6 @@
-AC_INIT(configure.in)
+AC_INIT(configure.ac)
 
-#AM_CONFIG_HEADER(config.h)
+AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(epuzzle, 0.1)
 
 AC_LANG_C

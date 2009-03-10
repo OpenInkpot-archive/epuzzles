@@ -11,6 +11,8 @@
 static Ewl_Widget *main_win = NULL;
 static Ewl_Widget *fd_win = NULL;
 
+void init_gui() {
+};
 
 /* lets go */
 int main(int argc, char ** argv) {
