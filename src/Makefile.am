@@ -1,8 +1,9 @@
+SUBDIRS = puzzles .
 bin_PROGRAMS = epuzzle
 noinst_LTLIBRARIES = libgui.la
 
 epuzzle_SOURCES = main.c 
-epuzzle_LDADD = libgui.la
+epuzzle_LDADD = libgui.la puzzles/libcore.la puzzles/libpuzzles.la
 
 libgui_la_SOURCES = util.c
 

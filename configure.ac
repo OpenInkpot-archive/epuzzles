@@ -14,4 +14,4 @@ PKG_CHECK_MODULES(EVAS,[evas])
 PKG_CHECK_MODULES(EDJE,[edje])
 PKG_CHECK_MODULES(EWL, [ewl])
 
-AC_OUTPUT(Makefile src/Makefile)
+AC_OUTPUT(Makefile src/Makefile src/puzzles/Makefile)
