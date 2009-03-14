@@ -14,4 +14,16 @@ PKG_CHECK_MODULES(EVAS,[evas])
 PKG_CHECK_MODULES(EDJE,[edje])
 PKG_CHECK_MODULES(EWL, [ewl])
 
+if test -r "${srcdir}/configure.ac"; then
+    AC_CONFIG_SUBDIRS([edrawable])
+    SUBDIRS="edrawable ${SUBDIRS}"
+    EDRAWABLE_CFLAGS="-I\$(top_srcdir)/edrawable/src"
+    EDRAWABLE_LIBS="\$(top_builddir)/edrawable/src/libedrawable.la"
+    AC_SUBST([EDRAWABLE_CFLAGS])
+    AC_SUBST([EDRAWABLE_LIBS])
+else
+    PKG_CHECK_MODULES(EDRAWABLE, [edrawable])
+fi
+SUBDIRS="${SUBDIRS} src"
+AC_SUBST([SUBDIRS])
 AC_OUTPUT(Makefile src/Makefile src/puzzles/Makefile)
