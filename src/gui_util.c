@@ -6,9 +6,9 @@
 
 void frontend_default_colour(struct frontend *fe, float *output)
 {
-   output[0] = 0;
-   output[1] = 0;
-   output[2] = 0;
+   output[0] = 1.0;
+   output[1] = 0.0;
+   output[2] = 1.0;
 }
 
 void
@@ -25,8 +25,12 @@ gui_setup_colors(struct frontend *fe)
             fe->colours[i].r = colours[i*3] * 0xFF;
             fe->colours[i].g = colours[i*3+1] * 0xFF;
             fe->colours[i].b = colours[i*3+2] * 0xFF;
-            fe->colours[i].a = 0xFF;
+            fe->colours[i].a = 0x00;
+            printf("color %d: red:%d green:%d blue:%d alpha:%d\n",
+                i, fe->colours[i].r, fe->colours[i].g,
+                fe->colours[i].b, fe->colours[i].a);
         }
+        printf("Total %d colors\n", ncolours);
 }
 
 void

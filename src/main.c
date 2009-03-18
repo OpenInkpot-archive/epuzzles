@@ -58,17 +58,42 @@ static key_handler_info_t main_info =
 void
 destroy_game(struct frontend *fe) {
     gui_delete_colors(fe);
-    if(fe->me)
+    if(fe->me) {
         midend_free(fe->me);
+        fe->me = NULL;
+    }
+
 }
 
-struct drawing_api e_drawing_api;
+static
+void gui_redraw ( Ewl_Widget *w, struct frontend *fe) {
+    int x, y;
+    if (fe->me){
+        x = CURRENT_W(w);
+        y = CURRENT_H(w);
+        printf("got size %d X %d\n", x, y);
+        fe->w = x;
+        fe->h = y;
+        midend_size(fe->me, &x, &y, TRUE);
+        printf("got size from midend %d X %d\n", x, y);
+        fe->pw = x;
+        fe->ph = y;
+        fe->ox = (fe->w - fe->pw) / 2;
+        fe->oy = (fe->h - fe->ph) / 2;
+        midend_force_redraw(fe->me);
+        dputs("redrawn\n");
+    }
+}
+extern struct drawing_api e_drawing_api;
 
 void
 create_game(struct frontend *fe, struct game *thegame) {
     destroy_game(fe); /* close old gaming */
     fe->me = midend_new(fe, thegame, &e_drawing_api, fe);
     gui_setup_colors(fe);
+    midend_new_game(fe->me);
+    dputs("Game created\n");
+    gui_redraw(fe->area, fe);
 }
 
 void new_game_cb ( Ewl_Widget *w, void *event, void *data ) {
@@ -76,14 +101,23 @@ void new_game_cb ( Ewl_Widget *w, void *event, void *data ) {
     create_game( _frontend, thegame);
 }
 
+void configure_cb ( Ewl_Widget *w, void *event, void *data ) {
+    struct frontend *fe = (struct frontend *) data;
+    dputs("CONFIGURE CB\n");
+    if (fe->me){
+        gui_redraw(w, fe);
+    }
+}
+
 void destroy_cb ( Ewl_Widget *w, void *event, void *data )
 {
+    destroy_game((struct frontend *) data);
     ewl_widget_destroy ( w);
     ewl_main_quit();
 }
 
 void exit_cb( Ewl_Widget *w, void *event, void *data) {
-    destroy_cb( EWL_WIDGET(_frontend->window), event, data);
+    destroy_cb( EWL_WIDGET(_frontend->window), event, (void *) _frontend );
 }
 
 Ewl_Menu_Info  file_menu [] = {
@@ -116,6 +150,9 @@ void init_gui() {
 
     fe = snew(struct frontend);
     _frontend = fe;
+
+    fe->me = NULL;
+    fe->colours = NULL;
 
     main_win = ewl_window_new();
     ewl_window_title_set ( EWL_WINDOW ( main_win ), "EWL_WINDOW" );
@@ -150,13 +187,16 @@ void init_gui() {
     ewl_widget_show(menubar);
 
     fe->area = ewl_drawable_new();
-    ewl_container_child_append(EWL_CONTAINER(box), fe->area);
+    ewl_object_fill_policy_set(EWL_OBJECT(fe->area), EWL_FLAG_FILL_ALL);
+    ewl_container_child_append(EWL_CONTAINER(box), EWL_WIDGET(fe->area));
+    ewl_callback_append ( EWL_WIDGET(fe->area),
+            EWL_CALLBACK_CONFIGURE, configure_cb, fe);
     ewl_widget_show(EWL_WIDGET(fe->area));
 
     fe->statusbar = ewl_statusbar_new();
     ewl_container_child_append(EWL_CONTAINER(box), EWL_WIDGET(fe->statusbar));
     ewl_statusbar_push(fe->statusbar,"Select puzzle from menu...");
-    ewl_widget_show(fe->statusbar);
+    ewl_widget_show(EWL_WIDGET(fe->statusbar));
 
     fe->window = main_win;
 };

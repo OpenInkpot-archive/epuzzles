@@ -12,6 +12,7 @@
 
 #include <edrawable.h>
 #include "puzzles.h"
+#include "frontend.h"
 
 /* ----------------------------------------------------------------------
  * GTK front end to puzzles.
@@ -25,7 +26,10 @@ struct font {
 
 void e_start_draw(void *handle)
 {
-    Ewl_Drawable *d = (Ewl_Drawable *)handle;
+    struct frontend * fe = (struct frontend *) handle;
+    Ewl_Drawable *d = fe->area;
+
+    printf("e_start_draw()\n");
     ewl_drawable_draw_rectangle_fill(d, 0, 0, fe->w, fe->h);
     fe->bbox_l = fe->w;
     fe->bbox_r = 0;
@@ -36,20 +40,24 @@ void e_start_draw(void *handle)
 void e_clip(void *handle, int x, int y, int w, int h)
 {
     frontend *fe = (frontend *)handle;
+
+    printf("e_clip(%d,%d,%d,%d)\n", x, y, w, h);
     ewl_drawable_set_clip(fe->area, x, y, w, h);
 }
 
 void e_unclip(void *handle)
 {
     frontend *fe = (frontend *)handle;
+    printf("e_unclup()\n");
     ewl_drawable_reset_clip(fe->area);
 }
 
 void e_draw_text(void *handle, int x, int y, int fonttype, int fontsize,
-		   int align, int colour, char *text)
+		   int align, int color, char *text)
 {
     frontend *fe = (frontend *)handle;
     int i;
+    printf("e_draw_text(...,%d, %d, \"%s\")\n", x, y, text);
 #if 0
     /*
      * Find or create the font.
@@ -198,42 +206,46 @@ void e_draw_text(void *handle, int x, int y, int fonttype, int fontsize,
 #endif
 }
 
-void e_draw_rect(void *handle, int x, int y, int w, int h, int colour)
+void e_draw_rect(void *handle, int x, int y, int w, int h, int color)
 {
     frontend *fe = (frontend *)handle;
+    printf("e_draw_rect()\n");
     gui_apply_color(fe, color);
     ewl_drawable_draw_rectangle(fe->area, x, y, w, h);
 }
 
-void e_draw_line(void *handle, int x1, int y1, int x2, int y2, int colour)
+void e_draw_line(void *handle, int x1, int y1, int x2, int y2, int color)
 {
     frontend *fe = (frontend *)handle;
+    printf("e_draw_line()\n");
     gui_apply_color(fe, color);
     ewl_drawable_draw_line(fe->area, x1, y1, x2, y2);
 }
 
 void e_draw_poly(void *handle, int *coords, int npoints,
-		   int fillcolour, int outlinecolour)
+		   int fillcolor, int outlinecolor)
 {
     frontend *fe = (frontend *)handle;
     EDrawablePolygon *p;
     int i;
 
+    printf("e_draw_poly()\n");
+
     p = ewl_drawable_polygon_new();
     for (i = 0; i < npoints; i++) {
-          ewl_drawable_polygon_add(p, points[i].x, points[i].y))
+          ewl_drawable_polygon_add(p, coords[i*2], coords[i*2+1]);
 //        points[i].x = coords[i*2];
 //        points[i].y = coords[i*2+1];
     }
 
-    if (fillcolour >= 0) {
+    if (fillcolor >= 0) {
         gui_apply_color(fe, fillcolor);
         ewl_drawable_draw_polygon_fill(fe->area, p);
     }
-    assert(outlinecolour >= 0);
-    gui_apply_color(fe outlinecolour);
+    assert(outlinecolor >= 0);
+    gui_apply_color(fe, outlinecolor);
     ewl_drawable_draw_polygon(fe->area, p);
-    ewl_drawable_delete_polygon(p);
+    ewl_drawable_polygon_delete(p);
 
     /*
      * In principle we ought to be able to use gdk_draw_polygon for
@@ -252,16 +264,17 @@ void e_draw_poly(void *handle, int *coords, int npoints,
 }
 
 void e_draw_circle(void *handle, int cx, int cy, int radius,
-		     int fillcolour, int outlinecolour)
+		     int fillcolor, int outlinecolor)
 {
     frontend *fe = (frontend *)handle;
-    if (fillcolour >= 0) {
-        gui_apply_color(fillcolor);
-        ewl_drawable_draw_ellipse_fill(fe, cx, cy, radius, radius);
+    printf("e_draw_circle()\n");
+    if (fillcolor >= 0) {
+        gui_apply_color(fe, fillcolor);
+        ewl_drawable_draw_ellipse_filled(fe, cx, cy, radius, radius);
     }
 
-    assert(outlinecolour >= 0);
-    gui_apply_color(fillcolor);
+    assert(outlinecolor >= 0);
+    gui_apply_color(fe, outlinecolor);
     ewl_drawable_draw_ellipse(fe, cx, cy, radius, radius);
 }
 
@@ -272,6 +285,7 @@ struct blitter {
 
 blitter *e_blitter_new(void *handle, int w, int h)
 {
+    printf("e_blitter_new()\n");
 #if 0
     /*
      * We can't create the pixmap right now, because fe->window
@@ -288,6 +302,7 @@ blitter *e_blitter_new(void *handle, int w, int h)
 
 void e_blitter_free(void *handle, blitter *bl)
 {
+    printf("e_blitter_free()\n");
 #if 0
     if (bl->pixmap)
         gdk_pixmap_unref(bl->pixmap);
@@ -297,6 +312,7 @@ void e_blitter_free(void *handle, blitter *bl)
 
 void e_blitter_save(void *handle, blitter *bl, int x, int y)
 {
+    printf("e_blitter_save()\n");
 #if 0
     frontend *fe = (frontend *)handle;
     if (!bl->pixmap)
@@ -312,6 +328,7 @@ void e_blitter_save(void *handle, blitter *bl, int x, int y)
 
 void e_blitter_load(void *handle, blitter *bl, int x, int y)
 {
+    printf("e_blitted_load()\n");
 #if 0
     frontend *fe = (frontend *)handle;
     assert(bl->pixmap);
@@ -329,6 +346,7 @@ void e_blitter_load(void *handle, blitter *bl, int x, int y)
 void e_draw_update(void *handle, int x, int y, int w, int h)
 {
     frontend *fe = (frontend *)handle;
+    printf("e_draw_update(%d,%d,%d,%d)\n",x,y,w,h);
     if (fe->bbox_l > x  ) fe->bbox_l = x  ;
     if (fe->bbox_r < x+w) fe->bbox_r = x+w;
     if (fe->bbox_u > y  ) fe->bbox_u = y  ;
@@ -338,6 +356,7 @@ void e_draw_update(void *handle, int x, int y, int w, int h)
 void e_end_draw(void *handle)
 {
     frontend *fe = (frontend *)handle;
+    printf("e_end_draw()\n");
     ewl_drawable_commit(fe->area);
 #if 0
     gdk_gc_unref(fe->gc);
@@ -352,6 +371,13 @@ void e_end_draw(void *handle)
                         fe->bbox_r - fe->bbox_l, fe->bbox_d - fe->bbox_u);
     }
 #endif
+}
+
+void
+e_status_bar(void *handler, char *text) {
+    struct frontend *fe = (struct frontend *) handler;
+    ewl_statusbar_pop(fe->statusbar);
+    ewl_statusbar_push(fe->statusbar, text);
 }
 
 const struct drawing_api e_drawing_api = {
