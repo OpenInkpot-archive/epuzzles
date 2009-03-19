@@ -153,6 +153,7 @@ void init_gui() {
 
     fe->me = NULL;
     fe->colours = NULL;
+    fe->timer_id = fe->timer_active = NULL;
 
     main_win = ewl_window_new();
     ewl_window_title_set ( EWL_WINDOW ( main_win ), "EWL_WINDOW" );
