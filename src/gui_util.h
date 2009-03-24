@@ -1,9 +1,14 @@
 #ifndef _GUI_UTIL_H
 #define _GUI_UTIL_H 1
 
+void gui_redraw ( Ewl_Widget *w, struct frontend *fe);
+void main_nav_menubtn(Ewl_Widget *widget, unsigned char lp);
 void gui_apply_color(struct frontend *fe, int color);
 void gui_setup_colors(struct frontend *fe);
 void gui_delete_colors(struct frontend *fe);
+
+void gui_set_key_handler(struct frontend *fe);
+void gui_unset_key_handler(struct frontend *fe);
 
 extern void gui_get_size(frontend *fe, int *px, int *py);
 extern int gui_get_color(frontend *fe, int color, int component);

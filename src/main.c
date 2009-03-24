@@ -16,7 +16,11 @@ struct frontend *_frontend = NULL;
 
 void main_nav_menubtn(Ewl_Widget *widget, unsigned char lp)
 {
- //   show_main_menu();    
+ //   show_main_menu(); 
+     Ewl_Widget *curwidget=ewl_widget_name_find("okmenu");
+     ewl_menu_cb_expand(curwidget,NULL,NULL);
+     ewl_widget_focus_send(EWL_WIDGET(EWL_MENU(curwidget)->popup));
+
 }
 
 void main_nav_up(Ewl_Widget *widget, unsigned char lp)
@@ -62,10 +66,10 @@ destroy_game(struct frontend *fe) {
         midend_free(fe->me);
         fe->me = NULL;
     }
+    gui_unset_key_handler(fe);
 
 }
 
-static
 void gui_redraw ( Ewl_Widget *w, struct frontend *fe) {
     int x, y;
     if (fe->me){
@@ -94,6 +98,7 @@ create_game(struct frontend *fe, struct game *thegame) {
     midend_new_game(fe->me);
     dputs("Game created\n");
     gui_redraw(fe->area, fe);
+    gui_set_key_handler(fe);
 }
 
 void new_game_cb ( Ewl_Widget *w, void *event, void *data ) {
@@ -156,6 +161,7 @@ void init_gui() {
     fe->timer_id = fe->timer_active = NULL;
 
     main_win = ewl_window_new();
+    fe->window = main_win;
     ewl_window_title_set ( EWL_WINDOW ( main_win ), "EWL_WINDOW" );
     ewl_window_name_set ( EWL_WINDOW ( main_win ), "EWL_WINDOW" );
     ewl_window_class_set ( EWL_WINDOW ( main_win ), "EWLWindow" );
@@ -173,6 +179,7 @@ void init_gui() {
 
     menubar = ewl_menubar_new();
     ewl_menubar_from_info(EWL_MENUBAR(menubar), menubar_info);
+    ewl_widget_name_set(menubar, "okmenu");
 
     menu = ewl_menu_new();
     ewl_button_label_set(EWL_BUTTON(menu),"Puzzles");
@@ -199,7 +206,6 @@ void init_gui() {
     ewl_statusbar_push(fe->statusbar,"Select puzzle from menu...");
     ewl_widget_show(EWL_WIDGET(fe->statusbar));
 
-    fe->window = main_win;
 };
 
 /* lets go */
