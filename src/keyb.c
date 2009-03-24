@@ -21,21 +21,21 @@ static void _key_handler(Ewl_Widget* w, void *event, void *context) {
 #define HANDLE_KEY(kk, vv)  if( !strcmp(k, kk) ){ keyval = vv; }
     HANDLE_KEY("9", MOD_NUM_KEYPAD | '9') else
     HANDLE_KEY("Page_Up", MOD_NUM_KEYPAD | '9') else
-    HANDLE_KEY("8",  MOD_NUM_KEYPAD | '8') else
-    HANDLE_KEY("Up",  MOD_NUM_KEYPAD | '8') else
+    HANDLE_KEY("8",   CURSOR_UP) else
+    HANDLE_KEY("Up",  CURSOR_UP) else
     HANDLE_KEY("7",  MOD_NUM_KEYPAD | '7') else
     HANDLE_KEY("Home",  MOD_NUM_KEYPAD | '7') else
-    HANDLE_KEY("6",  MOD_NUM_KEYPAD | '6') else
-    HANDLE_KEY("Right",  MOD_NUM_KEYPAD | '6') else
+    HANDLE_KEY("6",  CURSOR_RIGHT) else
+    HANDLE_KEY("Right",  CURSOR_RIGHT) else
     HANDLE_KEY("5",  MOD_NUM_KEYPAD | '5') else
     // FIXME: equivalent of GDK_KP_Begin
     HANDLE_KEY("Begin",  MOD_NUM_KEYPAD | '0') else
-    HANDLE_KEY("4",  MOD_NUM_KEYPAD | '4') else
-    HANDLE_KEY("Right",  MOD_NUM_KEYPAD | '4') else
+    HANDLE_KEY("4",  CURSOR_LEFT) else
+    HANDLE_KEY("Left",  CURSOR_LEFT) else
     HANDLE_KEY("3",  MOD_NUM_KEYPAD | '3') else
     HANDLE_KEY("Page_Down",  MOD_NUM_KEYPAD | '3') else
-    HANDLE_KEY("2",  MOD_NUM_KEYPAD | '2') else
-    HANDLE_KEY("Down",  MOD_NUM_KEYPAD | '2') else
+    HANDLE_KEY("2",  CURSOR_DOWN) else
+    HANDLE_KEY("Down",  CURSOR_DOWN) else
     HANDLE_KEY("1",  MOD_NUM_KEYPAD | '1') else
     HANDLE_KEY("End",  MOD_NUM_KEYPAD | '1') else
     HANDLE_KEY("0",  MOD_NUM_KEYPAD | '0') else
@@ -46,11 +46,11 @@ static void _key_handler(Ewl_Widget* w, void *event, void *context) {
     }
 
     if (keyval) {
-        printf("processing key %s\n",k);
         if (lp)
             keyval |= MOD_SHFT;
+        printf("processing key %s %d\n",k, keyval);
         midend_process_key(fe->me, 0, 0, keyval);
-    //    gui_redraw ( fe->window, fe);
+        gui_redraw ( fe->window, fe);
     }
 };
 
