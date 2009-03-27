@@ -42,7 +42,7 @@ void activate_timer(frontend *fe)
     if (!fe)
     	return;			       /* can happen due to --generate */
     if (!fe->timer_active) {
-        fe->timer_id = ecore_timer_add(20, timer_func, (void *) fe);
+        fe->timer_id = ecore_timer_add(0.20, timer_func, (void *) fe);
 	    gettimeofday(&fe->last_time, NULL);
     }
     fe->timer_active = TRUE;
