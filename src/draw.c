@@ -57,8 +57,8 @@ void e_draw_text(void *handle, int x, int y, int fonttype, int fontsize,
 {
     frontend *fe = (frontend *)handle;
     int i;
-    printf("e_draw_text(...,%d, %d, \"%s\")\n", x, y, text);
-	const char * fontname = (fonttype == FONT_FIXED ? "/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf" : "/usr/share/fonts/truetype/liberation//LiberationSans-Regular.ttf");
+	const char * fontname = (fonttype == FONT_FIXED ? "/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf" : "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf");
+    printf("e_draw_text(...,%d, %d, %s, \"%s\")\n", x, y, fontname, text);
     gui_apply_color(fe, color);
     ewl_drawable_draw_text(fe->area, x, y, fontname, fontsize, text);
 }
@@ -66,15 +66,15 @@ void e_draw_text(void *handle, int x, int y, int fonttype, int fontsize,
 void e_draw_rect(void *handle, int x, int y, int w, int h, int color)
 {
     frontend *fe = (frontend *)handle;
-    printf("e_draw_rect()\n");
+    printf("e_draw_rect(%d, %d, %d, %d)\n", x, y, w, h);
     gui_apply_color(fe, color);
-    ewl_drawable_draw_rectangle(fe->area, x, y, w, h);
+    ewl_drawable_draw_rectangle_fill(fe->area, x, y, w, h);
 }
 
 void e_draw_line(void *handle, int x1, int y1, int x2, int y2, int color)
 {
     frontend *fe = (frontend *)handle;
-    printf("e_draw_line()\n");
+    printf("e_draw_line(%d, %d, %d, %d)\n", x1, y1, x2, y2);
     gui_apply_color(fe, color);
     ewl_drawable_draw_line(fe->area, x1, y1, x2, y2);
 }
@@ -85,15 +85,25 @@ void e_draw_poly(void *handle, int *coords, int npoints,
     frontend *fe = (frontend *)handle;
     EDrawablePolygon *p;
     int i;
+    struct GdkPoint {
+        int x;
+        int y;
+    };
+    struct GdkPoint *points = snewn(npoints, struct GdkPoint);
 
+    for (i = 0; i < npoints; i++) {
+         points[i].x = coords[i*2];
+         points[i].y = coords[i*2+1];
+    }
     printf("e_draw_poly()\n");
 
     p = ewl_drawable_polygon_new();
     for (i = 0; i < npoints; i++) {
           ewl_drawable_polygon_add(p, coords[i*2], coords[i*2+1]);
-//        points[i].x = coords[i*2];
-//        points[i].y = coords[i*2+1];
+        points[i].x = coords[i*2];
+        points[i].y = coords[i*2+1];
     }
+    ewl_drawable_polygon_add(p, coords[0], coords[1]);
 
     if (fillcolor >= 0) {
         gui_apply_color(fe, fillcolor);
@@ -110,14 +120,13 @@ void e_draw_poly(void *handle, int *coords, int npoints,
      * with a clipping region, for no terribly obvious reason, so I
      * draw the outline as a sequence of lines instead.
      */
-#if 0
-    for (i = 0; i < npoints; i++)
-	gdk_draw_line(fe->pixmap, fe->gc,
-		      points[i].x, points[i].y,
-		      points[(i+1)%npoints].x, points[(i+1)%npoints].y);
+//    for (i = 0; i < npoints; i++)
+//	gdk_draw_line(fe->pixmap, fe->gc,
+//    ewl_drawable_draw_line(fe->area,
+//		      points[i].x, points[i].y,
+//		      points[(i+1)%npoints].x, points[(i+1)%npoints].y);
 
     sfree(points);
-#endif
 }
 
 void e_draw_circle(void *handle, int cx, int cy, int radius,
