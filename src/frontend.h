@@ -52,4 +52,5 @@ void setup_gamelist(Ewl_Widget *);
 void append_game(Ewl_Widget*, struct game *);
 void gamelist_menu(Ewl_Widget *parent, void * userdata);
 void new_game_cb ( Ewl_Widget *w, void *event, void *data );
+void exit_cb( Ewl_Widget *w, void *event, void *data);
 #endif

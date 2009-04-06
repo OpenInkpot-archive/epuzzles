@@ -41,9 +41,13 @@ static void _key_handler(Ewl_Widget* w, void *event, void *context) {
     HANDLE_KEY("End",  MOD_NUM_KEYPAD | '1') else
     HANDLE_KEY("0",  MOD_NUM_KEYPAD | '0') else
     HANDLE_KEY("Insert",  MOD_NUM_KEYPAD | '0') else
-    if(!strcmp(k, "F2")){
+    if(!strcmp(k, "F2") || !strcmp(k, "Menu")){
         gamelist_menu(fe->window, fe);
         return;
+    }
+
+    if(!strcmp(k, "Escape")) {
+       exit_cb( w, event, context); 
     }
 
     if (keyval) {
