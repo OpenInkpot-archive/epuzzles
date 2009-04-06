@@ -15,6 +15,7 @@ _choice_close(int choice, Ewl_Widget *parent,void *userdata) {
 static void
 _choice_handler(int choice, Ewl_Widget *parent,void *userdata) {
     struct frontend * fe = (struct frontend *) userdata;
+    fini_choicebox(parent);
     create_game(fe, gamelist[choice]);
 }
 
@@ -48,6 +49,8 @@ void gamelist_menu(Ewl_Widget *parent, void * userdata) {
     w = init_choicebox(choices, NULL, i, _choice_handler, _choice_close,
         "Select puzzle", parent, userdata, TRUE);
     ewl_widget_show(w);
+    ewl_widget_data_set(EWL_WIDGET(parent), (void *)"choicebox",
+                (void *) w);
     free(choices);
 };
 
