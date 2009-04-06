@@ -5,6 +5,7 @@
 #include "gui_util.h"
 
 
+
 static void _key_handler(Ewl_Widget* w, void *event, void *context) {
     Ewl_Event_Key_Up* e = (Ewl_Event_Key_Up*)event;
     struct frontend *fe = (struct frontend *)context;
@@ -41,7 +42,7 @@ static void _key_handler(Ewl_Widget* w, void *event, void *context) {
     HANDLE_KEY("0",  MOD_NUM_KEYPAD | '0') else
     HANDLE_KEY("Insert",  MOD_NUM_KEYPAD | '0') else
     if(!strcmp(k, "F2")){
-        main_nav_menubtn(fe->window, 0);
+        gamelist_menu(fe->window, fe);
         return;
     }
 

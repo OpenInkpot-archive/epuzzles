@@ -10,53 +10,11 @@
 
 #define PROG    "EWL Puzzles"
 
+static char * theme_file = THEME_DIR "epuzzle.edj";
+
 /* globals */
 static Ewl_Widget *fd_win = NULL;
 struct frontend *_frontend = NULL;
-
-void main_nav_menubtn(Ewl_Widget *widget, unsigned char lp)
-{
- //   show_main_menu(); 
-     Ewl_Widget *curwidget=ewl_widget_name_find("okmenu");
-     ewl_menu_cb_expand(curwidget,NULL,NULL);
-     ewl_widget_focus_send(EWL_WIDGET(EWL_MENU(curwidget)->popup));
-
-}
-
-void main_nav_up(Ewl_Widget *widget, unsigned char lp)
-{
-}
-
-void main_nav_down(Ewl_Widget *widget, unsigned char lp)
-{
-}
-
-void main_nav_left(Ewl_Widget *widget, unsigned char lp)
-{
-}
-
-void main_nav_right(Ewl_Widget *widget, unsigned char lp)
-{
-}
-
-void main_nav_sel(Ewl_Widget *widget, unsigned char lp)
-{
-}
-
-/*
-static key_handler_info_t main_info =
-{
-    .ok_handler = &main_ok,
-    .nav_up_handler=&main_nav_up,
-    .nav_down_handler=&main_nav_down,
-    .nav_left_handler=&main_nav_left,
-    .nav_right_handler=&main_nav_right,
-    .nav_sel_handler=&main_nav_sel,
-    .nav_menubtn_handler=&main_nav_menubtn,
-    .esc_handler = &main_esc,
-    .shift_handler= &main_shift,
-    .item_handler = &main_item,
-}; */
 
 
 void
@@ -222,6 +180,7 @@ int main(int argc, char ** argv) {
     if(!ewl_init(&argc, argv)) {
         fatal("can't init ewl");
     };
+    ewl_theme_theme_set(theme_file);
     init_gui();
     ewl_main();
     return 0;
