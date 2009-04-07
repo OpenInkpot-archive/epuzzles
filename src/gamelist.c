@@ -10,11 +10,17 @@ const game  *gamelist[] = {
 
 static void
 _choice_close(int choice, Ewl_Widget *parent,void *userdata) {
+    struct frontend * fe = (struct frontend *) userdata;
+    printf("parent %x %x\n", parent, userdata);
+//    if(fe->first_time)
+//        exit_cb(fe->window, NULL, userdata);
 }
 
 static void
 _choice_handler(int choice, Ewl_Widget *parent,void *userdata) {
     struct frontend * fe = (struct frontend *) userdata;
+    fe->first_time = 0;
+    printf("choicebox %x %x\n", parent, userdata);
     fini_choicebox(parent);
     create_game(fe, gamelist[choice]);
 }
@@ -51,6 +57,10 @@ void gamelist_menu(Ewl_Widget *parent, void * userdata) {
     ewl_widget_show(w);
     ewl_widget_data_set(EWL_WIDGET(parent), (void *)"choicebox",
                 (void *) w);
+    ewl_window_raise(w);
+    ewl_widget_focus_send(w);
+    printf("choicebox %x %x\n", w, userdata);
+    printf("parent %x\n", parent);
     free(choices);
 };
 

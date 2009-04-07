@@ -51,6 +51,7 @@ extern struct drawing_api e_drawing_api;
 void
 create_game(struct frontend *fe, struct game *thegame) {
     destroy_game(fe); /* close old gaming */
+    fe->first_time = 0;
     fe->me = midend_new(fe, thegame, &e_drawing_api, fe);
     gui_setup_colors(fe);
     midend_new_game(fe->me);
@@ -81,6 +82,15 @@ void destroy_cb ( Ewl_Widget *w, void *event, void *data )
 
 void exit_cb( Ewl_Widget *w, void *event, void *data) {
     destroy_cb( EWL_WIDGET(_frontend->window), event, (void *) _frontend );
+}
+
+void realize_cb( Ewl_Widget *w, void *event, void *data) {
+    struct frontend *fe = (struct frontend *) data;
+    if (fe->first_time) {
+       fe->first_time = 0;
+       gamelist_menu(fe->window, fe);
+//       ewl_window_lower(fe->window);
+    };
 }
 
 Ewl_Menu_Info  file_menu [] = {
@@ -114,6 +124,7 @@ void init_gui() {
     fe = snew(struct frontend);
     _frontend = fe;
 
+    fe->first_time = 1;
     fe->me = NULL;
     fe->colours = NULL;
     fe->timer_id = fe->timer_active = NULL;
@@ -126,6 +137,7 @@ void init_gui() {
     ewl_object_size_request ( EWL_OBJECT ( main_win ), 600, 800 );
     ewl_object_maximum_w_set(EWL_OBJECT(main_win),600);
     ewl_callback_append ( main_win, EWL_CALLBACK_DELETE_WINDOW, destroy_cb, fe);
+    ewl_callback_append ( main_win, EWL_CALLBACK_SHOW, realize_cb, fe);
     //set_key_handler(main_win, &main_info);
     ewl_widget_name_set(main_win,"mainwindow");
     ewl_widget_show ( main_win );
@@ -163,7 +175,8 @@ void init_gui() {
     ewl_container_child_append(EWL_CONTAINER(box), EWL_WIDGET(fe->statusbar));
     ewl_statusbar_push(fe->statusbar,"Select puzzle from menu...");
     ewl_widget_show(EWL_WIDGET(fe->statusbar));
-
+//    gamelist_menu(fe->window, fe);
+ //   ewl_window_lower(fe->window);
 };
 
 /* lets go */

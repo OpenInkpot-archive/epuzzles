@@ -46,6 +46,7 @@ struct frontend {
 /*    GtkWidget **preset_bullets;
     GtkWidget *preset_custom_bullet;
     GtkWidget *copy_menu_item; */
+    int first_time;
 };
 
 void setup_gamelist(Ewl_Widget *);
