@@ -136,12 +136,12 @@ void e_draw_circle(void *handle, int cx, int cy, int radius,
     printf("e_draw_circle()\n");
     if (fillcolor >= 0) {
         gui_apply_color(fe, fillcolor);
-        ewl_drawable_draw_ellipse_filled(fe, cx, cy, radius, radius);
+        ewl_drawable_draw_ellipse_filled(fe->area, cx, cy, radius, radius);
     }
 
     assert(outlinecolor >= 0);
     gui_apply_color(fe, outlinecolor);
-    ewl_drawable_draw_ellipse(fe, cx, cy, radius, radius);
+    ewl_drawable_draw_ellipse(fe->area, cx, cy, radius, radius);
 }
 
 struct blitter {
