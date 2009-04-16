@@ -30,7 +30,7 @@ enum {
 #define COORD(x)  ( (x) * TILE_SIZE + BORDER )
 #define FROMCOORD(x)  ( ((x) - BORDER + TILE_SIZE) / TILE_SIZE - 1 )
 
-#define ANIM_TIME 0.25F
+#define ANIM_TIME 0 //.25F
 #define FLASH_FRAME 0.07F
 
 /*
