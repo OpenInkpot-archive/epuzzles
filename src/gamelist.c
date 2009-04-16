@@ -2,7 +2,7 @@
 #include "frontend.h"
 
 extern game fifteen;
-//extern game bridges;
+extern game bridges;
 extern game twiddle;
 extern game flip;
 extern game pegs;
@@ -11,8 +11,8 @@ const game  *gamelist[] = {
     &fifteen,
     &flip,
     &twiddle,
-    &pegs,
-//    &bridges,
+//    &pegs,
+    &bridges,
     0,
 };
 

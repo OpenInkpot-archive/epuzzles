@@ -57,10 +57,25 @@ void e_draw_text(void *handle, int x, int y, int fonttype, int fontsize,
 {
     frontend *fe = (frontend *)handle;
     int i;
+    int xx, yy, asc, desc;
+
 	const char * fontname = (fonttype == FONT_FIXED ? "/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf" : "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf");
     printf("e_draw_text(...,%d, %d, %s, \"%s\")\n", x, y, fontname, text);
     gui_apply_color(fe, color);
-    ewl_drawable_draw_text(fe->area, x, y, fontname, fontsize, text);
+    ewl_drawable_select_font(fe->area, fontname, fontsize);
+    ewl_drawable_get_text_size(fe->area, text, &xx, &yy);
+    printf("get_text_size returns %d and %d\n", xx, yy);
+    asc = ewl_drawable_get_font_ascent(fe->area);
+    desc = ewl_drawable_get_font_descent(fe->area);
+    if (align & ALIGN_VCENTRE)
+        y -= yy /2;
+    else
+        y -= yy;
+    if (align & ALIGN_HCENTRE)
+        x -= xx / 2;
+    else if (align & ALIGN_HRIGHT)
+        x -= xx;
+    ewl_drawable_draw_text(fe->area, x, y, text);
 }
 
 void e_draw_rect(void *handle, int x, int y, int w, int h, int color)
