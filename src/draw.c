@@ -68,7 +68,7 @@ void e_draw_text(void *handle, int x, int y, int fonttype, int fontsize,
     asc = ewl_drawable_get_font_ascent(fe->area);
     desc = ewl_drawable_get_font_descent(fe->area);
     if (align & ALIGN_VCENTRE)
-        y -= yy /2;
+        y -= asc - (asc+desc) /2;
     else
         y -= yy;
     if (align & ALIGN_HCENTRE)
