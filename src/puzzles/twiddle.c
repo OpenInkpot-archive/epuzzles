@@ -21,8 +21,13 @@
 #define COORD(x)  ( (x) * TILE_SIZE + BORDER )
 #define FROMCOORD(x)  ( ((x) - BORDER + TILE_SIZE) / TILE_SIZE - 1 )
 
+#ifndef EINK_SCREEN
 #define ANIM_PER_RADIUS_UNIT 0.13F
 #define FLASH_FRAME 0.13F
+#else
+#define ANIM_PER_RADIUS_UNIT 0.0F
+#define FLASH_FRAME 0.0F
+#endif
 
 enum {
     COL_BACKGROUND,

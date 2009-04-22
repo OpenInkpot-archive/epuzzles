@@ -30,8 +30,13 @@ enum {
 #define COORD(x)  ( (x) * TILE_SIZE + BORDER )
 #define FROMCOORD(x)  ( ((x) - BORDER + TILE_SIZE) / TILE_SIZE - 1 )
 
-#define ANIM_TIME 0 //.25F
+#ifndef EINK_SCREEN
+#define ANIM_TIME 0.25F
 #define FLASH_FRAME 0.07F
+#else
+#define ANIM_TIME 0.0F
+#define FLASH_FRAME 0.0F
+#endif
 
 /*
  * Possible ways to decide which lights are toggled by each click.

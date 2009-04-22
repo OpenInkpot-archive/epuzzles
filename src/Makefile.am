@@ -12,7 +12,7 @@ all_libraries = libgui.la
 all_includes = -I${top_srcdir} -I${top_srcdir}/src -I${top_srcdir}/src/puzzles
 
 # set the include path found by configure
-CFLAGS = -DCOMBINED -DDEBUGGING
+CFLAGS = -DCOMBINED -DDEBUGGING -DEINK_SCREEN
 INCLUDES= $(all_includes) @ECORE_CFLAGS@ @ECORE_FILE_CFLAGS@ @ECORE_EVAS_CFLAGS@ @EDJE_CFLAGS@ @EVAS_CFLAGS@ @EWL_CFLAGS@ @EDRAWABLE_CFLAGS@ @XCB_AUX_CFLAGS@ @EFREET_CFLAGS@
 
 # the library search path.
