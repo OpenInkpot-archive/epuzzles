@@ -828,6 +828,8 @@ void midend_timer(midend *me, float tplus)
 
     midend_set_timer(me);
 }
+extern int
+gui_get_config_color(char *, char *, int *, int *, int *);
 
 float *midend_colours(midend *me, int *ncolours)
 {
@@ -848,7 +850,14 @@ float *midend_colours(midend *me, int *ncolours)
             char buf[80], *e;
             unsigned int r, g, b;
             int j, k;
-
+            snprintf(buf, 80, "color%d", i);
+            if(gui_get_config_color(me->ourgame->name, buf, &r, &g, &b)){
+                printf("color configured\n");
+                ret[i*3 + 0] = r / 255.0F;
+                ret[i*3 + 1] = g / 255.0F;
+                ret[i*3 + 2] = b / 255.0F;
+            };
+#if 0
             sprintf(buf, "%s_COLOUR_%d", me->ourgame->name, i);
             for (j = k = 0; buf[j]; j++)
 		if (!isspace((unsigned char)buf[j]))
@@ -860,6 +869,7 @@ float *midend_colours(midend *me, int *ncolours)
                 ret[i*3 + 1] = g / 255.0F;
                 ret[i*3 + 2] = b / 255.0F;
             }
+#endif
         }
     }
 

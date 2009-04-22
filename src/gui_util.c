@@ -1,4 +1,8 @@
+#include <stdio.h>
 #include <Ewl.h>
+#include <Efreet.h>
+#include <xcb/xcb.h>
+#include <xcb/xcb_aux.h>
 #include "puzzles.h"
 #include "frontend.h"
 #include "gui_util.h"
@@ -18,7 +22,9 @@ gui_setup_colors(struct frontend *fe)
         int ncolours;
         int i;
 
+        printf("midend_colours(): enter\n");
         colours = midend_colours(fe->me, &ncolours);
+        printf("midend_colours(): leave\n");
         fe->ncolours = ncolours;
         fe->colours = snewn(ncolours, Ewl_Color_Set);
         for (i = 0; i < ncolours; i++) {
@@ -80,4 +86,42 @@ int gui_get_color(frontend *fe, int color, int component) {
         fe->ncolours = ncolours;
 //        fe->colours = snewn(ncolours, Ewl_Color_Set);
         return colours[color*3+component] * 0xFFFF;
+}
+
+int
+gui_get_config_color(char *puzzle, char *colorname, int *r, int *g, int *b) {
+    uint16_t rr=0xFFFF;
+    uint16_t gg=0xFFFF;
+    uint16_t bb=0xFFFF;
+    Efreet_Ini *config;
+    const char * config_file = "epuzzles.rc";
+    const char *line;
+    int rc = 0;
+
+    printf("gui_get_config_color(%s, %s);\n", puzzle, colorname);
+    config = efreet_ini_new(config_file);
+
+    if(!config){
+        printf("Can't load config %s\n", config_file);
+        goto exit;
+    }
+
+    if(!efreet_ini_section_set(config, puzzle))
+        goto exit;
+
+    line = efreet_ini_string_get(config, colorname);
+    if(!line)
+        goto exit;
+
+    xcb_aux_parse_color(line, &rr, &gg, &bb);
+    printf("loaded colorline %s, r:%x g:%x b:%x\n",line, rr, gg, bb);
+    rc = 1;
+    
+    exit:
+    if(config)
+        efreet_ini_free(config);
+    *r = rr >> 8;
+    *g = gg >> 8;
+    *b = bb >> 8;
+    return rc;
 }
