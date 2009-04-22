@@ -11,7 +11,7 @@ const game  *gamelist[] = {
     &fifteen,
     &flip,
     &twiddle,
-//    &pegs,
+    &pegs,
     &bridges,
     0,
 };

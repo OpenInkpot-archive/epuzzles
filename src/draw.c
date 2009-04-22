@@ -11,6 +11,7 @@
 #include <errno.h>
 
 #include <edrawable.h>
+#include <eimlib.h>
 #include "puzzles.h"
 #include "frontend.h"
 
@@ -160,68 +161,61 @@ void e_draw_circle(void *handle, int cx, int cy, int radius,
 }
 
 struct blitter {
-    Evas *evas;
+    Drawable_Image *image;
     int w, h, x, y;
 };
 
 blitter *e_blitter_new(void *handle, int w, int h)
 {
     printf("e_blitter_new()\n");
-#if 0
     /*
      * We can't create the pixmap right now, because fe->window
      * might not yet exist. So we just cache w and h and create it
      * during the firs call to blitter_save.
      */
     blitter *bl = snew(blitter);
-    bl->pixmap = NULL;
+    bl->image = NULL;
     bl->w = w;
     bl->h = h;
+    bl->x = 0;
+    bl->y = 0;
     return bl;
-#endif
 }
 
 void e_blitter_free(void *handle, blitter *bl)
 {
     printf("e_blitter_free()\n");
-#if 0
-    if (bl->pixmap)
-        gdk_pixmap_unref(bl->pixmap);
+    if (bl->image)
+        drawable_free_image(bl->image);
     sfree(bl);
-#endif
 }
 
 void e_blitter_save(void *handle, blitter *bl, int x, int y)
 {
     printf("e_blitter_save()\n");
-#if 0
     frontend *fe = (frontend *)handle;
-    if (!bl->pixmap)
-        bl->pixmap = gdk_pixmap_new(fe->area->window, bl->w, bl->h, -1);
+    if (bl->image)
+        drawable_free_image(bl->image);
     bl->x = x;
     bl->y = y;
-    gdk_draw_pixmap(bl->pixmap,
-                    fe->area->style->fg_gc[GTK_WIDGET_STATE(fe->area)],
-                    fe->pixmap,
-                    x, y, 0, 0, bl->w, bl->h);
-#endif
+    bl->image = drawable_create_cropped_image(fe->area->context,
+        x, y, bl->w, bl->h);
 }
 
 void e_blitter_load(void *handle, blitter *bl, int x, int y)
 {
     printf("e_blitted_load()\n");
-#if 0
     frontend *fe = (frontend *)handle;
-    assert(bl->pixmap);
+    assert(bl->image);
     if (x == BLITTER_FROMSAVED && y == BLITTER_FROMSAVED) {
         x = bl->x;
         y = bl->y;
     }
-    gdk_draw_pixmap(fe->pixmap,
-                    fe->area->style->fg_gc[GTK_WIDGET_STATE(fe->area)],
-                    bl->pixmap,
-                    0, 0, x, y, bl->w, bl->h);
-#endif
+    drawable_blend_image_onto_image(fe->area->context,
+        bl->image,
+        0,
+        0, 0, bl->w, bl->h,
+        x, y, bl->w, bl->h);
 }
 
 void e_draw_update(void *handle, int x, int y, int w, int h)
