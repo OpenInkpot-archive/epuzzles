@@ -216,6 +216,7 @@ void e_blitter_load(void *handle, blitter *bl, int x, int y)
         0,
         0, 0, bl->w, bl->h,
         x, y, bl->w, bl->h);
+    drawable_update_append_rect(fe->area->updates, x, y, bl->w, bl->h);
 }
 
 void e_draw_update(void *handle, int x, int y, int w, int h)
@@ -226,6 +227,7 @@ void e_draw_update(void *handle, int x, int y, int w, int h)
     if (fe->bbox_r < x+w) fe->bbox_r = x+w;
     if (fe->bbox_u > y  ) fe->bbox_u = y  ;
     if (fe->bbox_d < y+h) fe->bbox_d = y+h;
+    drawable_update_append_rect(fe->area->updates, x, y, w, h);
 }
 
 void e_end_draw(void *handle)

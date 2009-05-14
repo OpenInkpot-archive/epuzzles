@@ -58,7 +58,7 @@ static void _key_handler(Ewl_Widget* w, void *event, void *context) {
             keyval |= MOD_SHFT;
         printf("processing key %s %d\n",k, keyval);
         midend_process_key(fe->me, 0, 0, keyval);
-        gui_redraw ( fe->window, fe);
+//        gui_redraw ( fe->window, fe);
     }
 };
 
