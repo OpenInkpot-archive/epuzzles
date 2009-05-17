@@ -31,7 +31,7 @@ void e_start_draw(void *handle)
     Ewl_Drawable *d = fe->area;
 
     printf("e_start_draw()\n");
-    ewl_drawable_draw_rectangle_fill(d, 0, 0, fe->w, fe->h);
+    //ewl_drawable_draw_rectangle_fill(d, 0, 0, fe->w, fe->h);
     fe->bbox_l = fe->w;
     fe->bbox_r = 0;
     fe->bbox_u = fe->h;
