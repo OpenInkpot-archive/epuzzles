@@ -1,7 +1,7 @@
 SUBDIRS = puzzles .
 bin_PROGRAMS = epuzzle
 noinst_LTLIBRARIES = libgui.la
-AM_CPPFLAGS = -DTHEME_DIR='"$(pkgdatadir)/themes/"'
+AM_CPPFLAGS = -DTHEME_DIR='"$(pkgdatadir)/themes/"' -DCOLOR_CONFIG='"$(pkgdatadir)/epuzzles.rc"'
 epuzzle_SOURCES = main.c gamelist.c
 
 libgui_la_SOURCES = util.c gui_util.c timer.c draw.c keyb.c \
@@ -17,3 +17,4 @@ INCLUDES= $(all_includes) @ECORE_CFLAGS@ @ECORE_FILE_CFLAGS@ @ECORE_EVAS_CFLAGS@
 
 # the library search path.
 epuzzle_LDFLAGS = $(all_libraries) @ECORE_LIBS@ @ECORE_FILE_LIBS@ @EVAS_LIBS@ @EDJE_LIBS@ @EWL_LIBS@ @ECORE_EVAS_LIBS@ @EDRAWABLE_LIBS@ @XCB_AUX_LIBS@ @EFREET_LIBS@
+

@@ -94,17 +94,54 @@ gui_get_config_color(char *puzzle, char *colorname, int *r, int *g, int *b) {
     uint16_t gg=0xFFFF;
     uint16_t bb=0xFFFF;
     Efreet_Ini *config;
-    const char * config_file = "epuzzles.rc";
+    const char * config_files[] ={
+        ".epuzzles.rc",
+        "/etc/epuzzles.rc",
+        COLOR_CONFIG,
+        NULL,
+    };
+    int i=0;
+        
+    const char  home_config[1024];
+    const char *config_file_name = NULL;
     const char *line;
+    char *home;
     int rc = 0;
 
     printf("gui_get_config_color(%s, %s);\n", puzzle, colorname);
-    config = efreet_ini_new(config_file);
+    
 
-    if(!config){
-        printf("Can't load config %s\n", config_file);
+    home = getenv("HOME");
+    if (home) {
+        snprintf(home_config, 1024, "%s/.epuzzles.rc", home);
+        if (ecore_file_exists(home_config)) {
+            printf("Selected %s\n", home_config);
+            config_file_name = home_config;
+        }
+    };
+
+    if(!config_file_name) {
+        while(config_files[i]) {
+            printf("Try config from %s\n", config_files[i]);
+            if(ecore_file_exists(config_files[i])) {
+                config_file_name = config_files[i];
+                printf("selected\n");
+                break;
+            };
+            i++;
+        }
+    };
+
+    if(!config_file_name){
+        printf("Can't find any configs, pass default values\n");
         goto exit;
     }
+
+    config = efreet_ini_new(config_file_name);
+    if(!config) {
+        printf("Can't open config: %s\n", config_file_name);
+        goto exit;
+    };
 
     if(!efreet_ini_section_set(config, puzzle))
         goto exit;
