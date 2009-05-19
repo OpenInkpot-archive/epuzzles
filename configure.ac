@@ -16,7 +16,7 @@ PKG_CHECK_MODULES(EDJE,[edje])
 PKG_CHECK_MODULES(EFREET, [efreet])
 PKG_CHECK_MODULES(EWL, [ewl])
 
-if test -r "${srcdir}/configure.ac"; then
+if test -r "${srcdir}/edrawable/configure.ac"; then
     AC_CONFIG_SUBDIRS([edrawable])
     SUBDIRS="edrawable ${SUBDIRS}"
     EDRAWABLE_CFLAGS="-I\$(top_srcdir)/edrawable/src"
