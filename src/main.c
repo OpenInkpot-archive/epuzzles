@@ -89,7 +89,6 @@ void realize_cb( Ewl_Widget *w, void *event, void *data) {
     if (fe->first_time) {
        fe->first_time = 0;
        gamelist_menu(fe->window, fe);
-//       ewl_window_lower(fe->window);
     };
 }
 
@@ -138,7 +137,6 @@ void init_gui() {
     ewl_object_maximum_w_set(EWL_OBJECT(main_win),600);
     ewl_callback_append ( main_win, EWL_CALLBACK_DELETE_WINDOW, destroy_cb, fe);
     ewl_callback_append ( main_win, EWL_CALLBACK_SHOW, realize_cb, fe);
-    //set_key_handler(main_win, &main_info);
     ewl_widget_name_set(main_win,"mainwindow");
     ewl_widget_show ( main_win );
 
@@ -175,21 +173,10 @@ void init_gui() {
     ewl_container_child_append(EWL_CONTAINER(box), EWL_WIDGET(fe->statusbar));
     ewl_statusbar_push(fe->statusbar,"Select puzzle from menu...");
     ewl_widget_show(EWL_WIDGET(fe->statusbar));
-//    gamelist_menu(fe->window, fe);
- //   ewl_window_lower(fe->window);
 };
 
 /* lets go */
 int main(int argc, char ** argv) {
-/*    if(!eina_mempool_init()){
-        fatal("can't init mempools\n");
-    };
-    if(!eina_init()){
-        fatal("can't init EINA\n");
-    };
-    if(!evas_init()) {
-        fatal("can't init evas\n");
-    }; */
     if(!ewl_init(&argc, argv)) {
         fatal("can't init ewl");
     };
