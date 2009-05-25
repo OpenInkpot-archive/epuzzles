@@ -2,5 +2,5 @@
 Version=1.0
 Type=Application
 Name=Pegs puzzle
-Exec=/usr/bin/epuzzles fifteen
+Exec=/usr/bin/epuzzles pegs
 Categories=Games
