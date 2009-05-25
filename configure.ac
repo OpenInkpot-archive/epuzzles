@@ -26,6 +26,6 @@ if test -r "${srcdir}/edrawable/configure.ac"; then
 else
     PKG_CHECK_MODULES(EDRAWABLE, [edrawable])
 fi
-SUBDIRS="${SUBDIRS} theme src"
+SUBDIRS="${SUBDIRS} theme src desktops"
 AC_SUBST([SUBDIRS])
-AC_OUTPUT(Makefile theme/Makefile src/Makefile src/puzzles/Makefile)
+AC_OUTPUT(Makefile theme/Makefile src/Makefile src/puzzles/Makefile desktops/Makefile)
