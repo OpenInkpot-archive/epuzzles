@@ -16,6 +16,7 @@ static char * theme_file = THEME_DIR "epuzzle.edj";
 static Ewl_Widget *fd_win = NULL;
 struct frontend *_frontend = NULL;
 
+struct game * single = NULL;
 
 void
 destroy_game(struct frontend *fe) {
@@ -86,7 +87,7 @@ void exit_cb( Ewl_Widget *w, void *event, void *data) {
 
 void realize_cb( Ewl_Widget *w, void *event, void *data) {
     struct frontend *fe = (struct frontend *) data;
-    if (fe->first_time) {
+    if (fe->first_time && !single) {
        fe->first_time = 0;
        gamelist_menu(fe->window, fe);
     };
@@ -145,41 +146,54 @@ void init_gui() {
     ewl_object_fill_policy_set(EWL_OBJECT(box), EWL_FLAG_FILL_ALL);
     ewl_widget_show(box);
 
-    menubar = ewl_menubar_new();
-    ewl_menubar_from_info(EWL_MENUBAR(menubar), menubar_info);
-    ewl_widget_name_set(menubar, "okmenu");
+        menubar = ewl_menubar_new();
+        ewl_widget_name_set(menubar, "okmenu");
+        ewl_menubar_from_info(EWL_MENUBAR(menubar), menubar_info);
 
-    menu = ewl_menu_new();
-    ewl_button_label_set(EWL_BUTTON(menu),"Puzzles");
+    if(!single) {
+        menu = ewl_menu_new();
+        ewl_button_label_set(EWL_BUTTON(menu),"Puzzles");
 
-    setup_gamelist(menu);
-    ewl_widget_show(menu);
+        setup_gamelist(menu);
+        ewl_widget_show(menu);
 
-    ewl_container_child_append(EWL_CONTAINER(menubar), menu);
-    ewl_object_fill_policy_set(EWL_OBJECT(menu),
-        EWL_FLAG_FILL_HSHRINKABLE | EWL_FLAG_FILL_VFILL);
+        ewl_container_child_append(EWL_CONTAINER(menubar), menu);
+        ewl_object_fill_policy_set(EWL_OBJECT(menu),
+            EWL_FLAG_FILL_HSHRINKABLE | EWL_FLAG_FILL_VFILL);
 
-    ewl_container_child_append(EWL_CONTAINER(box), menubar);
-    ewl_widget_show(menubar);
+    }
+        ewl_container_child_append(EWL_CONTAINER(box), menubar);
+        ewl_widget_show(menubar);
 
     fe->area = ewl_drawable_new();
     ewl_object_fill_policy_set(EWL_OBJECT(fe->area), EWL_FLAG_FILL_ALL);
     ewl_container_child_append(EWL_CONTAINER(box), EWL_WIDGET(fe->area));
     ewl_callback_append ( EWL_WIDGET(fe->area),
             EWL_CALLBACK_CONFIGURE, configure_cb, fe);
+    ewl_container_child_append(EWL_CONTAINER(box), fe->area);
     ewl_widget_show(EWL_WIDGET(fe->area));
 
     fe->statusbar = ewl_statusbar_new();
     ewl_container_child_append(EWL_CONTAINER(box), EWL_WIDGET(fe->statusbar));
     ewl_statusbar_push(fe->statusbar,"Select puzzle from menu...");
     ewl_widget_show(EWL_WIDGET(fe->statusbar));
+
+    if(single)
+        create_game(fe, single);
 };
 
 /* lets go */
 int main(int argc, char ** argv) {
+    printf("argc=%d\n", argc);
     if(!ewl_init(&argc, argv)) {
         fatal("can't init ewl");
     };
+    if(argc == 2) {
+        single = lookup_game_by_name(argv[1]);
+        if(!single)
+            fatal("Don't know this game");
+        printf("Enter single mode\n");
+    }
     ewl_theme_theme_set(theme_file);
     init_gui();
     ewl_main();

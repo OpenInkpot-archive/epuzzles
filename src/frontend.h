@@ -49,6 +49,7 @@ struct frontend {
     int first_time;
 };
 
+struct game * lookup_game_by_name(const char * name);
 void setup_gamelist(Ewl_Widget *);
 void append_game(Ewl_Widget*, struct game *);
 void gamelist_menu(Ewl_Widget *parent, void * userdata);

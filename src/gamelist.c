@@ -72,6 +72,18 @@ void gamelist_menu(Ewl_Widget *parent, void * userdata) {
     free(choices);
 };
 
+struct game *
+lookup_game_by_name(const char * name) {
+    struct game **each;
+    each = gamelist;
+    while(*each) {
+        if(!strcasecmp((*each)->name, name))
+            return *each;
+        ++each;
+    }
+}
+
+
 void
 setup_gamelist(Ewl_Widget *w) {
     struct game **each;

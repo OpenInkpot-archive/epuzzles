@@ -4,7 +4,7 @@
 #include "frontend.h"
 #include "gui_util.h"
 
-
+extern game * single;
 
 static void _key_handler(Ewl_Widget* w, void *event, void *context) {
     Ewl_Event_Key_Up* e = (Ewl_Event_Key_Up*)event;
@@ -45,7 +45,8 @@ static void _key_handler(Ewl_Widget* w, void *event, void *context) {
         keyval=CURSOR_SELECT;
     } else
     if(!strcmp(k, "F2") || !strcmp(k, "Menu")){
-        gamelist_menu(fe->window, fe);
+        if(!single)
+            gamelist_menu(fe->window, fe);
         return;
     }
 
