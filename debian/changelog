@@ -1,3 +1,12 @@
+epuzzles (0.1+20090518-2) asimov; urgency=low
+
+  * Two more games
+  * Remove menu from single-mode
+  * Fix proper keys
+  * proper colors for fifteens
+
+ -- Alexander V. Nikolaev <avn@daemon.hole.ru>  Tue, 26 May 2009 16:25:23 +0300
+
 epuzzles (0.1+20090518-1) asimov; urgency=low
 
   * Inirial version
