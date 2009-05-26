@@ -148,9 +148,9 @@ void init_gui() {
 
         menubar = ewl_menubar_new();
         ewl_widget_name_set(menubar, "okmenu");
-        ewl_menubar_from_info(EWL_MENUBAR(menubar), menubar_info);
 
     if(!single) {
+        ewl_menubar_from_info(EWL_MENUBAR(menubar), menubar_info);
         menu = ewl_menu_new();
         ewl_button_label_set(EWL_BUTTON(menu),"Puzzles");
 
