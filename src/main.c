@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <Ewl.h>
+#include <Ecore_X.h>
 #include <edrawable.h>
 #include "frontend.h"
 #include "puzzles.h"
@@ -175,19 +176,26 @@ void init_gui() {
 
     fe->statusbar = ewl_statusbar_new();
     ewl_container_child_append(EWL_CONTAINER(box), EWL_WIDGET(fe->statusbar));
-    ewl_statusbar_push(fe->statusbar,"Select puzzle from menu...");
+    ewl_statusbar_push(fe->statusbar, 
+        single ? "" : "Select puzzle from menu...");
     ewl_widget_show(EWL_WIDGET(fe->statusbar));
 
     if(single)
         create_game(fe, single);
 };
 
+static
+void exit_all(void* param __attribute__((unused))) { 
+    ewl_main_quit(); 
+    //ecore_main_loop_quit(); 
+}
 /* lets go */
 int main(int argc, char ** argv) {
     printf("argc=%d\n", argc);
     if(!ewl_init(&argc, argv)) {
         fatal("can't init ewl");
     };
+    ecore_x_io_error_handler_set(exit_all, NULL);
     if(argc == 2) {
         single = lookup_game_by_name(argv[1]);
         if(!single)
