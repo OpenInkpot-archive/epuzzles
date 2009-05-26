@@ -77,8 +77,9 @@ lookup_game_by_name(const char * name) {
     struct game **each;
     each = gamelist;
     while(*each) {
-        if(!strcasecmp((*each)->name, name))
-            return *each;
+        if(!strcasecmp((*each)->name, name) || \
+           !strcasecmp((*each)->htmlhelp_topic, name))
+                return *each;
         ++each;
     }
 }
