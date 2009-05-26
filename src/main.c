@@ -175,7 +175,8 @@ void init_gui() {
 
     fe->statusbar = ewl_statusbar_new();
     ewl_container_child_append(EWL_CONTAINER(box), EWL_WIDGET(fe->statusbar));
-    ewl_statusbar_push(fe->statusbar,"Select puzzle from menu...");
+    ewl_statusbar_push(fe->statusbar, 
+        single ? "" : "Select puzzle from menu...");
     ewl_widget_show(EWL_WIDGET(fe->statusbar));
 
     if(single)
