@@ -30,7 +30,11 @@
  * Constant and structure definitions
  */
 
+#ifndef EINK_SCREEN
 #define FLASH_TIME 0.4F
+#else
+#define FLASH_TIME 0.0F
+#endif
 
 #define PREFERRED_TILE_SIZE 32
 

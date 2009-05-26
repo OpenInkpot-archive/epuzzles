@@ -1,0 +1,6 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Solo (Sudoku like) puzzle
+Exec=/usr/bin/epuzzles solo
+Categories=Games

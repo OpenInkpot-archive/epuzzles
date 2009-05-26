@@ -6,6 +6,8 @@ extern game bridges;
 extern game twiddle;
 extern game flip;
 extern game pegs;
+extern game unequal;
+extern game solo;
 
 const game  *gamelist[] = {
     &fifteen,
@@ -13,6 +15,8 @@ const game  *gamelist[] = {
     &twiddle,
     &pegs,
     &bridges,
+    &unequal,
+    &solo,
     0,
 };
 
