@@ -2,5 +2,7 @@
 Version=1.0
 Type=Application
 Name=Fifteen puzzle
+Name[ru]=Пятнашки
+Name[ua]=П'ятнашки
 Exec=/usr/bin/epuzzles fifteen
 Categories=Games

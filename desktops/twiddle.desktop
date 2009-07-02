@@ -2,5 +2,7 @@
 Version=1.0
 Type=Application
 Name=Twiddle puzzle
+Name[ru]=Крути-верти
+Name[ua]=Круть-верть
 Exec=/usr/bin/epuzzles twiddle
 Categories=Games
