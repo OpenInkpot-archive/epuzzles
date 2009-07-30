@@ -1,19 +1,22 @@
 #include <stdio.h>
-#include <Ewl.h>
+#include <Evas.h>
+#include <Ecore.h>
 #include "puzzles.h"
 #include "frontend.h"
 #include "gui_util.h"
 
 extern game * single;
 
-static void _key_handler(Ewl_Widget* w, void *event, void *context) {
-    Ewl_Event_Key_Up* e = (Ewl_Event_Key_Up*)event;
-    struct frontend *fe = (struct frontend *)context;
+static void _key_handler(void* param __attribute__((unused)),
+         Evas* e __attribute__((unused)),
+         Evas_Object *r, void* event_info) {
+    Evas_Event_Key_Down* ev = (Evas_Event_Key_Down*)event_info;
+    struct frontend *fe = (struct frontend *)param;
 
-    const char *k = e->base.keyname;
+    const char *k = ev->keyname;
     unsigned int lp = 0;
-    if(e->base.modifiers & EWL_KEY_MODIFIER_ALT)
-        lp = 1;
+//    if(e->base.modifiers & EWL_KEY_MODIFIER_ALT)
+//        lp = 1;
 
     int keyval = 0;
 
@@ -43,14 +46,9 @@ static void _key_handler(Ewl_Widget* w, void *event, void *context) {
     if(!strcmp(k,"Enter") || !strcmp(k,"Return")) {
         keyval=CURSOR_SELECT;
     } else
-    if(!strcmp(k, "F2") || !strcmp(k, "Menu")){
-        if(!single)
-            gamelist_menu(fe->window, fe);
-        return;
-    }
 
     if(!strcmp(k, "Escape")) {
-       exit_cb( w, event, context); 
+       ecore_main_loop_quit();
     }
 
     if (keyval) {
@@ -58,15 +56,16 @@ static void _key_handler(Ewl_Widget* w, void *event, void *context) {
             keyval |= MOD_SHFT;
         printf("processing key %s %d\n",k, keyval);
         midend_process_key(fe->me, 0, 0, keyval);
-//        gui_redraw ( fe->window, fe);
+    } else {
+        printf("No keyval\n");
     }
 };
 
 void gui_set_key_handler(struct frontend *fe) {
-    ewl_callback_append(fe->window, EWL_CALLBACK_KEY_UP, &_key_handler, fe);
+    evas_object_event_callback_add(fe->area,
+                       EVAS_CALLBACK_KEY_UP,
+                      &_key_handler,
+                      fe);
+    evas_object_focus_set(fe->area, 1);
 }
 
-void gui_unset_key_handler(struct frontend *fe) {
-    ewl_callback_del_with_data(fe->window, EWL_CALLBACK_KEY_UP,
-            &_key_handler, fe);
-}

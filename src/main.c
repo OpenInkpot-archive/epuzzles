@@ -1,23 +1,35 @@
 #include <errno.h>
+#include <locale.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <Ewl.h>
-#include <Ecore_X.h>
+#include <Evas.h>
+#include <Ecore_Evas.h>
 #include <edrawable.h>
 #include "frontend.h"
 #include "puzzles.h"
 
-#define PROG    "EWL Puzzles"
+#define PROG    "E Puzzles"
+#define CANVAS_SIZE  400
 
 static char * theme_file = THEME_DIR "epuzzle.edj";
 
 /* globals */
-static Ewl_Widget *fd_win = NULL;
 struct frontend *_frontend = NULL;
 
 struct game * single = NULL;
+
+static void die(const char* fmt, ...)
+{
+   va_list ap;
+   va_start(ap, fmt);
+   vfprintf(stderr, fmt, ap);
+   va_end(ap);
+   exit(EXIT_FAILURE);
+}
+
+
 
 void
 destroy_game(struct frontend *fe) {
@@ -26,15 +38,13 @@ destroy_game(struct frontend *fe) {
         midend_free(fe->me);
         fe->me = NULL;
     }
-    gui_unset_key_handler(fe);
-
 }
 
-void gui_redraw ( Ewl_Widget *w, struct frontend *fe) {
+void gui_redraw ( struct frontend *fe) {
     int x, y;
     if (fe->me){
-        x = CURRENT_W(w);
-        y = CURRENT_H(w);
+        x = CANVAS_SIZE;
+        y = CANVAS_SIZE;
         printf("got size %d X %d\n", x, y);
         fe->w = x;
         fe->h = y;
@@ -58,153 +68,108 @@ create_game(struct frontend *fe, struct game *thegame) {
     gui_setup_colors(fe);
     midend_new_game(fe->me);
     dputs("Game created\n");
-    gui_redraw(fe->area, fe);
+    gui_redraw( fe);
     gui_set_key_handler(fe);
 }
 
-void new_game_cb ( Ewl_Widget *w, void *event, void *data ) {
-    struct game * thegame = (struct game *) data;
-    create_game( _frontend, thegame);
-}
-
-void configure_cb ( Ewl_Widget *w, void *event, void *data ) {
-    struct frontend *fe = (struct frontend *) data;
-    dputs("CONFIGURE CB\n");
-    if (fe->me){
-        gui_redraw(w, fe);
-    }
-}
-
-void destroy_cb ( Ewl_Widget *w, void *event, void *data )
+void terminate ( struct frontend * fe)
 {
-    destroy_game((struct frontend *) data);
-    ewl_widget_destroy ( w);
-    ewl_main_quit();
+    destroy_game(fe);
+    ecore_main_loop_quit();
 }
 
-void exit_cb( Ewl_Widget *w, void *event, void *data) {
-    destroy_cb( EWL_WIDGET(_frontend->window), event, (void *) _frontend );
+static void main_win_close_handler(Ecore_Evas* main_win __attribute__((unused)))
+{
+   ecore_main_loop_quit();
 }
 
-void realize_cb( Ewl_Widget *w, void *event, void *data) {
-    struct frontend *fe = (struct frontend *) data;
-    if (fe->first_time && !single) {
-       fe->first_time = 0;
-       gamelist_menu(fe->window, fe);
-    };
-}
 
-Ewl_Menu_Info  file_menu [] = {
-    {"Exit", NULL, exit_cb },
-    { NULL, NULL, NULL },
-};
-
-Ewl_Menubar_Info menubar_info [] = {
-    {"File", file_menu },
-    { NULL, NULL },
-};
-
-void
-append_game(Ewl_Widget *menu, struct game * thegame) {
-    Ewl_Widget *item;
-    item = ewl_menu_item_new();
-    ewl_button_label_set(EWL_BUTTON(item), thegame->name);
-    ewl_button_image_set(EWL_BUTTON(item), NULL, NULL);
-    ewl_container_child_append(EWL_CONTAINER(menu), item);
-    ewl_callback_append(item, EWL_CALLBACK_CLICKED, new_game_cb, thegame);
-    ewl_widget_show(item);
-}
-
-void init_gui() {
+static void run() {
     struct frontend * fe;
-    Ewl_Widget *main_win = NULL;
-    Ewl_Widget *box;
-    Ewl_Widget *menubar;
-    Ewl_Widget *menu;
+    Ecore_Evas* main_win = ecore_evas_software_x11_new(0, 0, 0, 0, 600, 800);
 
     fe = snew(struct frontend);
     _frontend = fe;
 
+    ecore_evas_title_set(main_win, "EPuzzles");
+    ecore_evas_name_class_set(main_win, "EPuzzles", "Epuzzles");
+    ecore_evas_callback_delete_request_set(main_win, main_win_close_handler);
+
     fe->first_time = 1;
     fe->me = NULL;
     fe->colours = NULL;
-    fe->timer_id = fe->timer_active = NULL;
+    fe->timer_id = NULL;
+    fe->timer_active = 0;
 
-    main_win = ewl_window_new();
-    fe->window = main_win;
-    ewl_window_title_set ( EWL_WINDOW ( main_win ), "EWL_WINDOW" );
-    ewl_window_name_set ( EWL_WINDOW ( main_win ), "EWL_WINDOW" );
-    ewl_window_class_set ( EWL_WINDOW ( main_win ), "EWLWindow" );
-    ewl_object_size_request ( EWL_OBJECT ( main_win ), 600, 800 );
-    ewl_object_maximum_w_set(EWL_OBJECT(main_win),600);
-    ewl_callback_append ( main_win, EWL_CALLBACK_DELETE_WINDOW, destroy_cb, fe);
-    ewl_callback_append ( main_win, EWL_CALLBACK_SHOW, realize_cb, fe);
-    ewl_widget_name_set(main_win,"mainwindow");
-    ewl_widget_show ( main_win );
+    Evas* main_canvas = ecore_evas_get(main_win);
+    Evas_Object* main_canvas_edje = edje_object_add(main_canvas);
+    evas_object_name_set(main_canvas_edje, "main_canvas_edje");
+    edje_object_file_set(main_canvas_edje, THEME_DIR "/epuzzle.edj", "epuzzle");
 
-    box =  ewl_vbox_new();
-    ewl_container_child_append(EWL_CONTAINER(main_win),box);
-    ewl_object_fill_policy_set(EWL_OBJECT(box), EWL_FLAG_FILL_ALL);
-    ewl_widget_show(box);
+    fe->window = main_canvas;
 
-        menubar = ewl_menubar_new();
-        ewl_widget_name_set(menubar, "okmenu");
+    fe->area = edrawable_add(main_canvas, CANVAS_SIZE, CANVAS_SIZE);
 
-    if(!single) {
-        ewl_menubar_from_info(EWL_MENUBAR(menubar), menubar_info);
-        menu = ewl_menu_new();
-        ewl_button_label_set(EWL_BUTTON(menu),"Puzzles");
-
-        setup_gamelist(menu);
-        ewl_widget_show(menu);
-
-        ewl_container_child_append(EWL_CONTAINER(menubar), menu);
-        ewl_object_fill_policy_set(EWL_OBJECT(menu),
-            EWL_FLAG_FILL_HSHRINKABLE | EWL_FLAG_FILL_VFILL);
-
-    }
-        ewl_container_child_append(EWL_CONTAINER(box), menubar);
-        ewl_widget_show(menubar);
-
-    fe->area = ewl_drawable_new();
-    ewl_object_fill_policy_set(EWL_OBJECT(fe->area), EWL_FLAG_FILL_ALL);
-    ewl_container_child_append(EWL_CONTAINER(box), EWL_WIDGET(fe->area));
-    ewl_callback_append ( EWL_WIDGET(fe->area),
-            EWL_CALLBACK_CONFIGURE, configure_cb, fe);
-    ewl_container_child_append(EWL_CONTAINER(box), fe->area);
-    ewl_widget_show(EWL_WIDGET(fe->area));
-
-    fe->statusbar = ewl_statusbar_new();
-    ewl_container_child_append(EWL_CONTAINER(box), EWL_WIDGET(fe->statusbar));
-    ewl_statusbar_push(fe->statusbar, 
-        single ? "" : "Select puzzle from menu...");
-    ewl_widget_show(EWL_WIDGET(fe->statusbar));
+    evas_object_move(main_canvas_edje, 0, 0);
+    evas_object_resize(main_canvas_edje, 600, 800);
+    gui_set_key_handler(fe);
 
     if(single)
         create_game(fe, single);
+
+    gui_redraw(fe);
+    evas_object_show(main_canvas_edje);
+    evas_object_show(fe->area);
+    edje_object_part_swallow(main_canvas_edje, "epuzzle/drawable",  fe->area );
+    ecore_evas_show(main_win);
+    ecore_main_loop_begin();
 };
 
 static
-void exit_all(void* param __attribute__((unused))) { 
-    ewl_main_quit(); 
-    //ecore_main_loop_quit(); 
+void exit_all(void* param __attribute__((unused))) {
+    ecore_main_loop_quit();
 }
+
+static int exit_handler(void* param __attribute__((unused)),
+                        int ev_type __attribute__((unused)),
+                        void* event __attribute__((unused)))
+{
+   ecore_main_loop_quit();
+   return 1;
+}
+
 /* lets go */
 int main(int argc, char ** argv) {
     printf("argc=%d\n", argc);
-    if(!ewl_init(&argc, argv)) {
-        fatal("can't init ewl");
-    };
+    setlocale(LC_ALL, "");
+    textdomain("gm");
+    if(!evas_init())
+       die("Unable to initialize Evas\n");
+    if(!ecore_init())
+       die("Unable to initialize Ecore\n");
+    if(!ecore_evas_init())
+       die("Unable to initialize Ecore_Evas\n");
+    if(!edje_init())
+       die("Unable to initialize Edje\n");
+    if(!efreet_init())
+       die("Unable to initialize Efreet\n");
+
     ecore_x_io_error_handler_set(exit_all, NULL);
+    ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_handler, NULL);
+
     if(argc == 2) {
         single = lookup_game_by_name(argv[1]);
         if(!single)
             fatal("Don't know this game");
-        printf("Enter single mode\n");
-    }
-    ewl_theme_theme_set(theme_file);
-    init_gui();
-    ewl_main();
+        run();
+    } else {
+        printf("game name required");
+    };
+    efreet_shutdown();
+    edje_shutdown();
+    ecore_evas_shutdown();
+    ecore_shutdown();
+    evas_shutdown();
     return 0;
 }
 

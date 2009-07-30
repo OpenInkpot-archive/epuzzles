@@ -16,7 +16,7 @@ void frontend_default_colour(struct frontend *fe, float *output)
 }
 
 void
-gui_setup_colors(struct frontend *fe) 
+gui_setup_colors(struct frontend *fe)
 {
         float * colours;
         int ncolours;
@@ -26,7 +26,7 @@ gui_setup_colors(struct frontend *fe)
         colours = midend_colours(fe->me, &ncolours);
         printf("midend_colours(): leave\n");
         fe->ncolours = ncolours;
-        fe->colours = snewn(ncolours, Ewl_Color_Set);
+        fe->colours = snewn(ncolours, struct _Color_Set);
         for (i = 0; i < ncolours; i++) {
             fe->colours[i].r = colours[i*3] * 0xFF;
             fe->colours[i].g = colours[i*3+1] * 0xFF;
@@ -40,12 +40,12 @@ gui_setup_colors(struct frontend *fe)
 }
 
 void
-gui_apply_color(struct frontend *fe, int color) 
+gui_apply_color(struct frontend *fe, int color)
 {
     if(color > fe->ncolours)
         fatal("requested color %d index greater then total num of colors: %d\n",
             color, fe->ncolours);
-    ewl_drawable_set_colors(fe->area, &fe->colours[color]);
+    edrawable_set_colors(fe->area, fe->colours[color].r, fe->colours[color].g, fe->colours[color].b, 255);
 }
 
 void
@@ -101,7 +101,7 @@ gui_get_config_color(char *puzzle, char *colorname, int *r, int *g, int *b) {
         NULL,
     };
     int i=0;
-        
+
     const char  home_config[1024];
     const char *config_file_name = NULL;
     const char *line;
@@ -109,7 +109,7 @@ gui_get_config_color(char *puzzle, char *colorname, int *r, int *g, int *b) {
     int rc = 0;
 
     printf("gui_get_config_color(%s, %s);\n", puzzle, colorname);
-    
+
 
     home = getenv("HOME");
     if (home) {
@@ -153,7 +153,7 @@ gui_get_config_color(char *puzzle, char *colorname, int *r, int *g, int *b) {
     xcb_aux_parse_color(line, &rr, &gg, &bb);
     printf("loaded colorline %s, r:%x g:%x b:%x\n",line, rr, gg, bb);
     rc = 1;
-    
+
     exit:
     if(config)
         efreet_ini_free(config);
