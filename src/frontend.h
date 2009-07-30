@@ -4,7 +4,6 @@
 #include <Evas.h>
 #include <Ecore.h>
 #include <Ecore_Evas.h>
-#include <Ewl.h>
 #include <edrawable.h>
 
 #include "puzzles.h"
@@ -16,13 +15,17 @@
  * particularly good reason not to.
  */
 
+struct _Color_Set {
+    int r;
+    int g;
+    int b;
+    int a;
+};
 
 struct frontend {
-    Ewl_Window *window;
-    Ewl_Drawable *area;
-    Ewl_Statusbar *statusbar;
-    Ewl_Widget *submenu;
-    Ewl_Color_Set *colours;
+    Evas_Object *window;
+    Evas_Object *area;
+    struct _Color_Set *colours;
     int ncolours;
     int w, h;
     midend *me;
@@ -34,25 +37,14 @@ struct frontend {
     int nfonts, fontsize;
     config_item *cfg;
     int cfg_which, cfgret;
-    Ewl_Widget *cfgbox;
     void *paste_data;
     int paste_data_len;
     int pw, ph;                        /* pixmap size (w, h are area size) */
     int ox, oy;                        /* offset of pixmap in drawing area */
-#ifdef OLD_FILESEL
-    char *filesel_name;
-#endif
     int npresets;
-/*    GtkWidget **preset_bullets;
-    GtkWidget *preset_custom_bullet;
-    GtkWidget *copy_menu_item; */
     int first_time;
 };
 
 struct game * lookup_game_by_name(const char * name);
-void setup_gamelist(Ewl_Widget *);
-void append_game(Ewl_Widget*, struct game *);
-void gamelist_menu(Ewl_Widget *parent, void * userdata);
-void new_game_cb ( Ewl_Widget *w, void *event, void *data );
-void exit_cb( Ewl_Widget *w, void *event, void *data);
+void terminate(struct frontend *);
 #endif
