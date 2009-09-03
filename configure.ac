@@ -23,7 +23,7 @@ if test -r "${srcdir}/edrawable/configure.ac"; then
     AC_SUBST([EDRAWABLE_CFLAGS])
     AC_SUBST([EDRAWABLE_LIBS])
 else
-    PKG_CHECK_MODULES(EDRAWABLE, [edrawable])
+    PKG_CHECK_MODULES(EDRAWABLE, [libedrawable])
 fi
 
 SUBDIRS="${SUBDIRS} theme src desktops"
