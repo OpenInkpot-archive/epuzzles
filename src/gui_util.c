@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <Ewl.h>
 #include <Efreet.h>
 #include <xcb/xcb.h>
 #include <xcb/xcb_aux.h>
