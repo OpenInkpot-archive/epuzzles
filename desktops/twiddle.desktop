@@ -4,6 +4,6 @@ Type=Application
 Name=Twiddle puzzle
 Name[pl]=Kręcenie
 Name[ru]=Крути-верти
-Name[ua]=Круть-верть
+Name[uk]=Круть-верть
 Exec=/usr/bin/epuzzles twiddle
 Categories=Games

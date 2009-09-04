@@ -4,6 +4,6 @@ Type=Application
 Name=Bridges puzzle
 Name[pl]=Mosty
 Name[ru]=Мостики
-Name[ua]=Місточки
+Name[uk]=Місточки
 Exec=/usr/bin/epuzzles bridges
 Categories=Games

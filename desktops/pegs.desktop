@@ -4,6 +4,6 @@ Type=Application
 Name=Pegs puzzle
 Name[pl]=Samotnik
 Name[ru]=Колышки
-Name[ua]=Кілочки
+Name[uk]=Кілочки
 Exec=/usr/bin/epuzzles pegs
 Categories=Games

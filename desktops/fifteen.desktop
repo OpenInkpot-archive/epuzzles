@@ -4,6 +4,6 @@ Type=Application
 Name=Fifteen puzzle
 Name[pl]=Piętnastka
 Name[ru]=Пятнашки
-Name[ua]=П'ятнашки
+Name[uk]=П'ятнашки
 Exec=/usr/bin/epuzzles fifteen
 Categories=Games
