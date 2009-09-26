@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <Evas.h>
 #include <Ecore.h>
+#include <libkeys.h>
 #include "puzzles.h"
 #include "frontend.h"
 #include "gui_util.h"
 
-extern game * single;
 
 static void _key_handler(void* param __attribute__((unused)),
          Evas* e __attribute__((unused)),
@@ -13,16 +13,22 @@ static void _key_handler(void* param __attribute__((unused)),
     Evas_Event_Key_Down* ev = (Evas_Event_Key_Down*)event_info;
     struct frontend *fe = (struct frontend *)param;
 
-    const char *k = ev->keyname;
-    unsigned int lp = 0;
-//    if(e->base.modifiers & EWL_KEY_MODIFIER_ALT)
-//        lp = 1;
+    unsigned int lp = evas_key_modifier_is_set(ev->modifiers, "Alt");
+
+    const char *trykey = keys_lookup(fe->keys, fe->name, ev->keyname);
+    const char *key;
+    if(key)
+        key = trykey;
+    else
+        key = keys_lookup(fe->keys, "default", ev->keyname);
+
+    if(!key)
+        return;
 
     int keyval = 0;
 
-    printf("In handler %s\n", k);
 
-#define HANDLE_KEY(kk, vv)  if( !strcmp(k, kk) ){ keyval = vv; }
+#define HANDLE_KEY(kk, vv)  if( !strcmp(key, kk) ){ keyval = vv; }
     HANDLE_KEY("KP_0", MOD_NUM_KEYPAD | '0') else
     HANDLE_KEY("KP_9", MOD_NUM_KEYPAD | '9') else
     HANDLE_KEY("KP_8", MOD_NUM_KEYPAD | '8') else
@@ -37,24 +43,16 @@ static void _key_handler(void* param __attribute__((unused)),
     HANDLE_KEY("Right",  CURSOR_RIGHT) else
     HANDLE_KEY("Left",  CURSOR_LEFT) else
     HANDLE_KEY("Down",  CURSOR_DOWN) else
+    HANDLE_KEY("Select", CURSOR_SELECT) else
 
-    /* For emulation on PC */
-    HANDLE_KEY("j",  CURSOR_UP) else
-    HANDLE_KEY("h",  CURSOR_RIGHT) else
-    HANDLE_KEY("l",  CURSOR_LEFT) else
-    HANDLE_KEY("k",  CURSOR_DOWN) else
-    if(!strcmp(k,"Enter") || !strcmp(k,"Return")) {
-        keyval=CURSOR_SELECT;
-    } else
-
-    if(!strcmp(k, "Escape")) {
+    if(!strcmp(key, "Quit")) {
        ecore_main_loop_quit();
     }
 
     if (keyval) {
         if (lp)
             keyval |= MOD_SHFT;
-        printf("processing key %s %d\n",k, keyval);
+        printf("processing key %s (%s)  %d\n",ev->keyname, key, keyval);
         midend_process_key(fe->me, 0, 0, keyval);
     } else {
         printf("No keyval\n");

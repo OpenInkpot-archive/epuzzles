@@ -4,6 +4,7 @@
 #include <Evas.h>
 #include <Ecore.h>
 #include <Ecore_Evas.h>
+#include <libkeys.h>
 #include <edrawable.h>
 
 #include "puzzles.h"
@@ -28,6 +29,9 @@ struct frontend {
     struct _Color_Set *colours;
     int ncolours;
     int default_alpha;
+
+    const char *name;
+    keys_t *keys;
 
     int w, h;
     midend *me;

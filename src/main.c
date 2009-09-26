@@ -1,3 +1,5 @@
+#define _GNU_SOURCE 1
+#include <err.h>
 #include <errno.h>
 #include <locale.h>
 #include <stdio.h>
@@ -34,6 +36,8 @@ static void die(const char* fmt, ...)
 void
 destroy_game(struct frontend *fe) {
     gui_delete_colors(fe);
+    if(fe->keys)
+        keys_free(fe->keys);
     if(fe->me) {
         midend_free(fe->me);
         fe->me = NULL;
@@ -64,6 +68,10 @@ void
 create_game(struct frontend *fe, struct game *thegame) {
     destroy_game(fe); /* close old gaming */
     fe->first_time = 0;
+    fe->keys = keys_alloc("epuzzles");
+    fe->name = thegame->name;
+    if(!fe->keys)
+        err(1, "Can't load keys\n");
     fe->me = midend_new(fe, thegame, &e_drawing_api, fe);
     gui_setup_colors(fe);
     midend_new_game(fe->me);
