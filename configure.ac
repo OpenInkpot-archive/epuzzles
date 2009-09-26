@@ -16,6 +16,7 @@ PKG_CHECK_MODULES(ECORE_EVAS,[ecore-evas])
 PKG_CHECK_MODULES(EFREET, [efreet])
 PKG_CHECK_MODULES(EDRAWABLE, [libedrawable])
 PKG_CHECK_MODULES(LIBKEYS, [libkeys])
+PKG_CHECK_MODULES(LIBEOI, [libeoi])
 
 AC_OUTPUT([
     Makefile theme/Makefile src/Makefile src/puzzles/Makefile 

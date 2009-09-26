@@ -7,7 +7,9 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <Evas.h>
+#include <Edje.h>
 #include <Ecore_Evas.h>
+#include <libeoi.h>
 #include <edrawable.h>
 #include "frontend.h"
 #include "puzzles.h"
@@ -111,27 +113,35 @@ static void run() {
     fe->timer_active = 0;
 
     Evas* main_canvas = ecore_evas_get(main_win);
-    Evas_Object* main_canvas_edje = edje_object_add(main_canvas);
-    evas_object_name_set(main_canvas_edje, "main_canvas_edje");
-    edje_object_file_set(main_canvas_edje, THEME_DIR "/epuzzle.edj", "epuzzle");
+    Evas_Object* main_edje = eoi_main_window_create(main_canvas);
+    evas_object_name_set(main_edje, "main_edje");
 
-    fe->window = main_canvas;
+    Evas_Object* contents = edje_object_add(main_canvas);
+    edje_object_file_set(contents, THEME_DIR "/epuzzle.edj", "epuzzle");
+    evas_object_name_set(contents, "contents");
+    evas_object_show(contents);
+    edje_object_part_swallow(main_edje, "contents", contents);
+
+    fe->window = main_edje;
 
     fe->area = edrawable_add(main_canvas, CANVAS_SIZE, CANVAS_SIZE);
     fe->default_alpha = 0xFF; /* Default alphachannel for drawing */
 
-    evas_object_move(main_canvas_edje, 0, 0);
-    evas_object_resize(main_canvas_edje, 600, 800);
+    evas_object_move(main_edje, 0, 0);
+    evas_object_resize(main_edje, 600, 800);
     gui_set_key_handler(fe);
+    evas_object_focus_set(contents, true);
 
     if(single)
         create_game(fe, single);
 
     gui_redraw(fe);
-    evas_object_show(main_canvas_edje);
+    evas_object_show(main_edje);
     evas_object_show(fe->area);
-    edje_object_part_swallow(main_canvas_edje, "epuzzle/drawable",  fe->area );
+    edje_object_part_swallow(contents, "epuzzle/drawable",  fe->area );
     ecore_evas_show(main_win);
+    init_clock(main_edje);
+    init_battery(main_edje);
     ecore_main_loop_begin();
 };
 
