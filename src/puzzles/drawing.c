@@ -2,13 +2,13 @@
  * drawing.c: Intermediary between the drawing interface as
  * presented to the back end, and that implemented by the front
  * end.
- * 
+ *
  * Mostly just looks up calls in a vtable and passes them through
  * unchanged. However, on the printing side it tracks print colours
  * so the front end API doesn't have to.
- * 
+ *
  * FIXME:
- * 
+ *
  *  - I'd _like_ to do automatic draw_updates, but it's a pain for
  *    draw_text in particular. I'd have to invent a front end API
  *    which retrieved the text bounds.
@@ -68,6 +68,11 @@ void drawing_free(drawing *dr)
     sfree(dr->laststatus);
     sfree(dr->colours);
     sfree(dr);
+}
+
+void * drawing_handle(drawing *dr)
+{
+    return dr->handle;
 }
 
 void draw_text(drawing *dr, int x, int y, int fonttype, int fontsize,
@@ -276,7 +281,7 @@ void print_line_width(drawing *dr, int width)
      * hand, absolute line widths aren't particularly nice either
      * because they start to feel a bit feeble at really large
      * scales.
-     * 
+     *
      * My experimental answer is to scale line widths as the
      * _square root_ of the main puzzle scale. Double the puzzle
      * size, and the line width multiplies by 1.4.

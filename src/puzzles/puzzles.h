@@ -47,7 +47,7 @@ enum {
     CURSOR_RIGHT,
     CURSOR_SELECT,
     CURSOR_SELECT2,
-    
+
     /* made smaller because of 'limited range of datatype' errors. */
     MOD_CTRL       = 0x1000,
     MOD_SHFT       = 0x2000,
@@ -176,6 +176,7 @@ void get_random_seed(void **randseed, int *randseedsize);
  */
 drawing *drawing_new(const drawing_api *api, midend *me, void *handle);
 void drawing_free(drawing *dr);
+void *drawing_handle(drawing *api);
 void draw_text(drawing *dr, int x, int y, int fonttype, int fontsize,
                int align, int colour, char *text);
 void draw_rect(drawing *dr, int x, int y, int w, int h, int colour);
