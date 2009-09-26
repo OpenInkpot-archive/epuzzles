@@ -126,7 +126,7 @@ static void run() {
 
     fe->window = main_edje;
 
-    if(!strncmp(single->name, "Fifteen"))
+    if(!strcmp(single->name, "Fifteen"))
     {
         printf("Unsing custom canvas\n");
         fe->area = custom_drawable_fifteen(main_canvas, CANVAS_SIZE);
@@ -150,8 +150,8 @@ static void run() {
         create_game(fe, single);
 
     gui_redraw(fe);
-    evas_object_show(main_edje);
     evas_object_show(fe->area);
+    evas_object_show(main_edje);
     edje_object_part_swallow(contents, "epuzzle/drawable",  fe->area );
     ecore_evas_show(main_win);
     init_clock(main_edje);

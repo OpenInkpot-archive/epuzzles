@@ -44,15 +44,24 @@ _sprites_init(Evas_Object *obj, Evas *evas, int w, int h) {
 
     sprites->bg = evas_object_image_add(evas);
     evas_object_smart_member_add(sprites->bg, obj);
-
-    sprites->clip = evas_object_rectangle_add(evas);
-    evas_object_smart_member_add(sprites->clip, obj);
-    evas_object_stack_above(sprites->bg, sprites->clip);
+    evas_object_name_set(sprites->bg, "sprites/bg");
+    evas_object_move(sprites->bg, 0, 0);
+    evas_object_resize(sprites->bg, w, h);
     evas_object_image_size_set(sprites->bg, w, h);
     evas_object_image_fill_set(sprites->bg, 0, 0, w, h);
+    evas_object_color_set(sprites->bg, 255, 255, 255, 255);
+
+    sprites->clip = evas_object_rectangle_add(evas);
+    evas_object_color_set(sprites->clip, 255, 255, 255, 255);
+    evas_object_name_set(sprites->clip, "sprites/clip");
+//    evas_object_clip_set(sprites->bg, sprites->clip);
+    evas_object_move(sprites->clip, 0, 0);
+    evas_object_resize(sprites->clip, w, h);
+    evas_object_smart_member_add(sprites->clip, obj);
+    evas_object_stack_above(sprites->bg, sprites->clip);
 
     sprites->sprites = NULL;
-
+    printf("sprite obj done\n");
 }
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
@@ -60,13 +69,14 @@ static void
 _sprites_display(Evas_Object *obj, int x, int y, int w, int h) {
     sprites_t *drawable = evas_object_smart_data_get(obj);
     int iw, ih;
-    evas_object_image_size_get(drawable->clip, &iw, &ih);
+    evas_object_image_size_get(drawable->bg, &iw, &ih);
     evas_object_move(drawable->clip, x, y);
     evas_object_resize(drawable->clip, MIN(w, iw), MIN(h, ih));
 }
 
 static void
 _sprites_show(Evas_Object *obj) {
+    printf("sprite show\n");
     sprites_t *drawable = evas_object_smart_data_get(obj);
     evas_object_show(drawable->clip);
 }
@@ -79,19 +89,24 @@ _sprites_hide(Evas_Object *obj) {
 
 static void
 _sprites_move(Evas_Object *obj, Evas_Coord x, Evas_Coord y) {
-    //EDrawable *drawable = evas_object_smart_data_get(obj);
     int ow, oh;
-    evas_object_geometry_get(obj, NULL, NULL, &ow, &oh);
-
-    _sprites_display(obj, x, y, ow, oh);
+    sprites_t *sprites = evas_object_smart_data_get(obj);
+    evas_object_move(sprites->clip, x, y);
+    evas_object_move(sprites->bg, x, y);
+    evas_object_smart_move_children_relative(obj, x, y);
+    //evas_object_geometry_get(obj, NULL, NULL, &ow, &oh);
+    //_sprites_display(obj, x, y, ow, oh);
 }
 
 
 static void
 _sprites_resize(Evas_Object *obj, Evas_Coord w, Evas_Coord h) {
-    int ox, oy;
-    evas_object_geometry_get(obj, &ox, &oy, NULL, NULL);
-    _sprites_display(obj, ox, oy, w, h);
+    sprites_t *sprites = evas_object_smart_data_get(obj);
+    evas_object_resize(sprites->clip, w, h);
+    evas_object_resize(sprites->bg, w, h);
+    //int ox, oy;
+    //evas_object_geometry_get(obj, &ox, &oy, NULL, NULL);
+    //_sprites_display(obj, ox, oy, w, h);
 }
 
 static void
@@ -147,15 +162,44 @@ sprites_bg_file_set(Evas_Object *obj, const char *file, const char *key) {
     evas_object_image_file_set(drawable->bg, file, key);
 }
 
+static void
+_move_sprite_relative(Evas_Object *obj, int x, int y)
+{
+    Evas_Object *clip = evas_object_clip_get(obj);
+    if(!clip) {
+        evas_object_move(obj, x, y);
+        return;
+    }
+    int xo, yo;
+    evas_object_geometry_get(obj, &xo, &yo, NULL, NULL);
+    evas_object_move(obj, xo, yo);
+}
+
 int
 sprites_add_sprite(Evas_Object *obj, const char *file, const char *key) {
     sprites_t *drawable  = evas_object_smart_data_get(obj);
-    if(!drawable)
-        return;
+    if(!drawable) {
+        printf("bad drawable\n");
+        return -1;
+    }
+    Evas_Imaging_Image *im = evas_imaging_image_load(file, key);
+    if(!im) {
+        printf("Can't load %s\n", file);
+        return -1;
+    }
+    int w, h;
+    evas_imaging_image_size_get(im, &w, &h);
     Evas_Object *sprite = evas_object_image_add(evas_object_evas_get(obj));
     evas_object_image_file_set(sprite, file, key);
     evas_object_smart_member_add(sprite, obj);
+    evas_object_image_size_set(sprite, w, h);
+    evas_object_image_fill_set(sprite, 0, 0, w, h);
     evas_object_clip_set(sprite, drawable->clip);
+    evas_object_stack_above(sprite, drawable->clip);
+    _move_sprite_relative(sprite, 0, 0);
+    evas_object_resize(sprite, w, h);
+    evas_object_show(sprite);
+    evas_imaging_image_free(im);
     drawable->sprites = eina_list_append(drawable->sprites, sprite);
     return drawable->counter++;
 }
@@ -168,7 +212,7 @@ sprites_sprite_move(Evas_Object *obj, int index, int x, int y)
         return;
     Evas_Object *sprite = (Evas_Object *) eina_list_nth(drawable->sprites, index);
     if(sprite)
-        evas_object_move(sprite, x, y);
+        _move_sprite_relative(sprite, x, y);
 }
 
 void

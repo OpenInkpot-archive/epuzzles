@@ -678,7 +678,7 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
                  game_state *state, int dir, game_ui *ui,
                  float animtime, float flashtime)
 {
-    int i, pass, bgcolour;
+    int i, pass, bgcolour = 0;
 
 
 #if 0

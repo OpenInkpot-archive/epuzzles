@@ -1,7 +1,7 @@
 SUBDIRS = .
 noinst_LTLIBRARIES = libcore.la libpuzzles.la
 
-CFLAGS = -DCOMBINED -DDEBUGGING -DEINK_SCREEN -I${top_srcdir}/src
+CFLAGS = -g3 -DCOMBINED -DDEBUGGING -DEINK_SCREEN -I${top_srcdir}/src
 
 libcore_la_SOURCES = drawing.c malloc.c dsf.c misc.c divvy.c combi.c random.c \
     midend.c printing.c tree234.c latin.c maxflow.c

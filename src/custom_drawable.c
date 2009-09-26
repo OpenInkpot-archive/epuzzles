@@ -5,7 +5,7 @@
 #include "frontend.h"
 #include "sprites.h"
 
-#define FIFTEEN "/usr/share/epuzzle/sprites/fifteen/"
+#define FIFTEEN "/usr/share/epuzzles/sprites/fifteen/"
 
 Evas_Object *
 custom_drawable_fifteen(Evas *evas, int xy)
@@ -18,7 +18,7 @@ custom_drawable_fifteen(Evas *evas, int xy)
     for(i=1; i < 16; i++)
     {
         char buf[1024];
-        snprintf(buf, 1024, FIFTEEN "%02x.png", i);
+        snprintf(buf, 1024, FIFTEEN "%02d.png", i);
         printf("Loading %s\n", buf);
         sprites_add_sprite(sprites, buf, NULL);
     };
