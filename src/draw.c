@@ -71,7 +71,7 @@ void e_draw_text(void *handle, int x, int y, int fonttype, int fontsize,
     else
         y -= yy;
     if (align & ALIGN_HCENTRE)
-        x -= xx / 4;
+        x -= xx / ( 4 / strlen(text));
     else  if (align & ALIGN_HRIGHT)
         x -= xx;
     edrawable_draw_text(fe->area, x, y, text);
