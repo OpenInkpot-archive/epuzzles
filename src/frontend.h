@@ -27,6 +27,8 @@ struct frontend {
     Evas_Object *area;
     struct _Color_Set *colours;
     int ncolours;
+    int default_alpha;
+
     int w, h;
     midend *me;
     int bbox_l, bbox_r, bbox_u, bbox_d;

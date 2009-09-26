@@ -30,7 +30,7 @@ gui_setup_colors(struct frontend *fe)
             fe->colours[i].r = colours[i*3] * 0xFF;
             fe->colours[i].g = colours[i*3+1] * 0xFF;
             fe->colours[i].b = colours[i*3+2] * 0xFF;
-            fe->colours[i].a = 0xFF;
+            fe->colours[i].a = fe->default_alpha;
             printf("color %d: red:%d green:%d blue:%d alpha:%d\n",
                 i, fe->colours[i].r, fe->colours[i].g,
                 fe->colours[i].b, fe->colours[i].a);
@@ -44,7 +44,7 @@ gui_apply_color(struct frontend *fe, int color)
     if(color > fe->ncolours)
         fatal("requested color %d index greater then total num of colors: %d\n",
             color, fe->ncolours);
-    edrawable_set_colors(fe->area, fe->colours[color].r, fe->colours[color].g, fe->colours[color].b, 255);
+    edrawable_set_colors(fe->area, fe->colours[color].r, fe->colours[color].g, fe->colours[color].b, fe->colours[color].a);
 }
 
 void

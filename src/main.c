@@ -91,6 +91,7 @@ static void run() {
     fe = snew(struct frontend);
     _frontend = fe;
 
+
     ecore_evas_title_set(main_win, "EPuzzles");
     ecore_evas_name_class_set(main_win, "EPuzzles", "Epuzzles");
     ecore_evas_callback_delete_request_set(main_win, main_win_close_handler);
@@ -109,6 +110,7 @@ static void run() {
     fe->window = main_canvas;
 
     fe->area = edrawable_add(main_canvas, CANVAS_SIZE, CANVAS_SIZE);
+    fe->default_alpha = 0xFF; /* Default alphachannel for drawing */
 
     evas_object_move(main_canvas_edje, 0, 0);
     evas_object_resize(main_canvas_edje, 600, 800);
