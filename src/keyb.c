@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdio.h>
 #include <Evas.h>
 #include <Ecore.h>
@@ -13,11 +14,13 @@ static void _key_handler(void* param __attribute__((unused)),
     Evas_Event_Key_Down* ev = (Evas_Event_Key_Down*)event_info;
     struct frontend *fe = (struct frontend *)param;
 
+    assert(fe);
+
     unsigned int lp = evas_key_modifier_is_set(ev->modifiers, "Alt");
 
     const char *trykey = keys_lookup(fe->keys, fe->name, ev->keyname);
     const char *key;
-    if(key)
+    if(trykey)
         key = trykey;
     else
         key = keys_lookup(fe->keys, "default", ev->keyname);
