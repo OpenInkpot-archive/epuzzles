@@ -11,9 +11,9 @@
 
 #include "puzzles.h"
 
-#define PREFERRED_TILE_SIZE 48
+#define PREFERRED_TILE_SIZE 100
 #define TILE_SIZE (ds->tilesize)
-#define BORDER    (TILE_SIZE / 2)
+#define BORDER    5 /* (TILE_SIZE / 2) */
 #define HIGHLIGHT_WIDTH (TILE_SIZE / 20)
 #define COORD(x)  ( (x) * TILE_SIZE + BORDER )
 #define FROMCOORD(x)  ( ((x) - BORDER + TILE_SIZE) / TILE_SIZE - 1 )
@@ -228,10 +228,10 @@ static char *new_game_desc(game_params *params, random_state *rs,
     /*
      * Determine the required parity of the overall permutation.
      * This is the XOR of:
-     * 
+     *
      * 	- The chessboard parity ((x^y)&1) of the gap square. The
      * 	  bottom right counts as even.
-     * 
+     *
      *  - The parity of n. (The target permutation is 1,...,n-1,0
      *    rather than 0,...,n-1; this is a cyclic permutation of
      *    the starting point and hence is odd iff n is even.)
@@ -632,6 +632,7 @@ static void game_free_drawstate(drawing *dr, game_drawstate *ds)
 static void draw_tile(drawing *dr, game_drawstate *ds, game_state *state,
                       int x, int y, int tile, int flash_colour)
 {
+    printf("TILE_SIZE = %d\n", TILE_SIZE);
     if (tile == 0) {
         draw_rect(dr, x, y, TILE_SIZE, TILE_SIZE,
                   flash_colour);

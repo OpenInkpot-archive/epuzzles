@@ -64,8 +64,8 @@ collections {
                type, SWALLOW;
                description {
                   state, "default" 0.0;
-                  rel1 { relative, 0.0 0.0; offset, 100 100; }
-                  rel2 { relative, 0.0 0.0; offset, 500 500; }
+                  rel1 { relative, 0.0 0.0; offset, 80 100; }
+                  rel2 { relative, 0.0 0.0; offset, 520 540; }
                }
             }
             part {

@@ -15,7 +15,7 @@
 #include "puzzles.h"
 
 #define PROG    "E Puzzles"
-#define CANVAS_SIZE  400
+#define CANVAS_SIZE  440
 
 static char * theme_file = THEME_DIR "epuzzle.edj";
 
