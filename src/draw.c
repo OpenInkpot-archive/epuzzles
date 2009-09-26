@@ -58,7 +58,7 @@ void e_draw_text(void *handle, int x, int y, int fonttype, int fontsize,
     int i;
     int xx, yy, asc, desc;
 
-	const char * fontname = (fonttype == FONT_FIXED ? "/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf" : "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf");
+	const char * fontname = (fonttype == FONT_FIXED ? "/usr/share/fonts/truetype/droid/DroidSansMono.ttf" : "/usr/share/fonts/truetype/droid/DroidSans.ttf");
     printf("e_draw_text(...,%d, %d, %s, \"%s\")\n", x, y, fontname, text);
     gui_apply_color(fe, color);
     edrawable_select_font(fe->area, fontname, fontsize);
