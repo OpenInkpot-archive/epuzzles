@@ -26,7 +26,7 @@
  *       elimination-only might be in order
  *     + but it's not good to have _too_ many difficulty levels, or
  *       it'll take too long to randomly generate a given level.
- * 
+ *
  *  - it might still be nice to do some prioritisation on the
  *    removal of numbers from the grid
  *     + one possibility is to try to minimise the maximum number
@@ -204,7 +204,7 @@ struct game_params {
     /*
      * For a square puzzle, `c' and `r' indicate the puzzle
      * parameters as described above.
-     * 
+     *
      * A jigsaw-style puzzle is indicated by r==1, in which case c
      * can be whatever it likes (there is no constraint on
      * compositeness - a 7x7 jigsaw sudoku makes perfect sense).
@@ -243,7 +243,7 @@ struct block_structure {
      * are of the form "(1,3)"; for jigsaw they are "starting at
      * (5,7)". So the sensible usage in both cases is to say
      * "elimination within block %s" with one of these strings.
-     * 
+     *
      * Only blocknames itself needs individually freeing; it's all
      * one block.
      */
@@ -644,13 +644,13 @@ static void remove_from_block(struct block_structure *blocks, int b, int n)
 
 /* ----------------------------------------------------------------------
  * Solver.
- * 
+ *
  * This solver is used for two purposes:
  *  + to check solubility of a grid as we gradually remove numbers
  *    from it
  *  + to solve an externally generated puzzle when the user selects
  *    `Solve'.
- * 
+ *
  * It supports a variety of specific modes of reasoning. By
  * enabling or disabling subsets of these modes we can arrange a
  * range of difficulty levels.
@@ -700,9 +700,9 @@ static void remove_from_block(struct block_structure *blocks, int b, int n)
  *       places, found by taking the _complement_ of the union of
  *       the numbers' possible positions (or the spaces' possible
  *       contents).
- * 
+ *
  *  - Forcing chains (see comment for solver_forcing().)
- * 
+ *
  *  - Recursion. If all else fails, we pick one of the currently
  *    most constrained empty squares and take a random guess at its
  *    contents, then continue solving on that basis and see if we
@@ -1098,7 +1098,7 @@ static int solver_set(struct solver_usage *usage,
                  * bits in the positions _not_ listed in `set'.
                  * Return +1 (meaning progress has been made) if we
                  * successfully eliminated anything at all.
-                 * 
+                 *
                  * This involves referring back through
                  * rowidx/colidx in order to work out which actual
                  * positions in the cube to meddle with.
@@ -1221,7 +1221,7 @@ static int solver_forcing(struct solver_usage *usage,
             /*
              * If this square doesn't have exactly two candidate
              * numbers, don't try it.
-             * 
+             *
              * In this loop we also sum the candidate numbers,
              * which is a nasty hack to allow us to quickly find
              * `the other one' (since we will shortly know there
@@ -1727,7 +1727,7 @@ static void solver(int cr, struct block_structure *blocks,
 	usage->diag = snewn(cr * 2, unsigned char);
 	memset(usage->diag, FALSE, cr * 2);
     } else
-	usage->diag = NULL; 
+	usage->diag = NULL;
 
     usage->nr_regions = cr * 3 + (xtype ? 2 : 0);
     usage->regions = snewn(cr * usage->nr_regions, int);
@@ -3075,7 +3075,7 @@ static char *encode_solve_move(int cr, digit *grid)
      * It's surprisingly easy to work out _exactly_ how long this
      * string needs to be. To decimal-encode all the numbers from 1
      * to n:
-     * 
+     *
      *  - every number has a units digit; total is n.
      *  - all numbers above 9 have a tens digit; total is max(n-9,0).
      *  - all numbers above 99 have a hundreds digit; total is max(n-99,0).
@@ -3156,7 +3156,7 @@ static char *encode_block_structure_desc(char *p, struct block_structure *blocks
      * ordinary reading order, then over the cr*(cr-1)
      * internal horizontal ones in transposed reading
      * order.
-     * 
+     *
      * We encode the number of non-lines between the
      * lines; _ means zero (two adjacent divisions), a
      * means 1, ..., y means 25, and z means 25 non-lines
@@ -4149,15 +4149,15 @@ static char *grid_text_format(int cr, struct block_structure *blocks,
      * For jigsaw puzzles, however, we must leave space between
      * _all_ pairs of digits for an optional dividing line, so we
      * have to move to the rather ugly
-     * 
+     *
      * .   .   .   .
      * ------+------
      * .   . | .   .
-     *       +---+  
+     *       +---+
      * .   . | . | .
-     * ------+   |  
+     * ------+   |
      * .   .   . | .
-     * 
+     *
      * We deal with both cases using the same formatting code; we
      * simply invent a vmod value such that there's a vertical
      * dividing line before column i iff i is divisible by vmod
@@ -4820,6 +4820,10 @@ static void draw_number(drawing *dr, game_drawstate *ds, game_state *state,
 	draw_text(dr, tx + TILE_SIZE/2, ty + TILE_SIZE/2,
 		  FONT_VARIABLE, TILE_SIZE/2, ALIGN_VCENTRE | ALIGN_HCENTRE,
 		  state->immutable[y*cr+x] ? COL_CLUE : (hl & 16) ? COL_ERROR : COL_USER, str);
+          if(hl & 0x10 && !state->immutable[y*cr+x]) {
+            draw_line(dr, tx + TILE_SIZE, ty, tx, ty + TILE_SIZE, COL_KILLER);
+            draw_line(dr, tx, ty, tx + TILE_SIZE, ty + TILE_SIZE, COL_KILLER);
+          }
     } else {
         int i, j, npencil;
 	int pl, pr, pt, pb;
