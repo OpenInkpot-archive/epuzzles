@@ -30,6 +30,10 @@ struct frontend {
     int ncolours;
     int default_alpha;
 
+    struct drawing_api * draw_api;
+
+    int support_colors; /* FIXME: temporary */
+
     const char *name;
     keys_t *keys;
 

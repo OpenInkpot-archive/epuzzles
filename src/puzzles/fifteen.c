@@ -11,6 +11,9 @@
 
 #include "puzzles.h"
 
+#define HIDE_EVAS 1
+#include "custom_drawable.h"
+
 #define PREFERRED_TILE_SIZE 100
 #define TILE_SIZE (ds->tilesize)
 #define BORDER    5 /* (TILE_SIZE / 2) */
@@ -629,6 +632,7 @@ static void game_free_drawstate(drawing *dr, game_drawstate *ds)
     sfree(ds);
 }
 
+#if 0
 static void draw_tile(drawing *dr, game_drawstate *ds, game_state *state,
                       int x, int y, int tile, int flash_colour)
 {
@@ -663,6 +667,12 @@ static void draw_tile(drawing *dr, game_drawstate *ds, game_state *state,
     }
     draw_update(dr, x, y, TILE_SIZE, TILE_SIZE);
 }
+#endif
+
+static void draw_tile(drawing *dr, game_drawstate *ds, game_state *state,
+                                    int x, int y, int t, int flash_color) {
+        custom_drawable_fifteen_move(dr, t - 1, x, y);
+}
 
 static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
                  game_state *state, int dir, game_ui *ui,
@@ -670,6 +680,8 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
 {
     int i, pass, bgcolour;
 
+
+#if 0
     if (flashtime > 0) {
         int frame = (int)(flashtime / FLASH_FRAME);
         bgcolour = (frame % 2 ? COL_LOWLIGHT : COL_HIGHLIGHT);
@@ -707,6 +719,7 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
 
         ds->started = TRUE;
     }
+#endif
 
     /*
      * Now draw each tile. We do this in two passes to make
@@ -794,7 +807,6 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
         }
     }
     ds->bgcolour = bgcolour;
-
     /*
      * Update the status bar.
      */

@@ -275,3 +275,31 @@ const struct drawing_api e_drawing_api = {
     NULL,			       /* line_width */
 };
 
+void e_fake_start_draw(void *handle)
+{
+}
+
+void e_fake_end_draw(void *handle)
+{
+}
+
+const struct drawing_api fake_drawing_api = {
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    e_fake_start_draw,
+    e_fake_end_draw,
+    e_status_bar,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL, NULL, NULL, NULL, NULL, NULL, /* {begin,end}_{doc,page,puzzle} */
+    NULL,			       /* line_width */
+};
+

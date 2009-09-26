@@ -44,7 +44,10 @@ gui_apply_color(struct frontend *fe, int color)
     if(color > fe->ncolours)
         fatal("requested color %d index greater then total num of colors: %d\n",
             color, fe->ncolours);
-    edrawable_set_colors(fe->area, fe->colours[color].r, fe->colours[color].g, fe->colours[color].b, fe->colours[color].a);
+
+    /* FIXME: temporary, until edrawable not support coloring */
+    if(fe->support_colors)
+        edrawable_set_colors(fe->area, fe->colours[color].r, fe->colours[color].g, fe->colours[color].b, fe->colours[color].a);
 }
 
 void

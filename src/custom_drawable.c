@@ -2,6 +2,7 @@
 #include <err.h>
 #include <Evas.h>
 #include "custom_drawable.h"
+#include "frontend.h"
 #include "sprites.h"
 
 #define FIFTEEN "/usr/share/epuzzle/sprites/fifteen/"
@@ -24,3 +25,9 @@ custom_drawable_fifteen(Evas *evas, int xy)
     return sprites;
 }
 
+
+custom_drawable_fifteen_move(drawing *dr, int tile, int x, int y)
+{
+    struct frontend * fe = (struct frontend *) drawing_handle(dr);
+    sprites_sprite_move(fe->area, tile, x, y);
+}

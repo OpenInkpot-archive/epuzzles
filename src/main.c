@@ -66,6 +66,7 @@ void gui_redraw ( struct frontend *fe) {
     }
 }
 extern struct drawing_api e_drawing_api;
+extern struct drawing_api fake_drawing_api;
 
 void
 create_game(struct frontend *fe, struct game *thegame) {
@@ -75,7 +76,7 @@ create_game(struct frontend *fe, struct game *thegame) {
     fe->name = thegame->name;
     if(!fe->keys)
         err(1, "Can't load keys\n");
-    fe->me = midend_new(fe, thegame, &e_drawing_api, fe);
+    fe->me = midend_new(fe, thegame, fe->draw_api, fe);
     gui_setup_colors(fe);
     midend_new_game(fe->me);
     dputs("Game created\n");
@@ -125,10 +126,19 @@ static void run() {
 
     fe->window = main_edje;
 
-    if(!strcmp(single->name, "fifteen"))
+    if(!strncmp(single->name, "Fifteen"))
+    {
+        printf("Unsing custom canvas\n");
         fe->area = custom_drawable_fifteen(main_canvas, CANVAS_SIZE);
+        fe->draw_api = &fake_drawing_api;
+        fe->support_colors = 0;
+    }
     else
+    {
         fe->area = edrawable_add(main_canvas, CANVAS_SIZE, CANVAS_SIZE);
+        fe->draw_api = &e_drawing_api;
+        fe->support_colors = 1;
+    }
     fe->default_alpha = 0xFF; /* Default alphachannel for drawing */
 
     evas_object_move(main_edje, 0, 0);

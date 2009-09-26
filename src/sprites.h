@@ -13,12 +13,12 @@ int
 sprites_add_sprite(Evas_Object *obj, const char *file, const char *key);
 
 void
-sprite_move(Evas_Object *obj, int index, int x, int y);
+sprites_sprite_move(Evas_Object *obj, int index, int x, int y);
 
 void
-sprite_show(Evas_Object *obj, int index);
+sprites_sprite_show(Evas_Object *obj, int index);
 
 void
-sprite_hide(Evas_Object *obj, int index);
+sprites_sprite_hide(Evas_Object *obj, int index);
 
 #endif
