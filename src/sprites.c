@@ -55,6 +55,7 @@ _sprites_init(Evas_Object *obj, Evas *evas, int w, int h) {
 
 }
 
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
 static void
 _sprites_display(Evas_Object *obj, int x, int y, int w, int h) {
     sprites_t *drawable = evas_object_smart_data_get(obj);
@@ -82,7 +83,7 @@ _sprites_move(Evas_Object *obj, Evas_Coord x, Evas_Coord y) {
     int ow, oh;
     evas_object_geometry_get(obj, NULL, NULL, &ow, &oh);
 
-    _edrawable_display(obj, x, y, ow, oh);
+    _sprites_display(obj, x, y, ow, oh);
 }
 
 
@@ -90,7 +91,7 @@ static void
 _sprites_resize(Evas_Object *obj, Evas_Coord w, Evas_Coord h) {
     int ox, oy;
     evas_object_geometry_get(obj, &ox, &oy, NULL, NULL);
-    _edrawable_display(obj, ox, oy, w, h);
+    _sprites_display(obj, ox, oy, w, h);
 }
 
 static void
@@ -105,7 +106,7 @@ _sprites_clip_unset(Evas_Object *obj) {
     evas_object_clip_unset(drawable->clip);
 }
 
-static Evas_Smart * _edrawable_smart_get() {
+static Evas_Smart * _sprites_smart_get() {
     static Evas_Smart * smart = NULL;
     static Evas_Smart_Class klass = {
         .name = "sprites",
@@ -134,7 +135,7 @@ sprites_add(Evas *evas, int w, int h) {
     Evas_Object *obj =  evas_object_smart_add(evas, _sprites_smart_get());
     sprites_t *drawable  = evas_object_smart_data_get(obj);
     if(drawable)
-        _edrawable_init(obj, evas, w, h);
+        _sprites_init(obj, evas, w, h);
     return obj;
 }
 
@@ -152,7 +153,7 @@ sprites_add_sprite(Evas_Object *obj, const char *file, const char *key) {
     if(!drawable)
         return;
     Evas_Object *sprite = evas_object_image_add(evas_object_evas_get(obj));
-    evas_image_file_set(sprite, file, key);
+    evas_object_image_file_set(sprite, file, key);
     evas_object_smart_member_add(sprite, obj);
     evas_object_clip_set(sprite, drawable->clip);
     drawable->sprites = eina_list_append(drawable->sprites, sprite);

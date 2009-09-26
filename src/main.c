@@ -13,6 +13,7 @@
 #include <edrawable.h>
 #include "frontend.h"
 #include "puzzles.h"
+#include "custom_drawable.h"
 
 #define PROG    "E Puzzles"
 #define CANVAS_SIZE  440
@@ -124,7 +125,10 @@ static void run() {
 
     fe->window = main_edje;
 
-    fe->area = edrawable_add(main_canvas, CANVAS_SIZE, CANVAS_SIZE);
+    if(!strcmp(single->name, "fifteen"))
+        fe->area = custom_drawable_fifteen(main_canvas, CANVAS_SIZE);
+    else
+        fe->area = edrawable_add(main_canvas, CANVAS_SIZE, CANVAS_SIZE);
     fe->default_alpha = 0xFF; /* Default alphachannel for drawing */
 
     evas_object_move(main_edje, 0, 0);
