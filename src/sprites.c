@@ -180,8 +180,9 @@ _move_sprite_relative(Evas_Object *obj, int x, int y)
         return;
     }
     int xo, yo;
-    evas_object_geometry_get(obj, &xo, &yo, NULL, NULL);
+    evas_object_geometry_get(clip, &xo, &yo, NULL, NULL);
     evas_object_move(obj, xo + x, yo + y);
+    printf("Move relative %d %d %d %d\n", xo, x, yo, y);
 }
 
 int
