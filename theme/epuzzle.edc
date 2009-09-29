@@ -51,11 +51,11 @@ collections {
                     color, 0 0 0 255;
                     text {
                         font, "sans-serif";
-                        size, 24;
+                        size, 23;
                         text, "Puzzles";
                     }
-                    rel1 { relative, 0.0 0.0; offset, 11 42; to, "epuzzle/image"; }
-                    rel2 { relative, 0.0 0.0; offset, 590 63; to, "epuzzle/image"; }
+                    rel1 { relative, 0.0 0.0; offset, 11 38; to, "epuzzle/image"; }
+                    rel2 { relative, 0.0 0.0; offset, 590 60; to, "epuzzle/image"; }
                     align, 0.0 0.0;
                 }
             }
