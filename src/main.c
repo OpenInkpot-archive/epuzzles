@@ -81,7 +81,7 @@ create_game(struct frontend *fe, struct game *thegame) {
     midend_new_game(fe->me);
     dputs("Game created\n");
     gui_redraw( fe);
-    gui_set_key_handler(fe);
+    //gui_set_key_handler(fe);
 }
 
 void terminate ( struct frontend * fe)
