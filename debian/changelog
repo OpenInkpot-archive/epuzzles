@@ -1,3 +1,10 @@
+epuzzles (0.1+20090518-5) asimov; urgency=low
+
+  * Switch fifteen to sprite engine
+  * add common design elements
+
+ -- Alexander V. Nikolaev <avn@daemon.hole.ru>  Tue, 29 Sep 2009 21:51:27 +0300
+
 epuzzles (0.1+20090518-4) asimov; urgency=low
 
   * Add translations to desktops
