@@ -81,7 +81,7 @@ create_game(struct frontend *fe, struct game *thegame) {
     midend_new_game(fe->me);
     dputs("Game created\n");
     gui_redraw( fe);
-    //gui_set_key_handler(fe);
+    gui_set_key_handler(fe);
 }
 
 void terminate ( struct frontend * fe)
@@ -143,7 +143,7 @@ static void run() {
 
     evas_object_move(main_edje, 0, 0);
     evas_object_resize(main_edje, 600, 800);
-    gui_set_key_handler(fe);
+//    gui_set_key_handler(fe);
     evas_object_focus_set(contents, true);
 
     if(single)
