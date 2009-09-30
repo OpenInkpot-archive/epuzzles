@@ -671,7 +671,7 @@ static void draw_tile(drawing *dr, game_drawstate *ds, game_state *state,
 
 static void draw_tile(drawing *dr, game_drawstate *ds, game_state *state,
                                     int x, int y, int t, int flash_color) {
-        custom_drawable_fifteen_move(dr, t - 1, x, y);
+        custom_drawable_fifteen_move(dr, t - 1, BORDER + x, BORDER + y);
 }
 
 static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
