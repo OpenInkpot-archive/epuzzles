@@ -42,15 +42,15 @@ _sprites_init(Evas_Object *obj, Evas *evas, int w, int h) {
         return;
     }
 
-    //sprites->bg = evas_object_image_add(evas);
-    sprites->bg = evas_object_rectangle_add(evas);
+    sprites->bg = evas_object_image_add(evas);
+    //sprites->bg = evas_object_rectangle_add(evas);
     evas_object_smart_member_add(sprites->bg, obj);
     evas_object_name_set(sprites->bg, "sprites/bg");
     evas_object_move(sprites->bg, 0, 0);
     evas_object_resize(sprites->bg, w, h);
-    //evas_object_image_size_set(sprites->bg, w, h);
-    //evas_object_image_fill_set(sprites->bg, 0, 0, w, h);
-    evas_object_color_set(sprites->bg, 255, 0, 0, 255);
+    evas_object_image_size_set(sprites->bg, w, h);
+    evas_object_image_fill_set(sprites->bg, 0, 0, w, h);
+    //evas_object_color_set(sprites->bg, 255, 0, 0, 255);
     evas_object_show(sprites->bg);
 
     sprites->clip = evas_object_rectangle_add(evas);
