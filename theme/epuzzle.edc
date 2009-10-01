@@ -82,8 +82,8 @@ collections {
                         text, "";
                     }
                     align, 0.0 0.9;
-                    rel1 { relative, 0.0 1.0; offset, 200 -45; to, "epuzzle/image"; }
-                    rel2 { relative, 0.0 1.0; offset, 580 -15; to, "epuzzle/image"; }
+                    rel1 { relative, 0.0 1.0; offset, 100 -100; to, "epuzzle/image"; }
+                    rel2 { relative, 1.0 1.0; offset, -100 -75; to, "epuzzle/image"; }
                 }
             }
        }

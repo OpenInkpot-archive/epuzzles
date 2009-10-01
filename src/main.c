@@ -145,12 +145,15 @@ static void run(const char* gamename) {
 
     evas_object_move(main_edje, 0, 0);
     evas_object_resize(main_edje, 600, 800);
-//    gui_set_key_handler(fe);
     evas_object_focus_set(contents, true);
 
     create_game(fe);
 
     gui_redraw(fe);
+
+    edje_object_part_text_set(contents, "epuzzle/help",
+            epuzzles_hint_by_name(fe->name));
+
     evas_object_show(fe->area);
     evas_object_show(main_edje);
     edje_object_part_swallow(contents, "epuzzle/drawable",  fe->area );
