@@ -2,7 +2,7 @@
 Version=1.0
 Type=Application
 Name=Solo (Sudoku like) puzzle
-Name[ru]=Solo (podobne do sudoku)
+Name[pl]=Solo (podobne do sudoku)
 Name[ru]=Соло (аналог судоку)
 Name[uk]=Соло (аналог судоку)
 Exec=/usr/bin/epuzzles solo
