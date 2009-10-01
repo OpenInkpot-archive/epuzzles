@@ -38,7 +38,7 @@ static gamelist_t *
 _lookup(const char *name)
 {
     struct gamelist_t *each;
-    each = _gamelist;
+    each = &_gamelist;
     while(each->name)
     {
         if(!strcasecmp(each->name, name))
