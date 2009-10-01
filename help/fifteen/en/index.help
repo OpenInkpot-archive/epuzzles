@@ -1,0 +1,6 @@
+<h1>Fifteen</h1>
+<p>
+The old ones are the best: this is the good old ‘15-puzzle’ with sliding tiles. You have a 4×4 square grid; 15 squares contain numbered tiles, and the sixteenth is empty. Your move is to choose a tile next to the empty space, and slide it into the space. The aim is to end up with the tiles in numerical order, with the space in the bottom right (so that the top row reads 1,2,3,4 and the bottom row reads 13,14,15,space).</p>
+
+<h2>Fifteen controls</h2>
+<p> The arrow keys will move a tile adjacent to the space in the direction indicated (moving the space in the opposite direction). </p>

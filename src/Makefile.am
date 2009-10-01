@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgui.la
 SUBDIRS = puzzles .
 bin_PROGRAMS = epuzzles
 AM_CPPFLAGS = -DTHEME_DIR='"$(pkgdatadir)/themes/"' -DCOLOR_CONFIG='"$(pkgdatadir)/epuzzles.rc"'
-epuzzles_SOURCES = main.c gamelist.c
+epuzzles_SOURCES = main.c gamelist.c help.c
 
 libgui_la_SOURCES = util.c gui_util.c timer.c draw.c keyb.c clock.c battery.c sprites.c custom_drawable.c
 libgui_la_LIBADD = puzzles/libcore.la puzzles/libpuzzles.la

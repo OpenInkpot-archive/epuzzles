@@ -26,10 +26,18 @@ static void _key_handler(void* param __attribute__((unused)),
         key = keys_lookup(fe->keys, "default", ev->keyname);
 
     if(!key)
+    {
+        printf("No key for %s\n", ev->keyname);
         return;
+    }
 
     int keyval = 0;
 
+    if(!strcmp(key, "Context")) {
+        printf("Getting help/raising menu\n");
+        epuzzles_ctxmenu_by_name(fe->area, fe->name);
+        return;
+    }
 
 #define HANDLE_KEY(kk, vv)  if( !strcmp(key, kk) ){ keyval = vv; }
     HANDLE_KEY("KP_0", MOD_NUM_KEYPAD | '0') else
@@ -48,6 +56,7 @@ static void _key_handler(void* param __attribute__((unused)),
     HANDLE_KEY("Down",  CURSOR_DOWN) else
     HANDLE_KEY("Select", CURSOR_SELECT) else
 
+    printf("processing key %s (%s)  %d\n",ev->keyname, key, keyval);
     if(!strcmp(key, "Quit")) {
        ecore_main_loop_quit();
     }
@@ -55,7 +64,6 @@ static void _key_handler(void* param __attribute__((unused)),
     if (keyval) {
         if (lp)
             keyval |= MOD_SHFT;
-        printf("processing key %s (%s)  %d\n",ev->keyname, key, keyval);
         midend_process_key(fe->me, 0, 0, keyval);
     } else {
         printf("No keyval\n");

@@ -23,6 +23,17 @@ struct _Color_Set {
     int a;
 };
 
+
+typedef struct gamelist_t gamelist_t;
+struct gamelist_t {
+    const char* name;
+    /* canonical name, use to help and othre, upstream naming sucks due
+       capitalizing first leter */
+    struct game* puzzle;
+    const char* hint;
+    void (*ctxmenu)(Evas_Object *, const gamelist_t *);
+};
+
 struct frontend {
     Evas_Object *window;
     Evas_Object *area;
@@ -34,8 +45,8 @@ struct frontend {
 
     int support_colors; /* FIXME: temporary */
 
-    const char *name;
-    keys_t *keys;
+    const char* name;
+    keys_t* keys;
 
     int w, h;
     midend *me;
@@ -57,4 +68,12 @@ struct frontend {
 
 struct game * lookup_game_by_name(const char * name);
 void terminate(struct frontend *);
+
+
+void
+epuzzles_help(Evas_Object* obj, const char* puzzle);
+
+void epuzzles_ctxmenu_by_name(Evas_Object*, const char* name);
+const char* epuzzles_hint_by_name(const char* name);
+
 #endif

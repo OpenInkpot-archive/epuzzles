@@ -23,7 +23,6 @@ static char * theme_file = THEME_DIR "epuzzle.edj";
 /* globals */
 struct frontend *_frontend = NULL;
 
-struct game * single = NULL;
 
 static void die(const char* fmt, ...)
 {
@@ -69,11 +68,11 @@ extern struct drawing_api e_drawing_api;
 extern struct drawing_api fake_drawing_api;
 
 void
-create_game(struct frontend *fe, struct game *thegame) {
+create_game(struct frontend *fe) {
     destroy_game(fe); /* close old gaming */
     fe->first_time = 0;
     fe->keys = keys_alloc("epuzzles");
-    fe->name = thegame->name;
+    struct game * thegame = lookup_game_by_name(fe->name);
     if(!fe->keys)
         err(1, "Can't load keys\n");
     fe->me = midend_new(fe, thegame, fe->draw_api, fe);
@@ -96,11 +95,12 @@ static void main_win_close_handler(Ecore_Evas* main_win __attribute__((unused)))
 }
 
 
-static void run() {
+static void run(const char* gamename) {
     struct frontend * fe;
     Ecore_Evas* main_win = ecore_evas_software_x11_new(0, 0, 0, 0, 600, 800);
 
-    fe = snew(struct frontend);
+    fe = calloc(1, sizeof(struct frontend));
+    fe->name = gamename;
     _frontend = fe;
 
 
@@ -126,7 +126,7 @@ static void run() {
 
     fe->window = main_edje;
 
-    if(!strcmp(single->name, "Fifteen"))
+    if(!strcmp(fe->name, "fifteen"))
     {
         printf("Unsing custom canvas\n");
         fe->area = custom_drawable_fifteen(main_canvas, CANVAS_SIZE);
@@ -141,13 +141,14 @@ static void run() {
     }
     fe->default_alpha = 0xFF; /* Default alphachannel for drawing */
 
+    evas_object_name_set(fe->area, "puzzle");
+
     evas_object_move(main_edje, 0, 0);
     evas_object_resize(main_edje, 600, 800);
 //    gui_set_key_handler(fe);
     evas_object_focus_set(contents, true);
 
-    if(single)
-        create_game(fe, single);
+    create_game(fe);
 
     gui_redraw(fe);
     evas_object_show(fe->area);
@@ -192,10 +193,9 @@ int main(int argc, char ** argv) {
     ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_handler, NULL);
 
     if(argc == 2) {
-        single = lookup_game_by_name(argv[1]);
-        if(!single)
+        if(!lookup_game_by_name(argv[1]))
             fatal("Don't know this game");
-        run();
+        run(argv[1]);
     } else {
         printf("game name required");
     };
