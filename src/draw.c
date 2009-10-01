@@ -10,6 +10,8 @@
 #include <string.h>
 #include <errno.h>
 
+#include <Evas.h>
+#include <Edje.h>
 #include <edrawable.h>
 #include "puzzles.h"
 #include "frontend.h"
@@ -251,8 +253,9 @@ void e_end_draw(void *handle)
 void
 e_status_bar(void *handler, char *text) {
     struct frontend *fe = (struct frontend *) handler;
-    /*ewl_statusbar_pop(fe->statusbar);
-    ewl_statusbar_push(fe->statusbar, text); */
+    Evas* evas = evas_object_evas_get(fe->area);
+    Evas_Object*  main_edje = evas_object_name_find(evas, "main_edje");
+    edje_object_part_text_set(main_edje, "footer", text);
 }
 
 const struct drawing_api e_drawing_api = {
