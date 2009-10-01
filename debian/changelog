@@ -1,3 +1,9 @@
+epuzzles (0.1+20090518-7) asimov; urgency=low
+
+  * Fifteen now fully designed and have en help text
+
+ -- Alexander V. Nikolaev <avn@daemon.hole.ru>  Thu, 01 Oct 2009 05:01:03 +0300
+
 epuzzles (0.1+20090518-6) asimov; urgency=low
 
   * Fix doubled actions
