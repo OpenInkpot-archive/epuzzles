@@ -255,7 +255,7 @@ static void do_rotate(int *grid, int w, int h, int n, int orientable,
      * I'm going to do is loop over about one _quarter_ of the
      * rotated region and permute each element within that quarter
      * with its rotational coset.
-     * 
+     *
      * The size of the region I need to loop over is (n+1)/2 by
      * n/2, which is an obvious exact quarter for even n and is a
      * rectangle for odd n. (For odd n, this technique leaves out
@@ -267,7 +267,7 @@ static void do_rotate(int *grid, int w, int h, int n, int orientable,
 	    int k;
 	    int g[4];
 	    int p[4];
-            
+
             p[0] = j*w+i;
             p[1] = i*w+(n-j-1);
             p[2] = (n-j-1)*w+(n-i-1);
@@ -368,7 +368,7 @@ static char *new_game_desc(game_params *params, random_state *rs,
                  */
                 oldtotal = prevmoves[y*rw+x];
                 newtotal = oldtotal + r;
-                
+
                 /*
                  * Special case here for w==h==n, in which case
                  * there is actually no way to _avoid_ all moves
@@ -382,11 +382,11 @@ static char *new_game_desc(game_params *params, random_state *rs,
             /*
              * Log the rotation we've just performed at this point,
              * for inversion detection in the next move.
-             * 
+             *
              * Also zero a section of the prevmoves array, because
              * any rotation area which _overlaps_ this one is now
              * entirely safe to perform further moves in.
-             * 
+             *
              * Two rotation areas overlap if their top left
              * coordinates differ by strictly less than n in both
              * directions
@@ -1229,14 +1229,14 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
             state = oldstate;
 
 	if (state->used_solve)
-	    sprintf(statusbuf, "Moves since auto-solve: %d",
+	    sprintf(statusbuf, gettext("Moves since auto-solve: %d"),
 		    state->movecount - state->completed);
 	else {
-	    sprintf(statusbuf, "%sMoves: %d",
-		    (state->completed ? "COMPLETED! " : ""),
+	    sprintf(statusbuf, gettext("%sMoves: %d"),
+		    (state->completed ? gettext("COMPLETED! ") : ""),
 		    (state->completed ? state->completed : state->movecount));
             if (state->movetarget)
-                sprintf(statusbuf+strlen(statusbuf), " (target %d)",
+                sprintf(statusbuf+strlen(statusbuf), gettext(" (target %d)"),
                         state->movetarget);
         }
 

@@ -1,0 +1,61 @@
+# SOME DESCRIPTIVE TITLE.
+# This file is put in the public domain.
+# Alexander Nikolaev <avn@daemon.hole.ru>, 2009.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: epuzzles 0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-02 04:29+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/puzzles/twiddle.c:1232 src/puzzles/fifteen.c:824
+#, c-format
+msgid "Moves since auto-solve: %d"
+msgstr "Ходов после авторешения: %d"
+
+#: src/puzzles/twiddle.c:1235 src/puzzles/flip.c:1234
+#: src/puzzles/fifteen.c:827
+#, c-format
+msgid "%sMoves: %d"
+msgstr "%sХодов: %d"
+
+#: src/puzzles/twiddle.c:1236 src/puzzles/flip.c:1236
+#: src/puzzles/fifteen.c:828
+msgid "COMPLETED! "
+msgstr "РЕШЕНО! "
+
+#: src/puzzles/twiddle.c:1239
+#, c-format
+msgid " (target %d)"
+msgstr " (цель %d)"
+
+#: src/puzzles/flip.c:1236
+msgid "Auto-solved. "
+msgstr "Решено автоматом"
+
+#: src/puzzles/flip.c:1237
+msgid "Auto-solver used. "
+msgstr "Использовано авторешение"
+
+#: src/help.c:49
+msgid "Puzzles: Help"
+msgstr "Головоломки: Помощь"
+
+#: src/main.c:159
+msgid "Puzzles"
+msgstr "Головоломки"
+
+#: src/gamelist.c:22
+msgid "Press \"0\" to get help"
+msgstr ""
+
+#: src/gamelist.c:23
+msgid "Press \"M\" to get help"
+msgstr ""

@@ -821,11 +821,11 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
             state = oldstate;
 
 	if (state->used_solve)
-	    sprintf(statusbuf, "Moves since auto-solve: %d",
+	    sprintf(statusbuf, gettext("Moves since auto-solve: %d"),
 		    state->movecount - state->completed);
 	else
-	    sprintf(statusbuf, "%sMoves: %d",
-		    (state->completed ? "COMPLETED! " : ""),
+	    sprintf(statusbuf, gettext("%sMoves: %d"),
+		    (state->completed ? gettext("COMPLETED! ") : ""),
 		    (state->completed ? state->completed : state->movecount));
 
 	status_bar(dr, statusbuf);

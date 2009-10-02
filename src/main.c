@@ -1,6 +1,7 @@
 #define _GNU_SOURCE 1
 #include <err.h>
 #include <errno.h>
+#include <libintl.h>
 #include <locale.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -154,6 +155,9 @@ static void run(const char* gamename) {
     edje_object_part_text_set(contents, "epuzzle/help",
             epuzzles_hint_by_name(fe->name));
 
+    edje_object_part_text_set(contents, "epuzzle/title",
+            gettext("Puzzles"));
+
     evas_object_show(fe->area);
     evas_object_show(main_edje);
     edje_object_part_swallow(contents, "epuzzle/drawable",  fe->area );
@@ -180,7 +184,7 @@ static int exit_handler(void* param __attribute__((unused)),
 int main(int argc, char ** argv) {
     printf("argc=%d\n", argc);
     setlocale(LC_ALL, "");
-    textdomain("gm");
+    textdomain("epuzzles");
     if(!evas_init())
        die("Unable to initialize Evas\n");
     if(!ecore_init())

@@ -1,5 +1,5 @@
 AUTOMAKE_OPTIONS = foreign
-SUBDIRS = theme data src desktops
+SUBDIRS = theme data src desktops po
 
 install-exec-hook:
 	cd $(srcdir)/help && \

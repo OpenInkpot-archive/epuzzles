@@ -506,7 +506,7 @@ static char *new_game_desc(game_params *params, random_state *rs,
              * Finally, check to see if any two matrix rows are
              * exactly identical. If so, this is not an acceptable
              * matrix, and we give up and go round again.
-             * 
+             *
              * I haven't been immediately able to think of a
              * plausible means of algorithmically avoiding this
              * situation (by, say, making a small perturbation to
@@ -537,7 +537,7 @@ static char *new_game_desc(game_params *params, random_state *rs,
 
     /*
      * Now invent a random initial set of lights.
-     * 
+     *
      * At first glance it looks as if it might be quite difficult
      * to choose equiprobably from all soluble light sets. After
      * all, soluble light sets are those in the image space of the
@@ -545,7 +545,7 @@ static char *new_game_desc(game_params *params, random_state *rs,
      * space and its dimension, then pick a random coordinate for
      * each basis vector and recombine. Lot of fiddly matrix
      * algebra there.
-     * 
+     *
      * However, vector spaces are nicely orthogonal and relieve us
      * of all that difficulty. For every point in the image space,
      * there are precisely as many points in the input space that
@@ -1231,10 +1231,10 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
     {
 	char buf[256];
 
-	sprintf(buf, "%sMoves: %d",
-		(state->completed ? 
-		 (state->cheated ? "Auto-solved. " : "COMPLETED! ") :
-		 (state->cheated ? "Auto-solver used. " : "")),
+	sprintf(buf, gettext("%sMoves: %d"),
+		(state->completed ?
+		 (state->cheated ? gettext("Auto-solved. ") : gettext("COMPLETED! ")) :
+		 (state->cheated ? gettext("Auto-solver used. ") : "")),
 		state->moves);
 
 	status_bar(dr, buf);

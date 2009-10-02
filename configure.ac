@@ -23,5 +23,6 @@ AC_OUTPUT([
     Makefile theme/Makefile src/Makefile src/puzzles/Makefile 
     desktops/Makefile data/Makefile
     theme/sprites/fifteen/Makefile
+    po/Makefile
 ])
 

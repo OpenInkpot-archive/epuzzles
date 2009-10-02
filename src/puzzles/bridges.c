@@ -2562,7 +2562,7 @@ static void island_redraw(drawing *dr,
     draw_circle(dr, ox, oy, irad, bg, bg);
 
     sprintf(str, "%d", is->count);
-    draw_text(dr, ox, oy, FONT_VARIABLE, ISLAND_NUMSIZE(is),
+    draw_text(dr, ox, oy, FONT_FIXED, ISLAND_NUMSIZE(is),
               ALIGN_VCENTRE | ALIGN_HCENTRE, tcol, str);
 
     dsf_debug_draw(dr, state, ds, is->x, is->y);
