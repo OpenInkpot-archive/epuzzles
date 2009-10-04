@@ -5,5 +5,6 @@ Name=Fifteen puzzle
 Name[pl]=Piętnastka
 Name[ru]=Пятнашки
 Name[uk]=П'ятнашки
+Name[zh]=数字拼图
 Exec=/usr/bin/epuzzles fifteen
 Categories=Games

@@ -5,5 +5,6 @@ Name=Bridges puzzle
 Name[pl]=Mosty
 Name[ru]=Мостики
 Name[uk]=Місточки
+Name[zh]=数桥（Hashi）
 Exec=/usr/bin/epuzzles bridges
 Categories=Games

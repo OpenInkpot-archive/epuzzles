@@ -5,5 +5,6 @@ Name=Solo (Sudoku like) puzzle
 Name[pl]=Solo (podobne do sudoku)
 Name[ru]=Соло (аналог судоку)
 Name[uk]=Соло (аналог судоку)
+Name[zh]=Solo (类似数独)
 Exec=/usr/bin/epuzzles solo
 Categories=Games
