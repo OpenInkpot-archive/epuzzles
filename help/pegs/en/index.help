@@ -1,0 +1,9 @@
+<h1>Pegs</h1>
+
+<p>A number of pegs are placed in holes on a board. You can remove a peg by jumping an adjacent peg over it (horizontally or vertically) to a vacant hole on the other side. Your aim is to remove all but one of the pegs initially present.</p>
+
+<p>Vacant spaces which you can move a peg into are marked with holes. A space with no peg and no hole is not available for moving at all: it is an obstacle which you must work around.</p>
+
+<h1>Pegs controls</h1>
+
+<p>You can use the cursor keys to move a position indicator around the board. Pressing the "Ok" key while over a peg, followed by a cursor key, will jump the peg in that direction (if that is a legal move).</p>

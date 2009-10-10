@@ -1,0 +1,27 @@
+<h1>Bridges</h1>
+
+<p>You have a set of islands distributed across the playing area. Each island contains a number. Your aim is to connect the islands together with bridges, in such a way that:</p>
+
+<p>    * Bridges run horizontally or vertically.</p>
+<p>    * The number of bridges terminating at any island is equal to the number written in that island. </p>
+<p>    * Two bridges may run in parallel between the same two islands, but no more than two may do so.</p>
+<p>    * No bridge crosses another bridge.</p>
+<p>    * All the islands are connected together.</p>
+
+<p>There are some configurable alternative modes, which involve changing the parallel-bridge limit to something other than 2, and introducing the additional constraint that no sequence of bridges may form a loop from one island back to the same island. The rules stated above are the default ones.</p>
+
+<h1> Bridges controls</h1>
+
+<p>You can also use the cursor keys to move around the grid: if possible the cursor will always move orthogonally, otherwise it will move towards the nearest island to the indicated direction. Pressing the "Ok" key followed by a cursor key will lay an island in that direction (if available); pressing the "9" followed by a cursor key will lay a ‘non-bridge’ marker.</p>
+
+<p>Doing this again when a bridge is already present will add another parallel bridge. If there are already as many bridges between the two islands as permitted by the current game rules (i.e. two by default), the same dragging action will remove all of them.</p>
+
+<p>You can mark an island as finished by pressing the "Ok" key twice.</p>
+
+<p>Violations of the puzzle rules will be marked by cross:</p>
+
+<p>    * An island with too many bridges will be crossed.</p>
+<p>    * An island with too few bridges will be crossed if it is definitely an error (as opposed to merely not being finished yet): if adding enough bridges would involve having to cross another bridge or remove a non-bridge marker, or if the island has been highlighted as complete.</p>
+<p>    * A group of islands and bridges may be crossed if it is a closed subset of the puzzle with no way to connect it to the rest of the islands. For example, if you directly connect two 1s together with a bridge and they are not the only two islands on the grid, they will light up red to indicate that such a group cannot be contained in any valid solution.</p>
+<p>    * If you have selected the (non-default) option to disallow loops in the solution, a group of bridges which forms a loop will be crossed.</p>
+

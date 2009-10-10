@@ -1,0 +1,25 @@
+<h1>Solo</h1>
+
+<p>You have a square grid, which is divided into as many equally sized sub-blocks as the grid has rows. Each square must be filled in with a digit from 1 to the size of the grid, in such a way that</p>
+
+    <p>* every row contains only one occurrence of each digit</p>
+    <p>* every column contains only one occurrence of each digit</p>
+    <p>* every block contains only one occurrence of each digit.</p>
+    <p>* (optionally, by default off) each of the square's two main diagonals contains only one occurrence of each digit.</p>
+
+<p>You are given some of the numbers as clues; your aim is to place the rest of the numbers correctly.</p>
+
+<p>Under the default settings, the sub-blocks are square or rectangular. The default puzzle size is 3×3 (a 9×9 actual grid, divided into nine 3×3 blocks). You can also select sizes with rectangular blocks instead of square ones, such as 2×3 (a 6×6 grid divided into six 3×2 blocks). Alternatively, you can select ‘jigsaw’ mode, in which the sub-blocks are arbitrary shapes which differ between individual puzzles.</p>
+
+<p>Another available mode is ‘killer’. In this mode, clues are not given in the form of filled-in squares; instead, the grid is divided into ‘cages’ by coloured lines, and for each cage the game tells you what the sum of all the digits in that cage should be. Also, no digit may appear more than once within a cage, even if the cage crosses the boundaries of existing regions.</p>
+
+
+<p>To play Solo, use the cursor keys to move the mark around the grid and  type a digit or letter on the keyboard to fill that square. If you make a mistake, move cursor to incorrect square and press "0" to clear it again.</p>
+
+<p>If you press "Ok"  and then type a number, that number will be entered in the square as a ‘pencil mark’. You can have pencil marks for multiple numbers in the same square. Squares containing filled-in numbers cannot also contain pencil marks.</p>
+
+<p>The game pays no attention to pencil marks, so exactly what you use them for is up to you: you can use them as reminders that a particular square needs to be re-examined once you know more about a particular number, or you can use them as lists of the possible numbers in a given square, or anything else you feel like.</p>
+
+<p>To erase a single pencil mark, move cursor to the square, press "Ok", and type the same number again.</p>
+
+
