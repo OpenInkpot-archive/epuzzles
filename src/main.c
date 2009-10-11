@@ -65,8 +65,6 @@ void gui_redraw ( struct frontend *fe) {
         dputs("redrawn\n");
     }
 }
-extern struct drawing_api e_drawing_api;
-extern struct drawing_api fake_drawing_api;
 
 void
 create_game(struct frontend *fe) {
@@ -127,19 +125,7 @@ static void run(const char* gamename) {
 
     fe->window = main_edje;
 
-    if(!strcmp(fe->name, "fifteen"))
-    {
-        printf("Unsing custom canvas\n");
-        fe->area = custom_drawable_fifteen(main_canvas, CANVAS_SIZE);
-        fe->draw_api = &fake_drawing_api;
-        fe->support_colors = 0;
-    }
-    else
-    {
-        fe->area = edrawable_add(main_canvas, CANVAS_SIZE, CANVAS_SIZE);
-        fe->draw_api = &e_drawing_api;
-        fe->support_colors = 1;
-    }
+    epuzzle_create_canvas(fe, main_canvas, CANVAS_SIZE);
     fe->default_alpha = 0xFF; /* Default alphachannel for drawing */
 
     evas_object_name_set(fe->area, "puzzle");

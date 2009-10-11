@@ -9,11 +9,19 @@
 
 #ifndef HIDE_EVAS
 Evas_Object *
+custom_drawable_edrawable(Evas *, int);
+
+Evas_Object *
 custom_drawable_fifteen(Evas *, int);
+
+Evas_Object *
+custom_drawable_twiddle(Evas *, int);
 
 #endif
 
 void
 custom_drawable_fifteen_move(drawing *dr, int tile, int x, int y);
+
+void custom_drawable_hide_unneeded(drawing *dr, int tile);
 
 #endif

@@ -182,7 +182,7 @@ _move_sprite_relative(Evas_Object *obj, int x, int y)
     int xo, yo;
     evas_object_geometry_get(clip, &xo, &yo, NULL, NULL);
     evas_object_move(obj, xo + x, yo + y);
-    printf("Move relative %d %d %d %d\n", xo, x, yo, y);
+//    printf("Move relative %d %d %d %d\n", xo, x, yo, y);
 }
 
 int
@@ -205,7 +205,9 @@ sprites_add_sprite(Evas_Object *obj, const char *file, const char *key) {
     evas_object_image_size_set(sprite, w, h);
     evas_object_image_fill_set(sprite, 0, 0, w, h);
     evas_object_clip_set(sprite, drawable->clip);
-    evas_object_stack_above(sprite, drawable->bg);
+    // evas_object_stack_above(sprite, drawable->bg);
+    Evas_Object* lower = eina_list_nth(drawable->sprites, drawable->counter);
+    evas_object_stack_above(sprite, lower);
     _move_sprite_relative(sprite, 0, 0);
     evas_object_resize(sprite, w, h);
     evas_object_show(sprite);

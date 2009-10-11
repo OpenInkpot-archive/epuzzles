@@ -14,9 +14,12 @@
 
 #include "puzzles.h"
 
-#define PREFERRED_TILE_SIZE 48
+#define HIDE_EVAS 1
+#include "custom_drawable.h"
+
+#define PREFERRED_TILE_SIZE 100
 #define TILE_SIZE (ds->tilesize)
-#define BORDER    (TILE_SIZE / 2)
+#define BORDER    5 /*(TILE_SIZE / 2) */
 #define HIGHLIGHT_WIDTH (TILE_SIZE / 20)
 #define COORD(x)  ( (x) * TILE_SIZE + BORDER )
 #define FROMCOORD(x)  ( ((x) - BORDER + TILE_SIZE) / TILE_SIZE - 1 )
@@ -61,7 +64,7 @@ static game_params *default_params(void)
 {
     game_params *ret = snew(game_params);
 
-    ret->w = ret->h = 3;
+    ret->w = ret->h = 4;
     ret->n = 2;
     ret->rowsonly = ret->orientable = FALSE;
     ret->movetarget = 0;
@@ -88,14 +91,14 @@ static int game_fetch_preset(int i, char **name, game_params **params)
         char *title;
         game_params params;
     } presets[] = {
-        { "3x3 rows only", { 3, 3, 2, TRUE, FALSE } },
+/*        { "3x3 rows only", { 3, 3, 2, TRUE, FALSE } },
         { "3x3 normal", { 3, 3, 2, FALSE, FALSE } },
-        { "3x3 orientable", { 3, 3, 2, FALSE, TRUE } },
+        { "3x3 orientable", { 3, 3, 2, FALSE, TRUE } }, */
         { "4x4 normal", { 4, 4, 2, FALSE } },
-        { "4x4 orientable", { 4, 4, 2, FALSE, TRUE } },
+/*        { "4x4 orientable", { 4, 4, 2, FALSE, TRUE } }, */
         { "4x4 radius 3", { 4, 4, 3, FALSE } },
-        { "5x5 radius 3", { 5, 5, 3, FALSE } },
-        { "6x6 radius 4", { 6, 6, 4, FALSE } },
+/*        { "5x5 radius 3", { 5, 5, 3, FALSE } },
+        { "6x6 radius 4", { 6, 6, 4, FALSE } }, */
     };
 
     if (i < 0 || i >= lenof(presets))
@@ -833,6 +836,8 @@ static game_drawstate *game_new_drawstate(drawing *dr, game_state *state)
     struct game_drawstate *ds = snew(struct game_drawstate);
     int i;
 
+    int cc = state-> n != 2 ? 16 : 17;
+    custom_drawable_hide_unneeded(dr, cc);
     ds->started = FALSE;
     ds->w = state->w;
     ds->h = state->h;
@@ -1079,6 +1084,20 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
 			game_state *state, int dir, game_ui *ui,
 			float animtime, float flashtime)
 {
+    int tx, ty, i;
+    /* ZZZ */
+//    printf("Draw: %d %d %d\n", state->w, state->h, state->n);
+    for (i = 0; i < state->w * state->h; i++)
+    {
+	    int tx = i % state->w, ty = i / state->w;
+	    int x = COORD(tx), y = COORD(ty);
+        int t = state->grid[i] / 4;
+       // printf("%d %d (%d) / %d (%d) %d\n", i, tx, x, ty, y, t);
+        custom_drawable_fifteen_move(dr, t - 1, BORDER + x, BORDER + y);
+    }
+    int cc = state-> n == 2 ? 16 : 17;
+    custom_drawable_fifteen_move(dr, cc, BORDER + COORD(ui->cur_x), BORDER + COORD(ui->cur_y));
+#if 0
     int i, bgcolour;
     struct rotation srot, *rot;
     int lastx = -1, lasty = -1, lastr = -1;
@@ -1214,6 +1233,7 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
     }
     ds->bgcolour = bgcolour;
     ds->cur_x = cx; ds->cur_y = cy;
+#endif
 
     /*
      * Update the status bar.

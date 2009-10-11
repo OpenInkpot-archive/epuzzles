@@ -32,6 +32,9 @@ struct gamelist_t {
     struct game* puzzle;
     const char* hint;
     void (*ctxmenu)(Evas_Object *, const gamelist_t *);
+    Evas_Object* (*create)(Evas*, int);
+    struct drawing_api* draw_api;
+    int support_colors; /* FIXME: temporary */
 };
 
 struct frontend {
@@ -42,7 +45,6 @@ struct frontend {
     int default_alpha;
 
     struct drawing_api * draw_api;
-
     int support_colors; /* FIXME: temporary */
 
     const char* name;
@@ -75,5 +77,6 @@ epuzzles_help(Evas_Object* obj, const char* puzzle);
 
 void epuzzles_ctxmenu_by_name(Evas_Object*, const char* name);
 const char* epuzzles_hint_by_name(const char* name);
+void epuzzle_create_canvas(struct frontend* fe, Evas*, int xy);
 
 #endif
