@@ -1,3 +1,11 @@
+epuzzles (0.1+20090518-8) asimov; urgency=low
+
+  * Update graphics
+  * Switch "Twiddle" puzzle to sprite-based engine
+  * Add help texts in Russian/English/Ukrainian languages
+
+ -- Alexander V. Nikolaev <avn@daemon.hole.ru>  Sun, 11 Oct 2009 07:17:40 +0300
+
 epuzzles (0.1+20090518-7) asimov; urgency=low
 
   * Fifteen now fully designed and have en help text
