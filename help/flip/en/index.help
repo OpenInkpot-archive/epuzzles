@@ -1,10 +1,6 @@
 <h1>Flip</h1>
-
 <p>You have a grid of squares, some light and some dark. Your aim is to light all the squares up at the same time. You can choose any square and flip its state from light to dark or dark to light, but when you do so, other squares around it change state as well.</p>
-
 <p>Each square contains a small diagram showing which other squares change when you flip it.</p>
-
 <h1>Flip controls</h1>
-
 <p>Use the cursor keys to choose a square and "Ok" key to flip.</p>
 

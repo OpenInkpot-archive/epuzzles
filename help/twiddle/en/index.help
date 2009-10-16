@@ -4,9 +4,5 @@
 
 <p>In basic Twiddle, your move is to rotate a square group of four tiles about their common centre. On more advanced settings, you can rotate a larger square group of tiles.</p>
 
-<h1>Twiddle controls</h1>
-
-<p>e centre of the square group you wish to rotate. In the basic mode, you rotate a 2×2 square. In more advanced modes you might be rotating 3×3 or even more at a time.</p>
-
-
-<p>You can move an outline square around the grid with the cursor keys; the square is the size above (2×2 by default, or larger). Pressing the "ok" key or "0" key will rotate the current square anticlockwise or clockwise respectively. </p>
+<h1>Controls</h1>
+<p>Joystick buttons move frame. Use "OK" button to rotate pieces inside the frame.</p>
