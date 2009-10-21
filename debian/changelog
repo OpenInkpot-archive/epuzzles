@@ -1,3 +1,9 @@
+epuzzles (0.1+20090518-10) asimov; urgency=low
+
+  * Enable debug symbols package
+
+ -- Alexander V. Nikolaev <avn@daemon.hole.ru>  Thu, 22 Oct 2009 00:28:20 +0300
+
 epuzzles (0.1+20090518-9) asimov; urgency=low
 
   * Add basic rotation support (closes #590)
