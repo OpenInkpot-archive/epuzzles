@@ -82,6 +82,64 @@ create_game(struct frontend *fe) {
     gui_set_key_handler(fe);
 }
 
+static void
+create_edjes(Evas* canvas)
+{
+    Evas_Object* main_edje = evas_object_name_find(canvas, "main_edje");
+    if(main_edje)
+        evas_object_del(main_edje);
+    Evas_Object* contents = evas_object_name_find(canvas, "contents");
+    if(contents)
+        evas_object_del(contents);
+    contents = edje_object_add(canvas);
+    int w, h;
+    evas_output_size_get(canvas, &w, &h);
+    if(w > h)
+    {
+        edje_object_file_set(contents, THEME_DIR "/epuzzle.edj", "horizontal");
+        main_edje = edje_object_add(canvas);
+        edje_object_file_set(main_edje, THEME_DIR "/epuzzle.edj", "main_edje");
+    }
+    else
+    {
+        edje_object_file_set(contents, THEME_DIR "/epuzzle.edj", "vertical");
+        main_edje = eoi_main_window_create(canvas);
+    }
+    evas_object_name_set(main_edje, "main_edje");
+    evas_object_move(main_edje, 0, 0);
+    evas_object_resize(main_edje, w, h);
+    evas_object_name_set(contents, "contents");
+    edje_object_part_swallow(main_edje, "contents", contents);
+    Evas_Object* area = evas_object_name_find(canvas, "puzzle");
+    edje_object_part_swallow(contents, "epuzzle/drawable",  area );
+    init_clock(main_edje);
+    init_battery(main_edje);
+    evas_object_show(main_edje);
+    evas_object_show(contents);
+}
+
+void fill_texts(Evas* canvas)
+{
+
+    Evas_Object* main_edje = evas_object_name_find(canvas, "main_edje");
+    Evas_Object* area = evas_object_name_find(canvas, "puzzle");
+    Evas_Object* contents = evas_object_name_find(canvas, "contents");
+    struct frontend * fe = (struct frontend *)
+                        evas_object_data_get(area, "frontend");
+
+    edje_object_part_text_set(contents, "epuzzle/help",
+            epuzzles_hint_by_name(fe->name));
+
+    edje_object_part_text_set(main_edje, "title",
+            gettext("Puzzles"));
+
+    edje_object_part_text_set(contents, "epuzzle/title",
+            gettext(lookup_game_by_name(fe->name)->name));
+
+    // FIXME: hack
+    fe->window = main_edje;
+}
+
 void terminate ( struct frontend * fe)
 {
     destroy_game(fe);
@@ -91,6 +149,15 @@ void terminate ( struct frontend * fe)
 static void main_win_close_handler(Ecore_Evas* main_win __attribute__((unused)))
 {
    ecore_main_loop_quit();
+}
+
+static void main_win_resize_handler(Ecore_Evas* main_win)
+{
+    Evas* evas = ecore_evas_get(main_win);
+    ecore_evas_hide(main_win);
+    create_edjes(evas);
+    fill_texts(evas);
+    ecore_evas_show(main_win);
 }
 
 
@@ -106,6 +173,7 @@ static void run(const char* gamename) {
     ecore_evas_title_set(main_win, "EPuzzles");
     ecore_evas_name_class_set(main_win, "EPuzzles", "Epuzzles");
     ecore_evas_callback_delete_request_set(main_win, main_win_close_handler);
+    ecore_evas_callback_resize_set(main_win, main_win_resize_handler);
 
     fe->first_time = 1;
     fe->me = NULL;
@@ -114,46 +182,27 @@ static void run(const char* gamename) {
     fe->timer_active = 0;
 
     Evas* main_canvas = ecore_evas_get(main_win);
-    Evas_Object* main_edje = eoi_main_window_create(main_canvas);
-    evas_object_name_set(main_edje, "main_edje");
 
-    Evas_Object* contents = edje_object_add(main_canvas);
-    edje_object_file_set(contents, THEME_DIR "/epuzzle.edj", "epuzzle");
-    evas_object_name_set(contents, "contents");
-    evas_object_show(contents);
-    edje_object_part_swallow(main_edje, "contents", contents);
-
-    fe->window = main_edje;
 
     epuzzle_create_canvas(fe, main_canvas, CANVAS_SIZE);
+    evas_object_data_set(fe->area, "frontend", fe);
+
     fe->default_alpha = 0xFF; /* Default alphachannel for drawing */
 
     evas_object_name_set(fe->area, "puzzle");
+    evas_object_show(fe->area);
 
-    evas_object_move(main_edje, 0, 0);
-    evas_object_resize(main_edje, 600, 800);
-    evas_object_focus_set(contents, true);
 
     create_game(fe);
 
     gui_redraw(fe);
 
-    edje_object_part_text_set(contents, "epuzzle/help",
-            epuzzles_hint_by_name(fe->name));
 
-    edje_object_part_text_set(main_edje, "title",
-            gettext("Puzzles"));
+    create_edjes(main_canvas);
 
-    edje_object_part_text_set(contents, "epuzzle/title",
-            gettext(lookup_game_by_name(fe->name)->name));
+    fill_texts(main_canvas);
 
-
-    evas_object_show(fe->area);
-    evas_object_show(main_edje);
-    edje_object_part_swallow(contents, "epuzzle/drawable",  fe->area );
     ecore_evas_show(main_win);
-    init_clock(main_edje);
-    init_battery(main_edje);
     ecore_main_loop_begin();
 };
 

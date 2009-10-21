@@ -1,6 +1,9 @@
 images {
     image, "puzzle_bg.png" COMP;
+    image, "horizontal_bg.png" COMP;
 }
+
+#include "no-footer.edc"
 
 styles {
     style {
@@ -16,8 +19,9 @@ styles {
 }
 
 collections {
+    MAIN_EDJE("main_edje")
     group {
-        name, "epuzzle";
+        name, "vertical";
         parts {
             part {
                 name, "epuzzle/bg";
@@ -86,6 +90,78 @@ collections {
                     rel2 { relative, 1.0 1.0; offset, -100 -75; to, "epuzzle/image"; }
                 }
             }
+       }
+    }
+    group {
+        name, "horizontal";
+        parts {
+            part {
+                name, "epuzzle/bg";
+                type, RECT;
+                description {
+                    state, "default" 0.0;
+                    color, 255 255 255 255;
+                    rel1 { relative, 0.0 0.0; offset, 0 0; }
+                    rel2 { relative, 1.0 1.0; offset, -1 -1; }
+                }
+            }
+            part {
+                name, "epuzzle/image";
+                type, IMAGE;
+                mouse_events, 0;
+                description {
+                    state, "default" 0.0;
+                    rel1 { relative, 0.0 0.0; offset, 0 0; to, "epuzzle/bg"; }
+                    rel2 { relative, 1.0 1.0; offset, 0 0; to, "epuzzle/bg"; }
+                    image {
+                        normal, "horizontal_bg.png";
+                    }
+                }
+            }
+            part {
+                name, "epuzzle/title";
+                type, TEXT;
+                mouse_events, 0;
+                description {
+                    state, "default" 0.0;
+                    color, 0 0 0 255;
+                    text {
+                        font, "sans-serif";
+                        size, 23;
+                        text, "Puzzles";
+                    }
+                    rel1 { relative, 0.0 0.0; offset, 1 34; to, "epuzzle/image"; }
+                    rel2 { relative, 1.0 0.0; offset, -1 44; to, "epuzzle/image"; }
+                    align, 0.0 0.0;
+                }
+            }
+            part {
+               name, "epuzzle/drawable";
+               type, SWALLOW;
+               description {
+                  state, "default" 0.0;
+                  rel1 { relative, 0.0 0.0; offset, 180 80; }
+                  rel2 { relative, 0.0 0.0; offset, 620 520; }
+               }
+            }
+/*            part {
+                name, "epuzzle/help";
+                type, TEXTBLOCK;
+                multiline, 1;
+                mouse_events, 0;
+                description {
+                    state, "default" 0.0;
+                    color, 0 0 0 255;
+                    text {
+                        style, "help_style";
+                        max, 0 1;
+                        text, "";
+                    }
+                    align, 0.0 0.9;
+                    rel1 { relative, 0.0 1.0; offset, 100 -100; to, "epuzzle/image"; }
+                    rel2 { relative, 1.0 1.0; offset, -100 -75; to, "epuzzle/image"; }
+                }
+            } */
        }
     }
 }
