@@ -31,6 +31,7 @@ void e_start_draw(void *handle)
     struct frontend * fe = (struct frontend *) handle;
     //Ewl_Drawable *d = fe->area;
     printf("e_start_draw()\n");
+    evas_event_freeze(evas_object_evas_get(fe->area));
     //ewl_drawable_draw_rectangle_fill(d, 0, 0, fe->w, fe->h);
     fe->bbox_l = fe->w;
     fe->bbox_r = 0;
@@ -235,6 +236,7 @@ void e_end_draw(void *handle)
     frontend *fe = (frontend *)handle;
     printf("e_end_draw()\n");
     edrawable_commit(fe->area);
+    evas_event_thaw(evas_object_evas_get(fe->area));
 #if 0
     gdk_gc_unref(fe->gc);
     fe->gc = NULL;
@@ -280,10 +282,14 @@ const struct drawing_api e_drawing_api = {
 
 void e_fake_start_draw(void *handle)
 {
+    struct frontend * fe = (struct frontend *) handle;
+    evas_event_freeze(evas_object_evas_get(fe->area));
 }
 
 void e_fake_end_draw(void *handle)
 {
+    struct frontend * fe = (struct frontend *) handle;
+    evas_event_thaw(evas_object_evas_get(fe->area));
 }
 
 const struct drawing_api fake_drawing_api = {

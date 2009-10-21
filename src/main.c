@@ -154,10 +154,10 @@ static void main_win_close_handler(Ecore_Evas* main_win __attribute__((unused)))
 static void main_win_resize_handler(Ecore_Evas* main_win)
 {
     Evas* evas = ecore_evas_get(main_win);
-    ecore_evas_hide(main_win);
+    evas_event_freeze(evas);
     create_edjes(evas);
     fill_texts(evas);
-    ecore_evas_show(main_win);
+    evas_event_thaw(evas);
 }
 
 
