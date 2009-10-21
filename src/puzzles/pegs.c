@@ -12,6 +12,8 @@
 #include "puzzles.h"
 #include "tree234.h"
 
+#define _(x) x
+
 #define GRID_HOLE 0
 #define GRID_PEG  1
 #define GRID_OBST 2
@@ -202,7 +204,7 @@ static char *validate_params(game_params *params, int full)
 
 /* ----------------------------------------------------------------------
  * Beginning of code to generate random Peg Solitaire boards.
- * 
+ *
  * This procedure is done with no aesthetic judgment, no effort at
  * symmetry, no difficulty grading and generally no finesse
  * whatsoever. We simply begin with an empty board containing a
@@ -223,7 +225,7 @@ struct move {
     /*
      * x,y are the start point of the move during generation (hence
      * its endpoint during normal play).
-     * 
+     *
      * dx,dy are the direction of the move during generation.
      * Absolute value 1. Hence, for example, x=3,y=5,dx=1,dy=0
      * means that the move during generation starts at (3,5) and
@@ -364,7 +366,7 @@ static void update_moves(unsigned char *grid, int w, int h, int x, int y,
 		/*
 		 * This move is impossible. If it is already in the
 		 * tree, delete it.
-		 * 
+		 *
 		 * (We make use here of the fact that del234
 		 * doesn't have to be passed a pointer to the
 		 * _actual_ element it's deleting: it merely needs
@@ -409,7 +411,7 @@ static void pegs_genmoves(unsigned char *grid, int w, int h, random_state *rs)
 	 * See how many moves we can make at zero cost. Make one,
 	 * if possible. Failing that, make a one-cost move, and
 	 * then a two-cost one.
-	 * 
+	 *
 	 * After filling at least half the input grid, we no longer
 	 * accept cost-2 moves: if that's our only option, we give
 	 * up and finish.
@@ -548,11 +550,11 @@ static char *new_game_desc(game_params *params, random_state *rs,
 	     * The octagonal (European) solitaire layout is
 	     * actually _insoluble_ with the starting hole at the
 	     * centre. Here's a proof:
-	     * 
+	     *
 	     * Colour the squares of the board diagonally in
 	     * stripes of three different colours, which I'll call
 	     * A, B and C. So the board looks like this:
-	     * 
+	     *
 	     *     A B C
 	     *   A B C A B
 	     * A B C A B C A
@@ -560,26 +562,26 @@ static char *new_game_desc(game_params *params, random_state *rs,
 	     * C A B C A B C
 	     *   B C A B C
 	     *     A B C
-	     * 
+	     *
 	     * Suppose we keep running track of the number of pegs
 	     * occuping each colour of square. This colouring has
 	     * the property that any valid move whatsoever changes
 	     * all three of those counts by one (two of them go
 	     * down and one goes up), which means that the _parity_
 	     * of every count flips on every move.
-	     * 
+	     *
 	     * If the centre square starts off unoccupied, then
 	     * there are twelve pegs on each colour and all three
 	     * counts start off even; therefore, after 35 moves all
 	     * three counts would have to be odd, which isn't
 	     * possible if there's only one peg left. []
-	     * 
+	     *
 	     * This proof works just as well if the starting hole
 	     * is _any_ of the thirteen positions labelled B. Also,
 	     * we can stripe the board in the opposite direction
 	     * and rule out any square labelled B in that colouring
 	     * as well. This leaves:
-	     * 
+	     *
 	     *     Y n Y
 	     *   n n Y n n
 	     * Y n n Y n n Y
@@ -587,17 +589,17 @@ static char *new_game_desc(game_params *params, random_state *rs,
 	     * Y n n Y n n Y
 	     *   n n Y n n
 	     *     Y n Y
-	     * 
+	     *
 	     * where the ns are squares we've proved insoluble, and
 	     * the Ys are the ones remaining.
-	     * 
+	     *
 	     * That doesn't prove all those starting positions to
 	     * be soluble, of course; they're merely the ones we
 	     * _haven't_ proved to be impossible. Nevertheless, it
 	     * turns out that they are all soluble, so when the
 	     * user requests an Octagon board the simplest thing is
 	     * to pick one of these at random.
-	     * 
+	     *
 	     * Rather than picking equiprobably from those twelve
 	     * positions, we'll pick equiprobably from the three
 	     * equivalence classes
@@ -826,7 +828,7 @@ static char *interpret_move(game_state *state, game_ui *ui, game_drawstate *ds,
 	/*
 	 * Left button down: we attempt to start a drag.
 	 */
-	
+
 	/*
 	 * There certainly shouldn't be a current drag in progress,
 	 * unless the midend failed to send us button events in
@@ -1287,7 +1289,7 @@ static void game_print(drawing *dr, game_state *state, int tilesize)
 #endif
 
 const struct game thegame = {
-    "Pegs", "games.pegs", "pegs",
+    _("Pegs"), "games.pegs", "pegs",
     default_params,
     game_fetch_preset,
     decode_params,

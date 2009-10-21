@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: epuzzles 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-02 04:29+0000\n"
+"POT-Creation-Date: 2009-10-20 13:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,26 +15,38 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/puzzles/twiddle.c:1232 src/puzzles/fifteen.c:824
+#: src/puzzles/pegs.c:1292
+msgid "Pegs"
+msgstr "Колышки"
+
+#: src/puzzles/solo.c:5364
+msgid "Solo"
+msgstr "Судоку"
+
+#: src/puzzles/twiddle.c:1254 src/puzzles/fifteen.c:826
 #, c-format
 msgid "Moves since auto-solve: %d"
 msgstr "Ходов после авторешения: %d"
 
-#: src/puzzles/twiddle.c:1235 src/puzzles/flip.c:1234
-#: src/puzzles/fifteen.c:827
+#: src/puzzles/twiddle.c:1257 src/puzzles/flip.c:1234
+#: src/puzzles/fifteen.c:829
 #, c-format
 msgid "%sMoves: %d"
 msgstr "%sХодов: %d"
 
-#: src/puzzles/twiddle.c:1236 src/puzzles/flip.c:1236
-#: src/puzzles/fifteen.c:828
+#: src/puzzles/twiddle.c:1258 src/puzzles/flip.c:1236
+#: src/puzzles/fifteen.c:830
 msgid "COMPLETED! "
 msgstr "РЕШЕНО! "
 
-#: src/puzzles/twiddle.c:1239
+#: src/puzzles/twiddle.c:1261
 #, c-format
 msgid " (target %d)"
 msgstr " (цель %d)"
+
+#: src/puzzles/twiddle.c:1287
+msgid "Twiddle"
+msgstr "Крути-верти"
 
 #: src/puzzles/flip.c:1236
 msgid "Auto-solved. "
@@ -44,18 +56,27 @@ msgstr "Решено автоматом"
 msgid "Auto-solver used. "
 msgstr "Использовано авторешение"
 
+#: src/puzzles/bridges.c:2777
+msgid "Bridges"
+msgstr "Мостики"
+
+#: src/puzzles/fifteen.c:871
+msgid "Fifteen"
+msgstr "Пятнашки"
+
 #: src/help.c:49
 msgid "Puzzles: Help"
 msgstr "Головоломки: Помощь"
 
-#: src/main.c:159
+#: src/main.c:145
 msgid "Puzzles"
 msgstr "Головоломки"
 
-#: src/gamelist.c:22
+#: src/gamelist.c:28
 msgid "Press \"0\" to get help"
-msgstr ""
+msgstr "Нажмите \"0\" для подсказки"
 
-#: src/gamelist.c:23
+#: src/gamelist.c:29
 msgid "Press \"M\" to get help"
-msgstr ""
+msgstr "Нажмите \"M\" для подсказки"
+

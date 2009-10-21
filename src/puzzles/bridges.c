@@ -15,6 +15,8 @@
 
 #include "puzzles.h"
 
+#define _(x) x
+
 /* Turn this on for hints about which lines are considered possibilities. */
 #undef DRAW_GRID
 #undef DRAW_DSF
@@ -2772,7 +2774,7 @@ static void game_print(drawing *dr, game_state *state, int ts)
 #endif
 
 const struct game thegame = {
-    "Bridges", "games.bridges", "bridges",
+    _("Bridges"), "games.bridges", "bridges",
     default_params,
     game_fetch_preset,
     decode_params,

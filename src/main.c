@@ -141,8 +141,12 @@ static void run(const char* gamename) {
     edje_object_part_text_set(contents, "epuzzle/help",
             epuzzles_hint_by_name(fe->name));
 
-    edje_object_part_text_set(contents, "epuzzle/title",
+    edje_object_part_text_set(main_edje, "title",
             gettext("Puzzles"));
+
+    edje_object_part_text_set(contents, "epuzzle/title",
+            gettext(lookup_game_by_name(fe->name)->name));
+
 
     evas_object_show(fe->area);
     evas_object_show(main_edje);

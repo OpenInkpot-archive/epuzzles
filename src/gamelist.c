@@ -81,7 +81,7 @@ const char* epuzzles_hint_by_name(const char* name)
 {
     gamelist_t* item = _lookup(name);
     if(item && item->hint)
-        return item->hint;
+        return gettext(item->hint);
     return "";
 };
 

@@ -14,6 +14,8 @@
 #define HIDE_EVAS 1
 #include "custom_drawable.h"
 
+#define _(x) x
+
 #define PREFERRED_TILE_SIZE 100
 #define TILE_SIZE (ds->tilesize)
 #define BORDER    5 /* (TILE_SIZE / 2) */
@@ -866,7 +868,7 @@ static void game_print(drawing *dr, game_state *state, int tilesize)
 #endif
 
 const struct game thegame = {
-    "Fifteen", "games.fifteen", "fifteen",
+    _("Fifteen"), "games.fifteen", "fifteen",
     default_params,
     game_fetch_preset,
     decode_params,
