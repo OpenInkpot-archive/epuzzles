@@ -1,3 +1,12 @@
+epuzzles (0.1+20090518-9) asimov; urgency=low
+
+  * Add basic rotation support (closes #590)
+  * Fix sudoku help (closes #601)
+  * Remove unwanted keybindings (close #592)
+  * Help files updated
+
+ -- Alexander V. Nikolaev <avn@daemon.hole.ru>  Wed, 21 Oct 2009 22:59:13 +0300
+
 epuzzles (0.1+20090518-8) asimov; urgency=low
 
   * Update graphics
