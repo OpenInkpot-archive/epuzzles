@@ -1,8 +1,9 @@
 epuzzles (0.1+20090518-13) asimov; urgency=low
 
-  * keymapping for V3 (closes #642)
+  * [Tomasz Dlugosz <tomek3d@gmail.com>]
+     + keymapping for V3 (closes #642)
 
- -- Tomasz Dlugosz <tomek3d@gmail.com>  Sun, 08 Nov 2009 17:53:20 +0000
+ -- Alexander V. Nikolaev <avn@daemon.hole.ru>  Sun, 08 Nov 2009 17:53:20 +0000
 
 epuzzles (0.1+20090518-12) asimov; urgency=low
 
