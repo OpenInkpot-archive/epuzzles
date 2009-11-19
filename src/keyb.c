@@ -20,12 +20,12 @@ static void _key_handler(void* param __attribute__((unused)),
 
     const char *trykey = keys_lookup(fe->keys, fe->name, ev->keyname);
     const char *key;
-    if(trykey)
+    if(*trykey)
         key = trykey;
     else
         key = keys_lookup(fe->keys, "default", ev->keyname);
 
-    if(!key)
+    if(!*key)
     {
         printf("No key for %s\n", ev->keyname);
         return;
