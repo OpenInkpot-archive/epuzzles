@@ -6,6 +6,7 @@
 #include <libeoi.h>
 #include <libeoi_help.h>
 
+/*
 static void help_closed(Evas_Object* help)
 {
     Evas* evas = evas_object_evas_get(help);
@@ -36,6 +37,7 @@ static void help_resize(Evas* evas, int w, int h)
     Evas_Object* rr = evas_object_name_find(evas, "help-window");
     evas_object_resize(rr, w, h);
 }
+*/
 
 void epuzzles_help(Evas_Object* obj, const char* topic)
 {
@@ -44,7 +46,12 @@ void epuzzles_help(Evas_Object* obj, const char* topic)
     asprintf(&helpfile, "epuzzles/%s", topic);
     Evas* evas = evas_object_evas_get(obj);
 
-    Evas_Object* rr = eoi_main_window_create(evas);
+    eoi_help_show(evas,
+                    helpfile,
+                    "index",
+                    gettext("Puzzles: Help"),
+                    NULL);
+/*    Evas_Object* rr = eoi_main_window_create(evas);
 
     edje_object_part_text_set(rr, "title", gettext("Puzzles: Help"));
     edje_object_part_text_set(rr, "footer", "0/0");
@@ -64,5 +71,5 @@ void epuzzles_help(Evas_Object* obj, const char* topic)
     evas_object_data_set(rr, "prev-focus", f);
 
     edje_object_part_swallow(rr, "contents", help);
-    evas_object_focus_set(help, 1);
+    evas_object_focus_set(help, 1); */
 }
