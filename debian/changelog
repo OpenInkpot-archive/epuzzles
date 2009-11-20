@@ -1,3 +1,9 @@
+epuzzles (0.1+20090518-15) asimov; urgency=low
+
+  * Convert help into .po, use oi-help-compiler
+
+ -- Alexander V. Nikolaev <avn@daemon.hole.ru>  Fri, 20 Nov 2009 23:55:26 +0200
+
 epuzzles (0.1+20090518-14) asimov; urgency=low
 
   * Fix broken keys
