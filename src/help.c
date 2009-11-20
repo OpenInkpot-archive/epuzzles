@@ -47,8 +47,8 @@ void epuzzles_help(Evas_Object* obj, const char* topic)
     Evas* evas = evas_object_evas_get(obj);
 
     eoi_help_show(evas,
-                    helpfile,
-                    "index",
+                    "epuzzles",
+                    topic,
                     gettext("Puzzles: Help"),
                     NULL);
 /*    Evas_Object* rr = eoi_main_window_create(evas);
