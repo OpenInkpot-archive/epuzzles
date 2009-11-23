@@ -26,14 +26,13 @@ epuzzle_run_help(struct frontend * fe, const gamelist_t* item)
 }
 
 const char  stdhelp[] = _("Press @Context@ to get help");
-const char  solohelp[] = _("Press \"M\" to get help");
 
 static gamelist_t _gamelist[] = {
     { "fifteen", &fifteen, stdhelp, epuzzle_run_help, custom_drawable_fifteen,
        &fake_drawing_api, 0 },
     { "flip", &flip, stdhelp, &epuzzle_run_help,
         &custom_drawable_edrawable,  &e_drawing_api, 1},
-    { "twiddle", &twiddle, solohelp, epuzzle_run_help , &custom_drawable_twiddle,
+    { "twiddle", &twiddle, stdhelp, epuzzle_run_help , &custom_drawable_twiddle,
        &fake_drawing_api, 0 },
     { "pegs", &pegs, stdhelp, epuzzle_run_help ,
         &custom_drawable_edrawable,  &e_drawing_api, 1},
@@ -41,7 +40,7 @@ static gamelist_t _gamelist[] = {
         &custom_drawable_edrawable,  &e_drawing_api, 1},
     { "unequal", &unequal, stdhelp, epuzzle_run_help ,
         &custom_drawable_edrawable,  &e_drawing_api, 1},
-    { "solo", &solo, solohelp, epuzzle_run_help ,
+    { "solo", &solo, stdhelp, epuzzle_run_help ,
         &custom_drawable_edrawable,  &e_drawing_api, 1},
     { NULL, NULL, NULL, NULL, NULL, NULL, 1 }
 };
