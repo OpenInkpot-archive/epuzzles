@@ -20,12 +20,12 @@ extern game unequal;
 extern game solo;
 
 void
-epuzzle_run_help(Evas_Object* gui, const gamelist_t* item)
+epuzzle_run_help(struct frontend * fe, const gamelist_t* item)
 {
-    epuzzles_help(gui, item->name);
+    epuzzles_help(fe, item->name);
 }
 
-const char  stdhelp[] = _("Press \"0\" to get help");
+const char  stdhelp[] = _("Press @Context@ to get help");
 const char  solohelp[] = _("Press \"M\" to get help");
 
 static gamelist_t _gamelist[] = {
@@ -70,19 +70,19 @@ lookup_game_by_name(const char * name)
     return NULL;
 }
 
-void epuzzles_ctxmenu_by_name(Evas_Object *obj, const char* name)
+void epuzzles_ctxmenu_by_name(struct frontend * fe)
 {
-    gamelist_t* item = _lookup(name);
+    gamelist_t* item = _lookup(fe->name);
     if(item)
-        item->ctxmenu(obj, item);
+        item->ctxmenu(fe, item);
 }
 
-const char* epuzzles_hint_by_name(const char* name)
+const char* epuzzles_hint_by_name(struct frontend *fe)
 {
-    gamelist_t* item = _lookup(name);
+    gamelist_t* item = _lookup(fe->name);
     if(item && item->hint)
-        return gettext(item->hint);
-    return "";
+        return eoi_subst_keys(gettext(item->hint), fe->keys, fe->name);
+    return strdup("");
 };
 
 void epuzzle_create_canvas(struct frontend* fe, Evas* evas, int xy)

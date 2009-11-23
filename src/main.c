@@ -127,8 +127,9 @@ void fill_texts(Evas* canvas)
     struct frontend * fe = (struct frontend *)
                         evas_object_data_get(area, "frontend");
 
-    edje_object_part_text_set(contents, "epuzzle/help",
-            epuzzles_hint_by_name(fe->name));
+    char *hint = epuzzles_hint_by_name(fe);
+    edje_object_part_text_set(contents, "epuzzle/help", hint);
+    free(hint);
 
     edje_object_part_text_set(main_edje, "title",
             gettext("Puzzles"));

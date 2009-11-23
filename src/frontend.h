@@ -24,19 +24,6 @@ struct _Color_Set {
 };
 
 
-typedef struct gamelist_t gamelist_t;
-struct gamelist_t {
-    const char* name;
-    /* canonical name, use to help and othre, upstream naming sucks due
-       capitalizing first leter */
-    struct game* puzzle;
-    const char* hint;
-    void (*ctxmenu)(Evas_Object *, const gamelist_t *);
-    Evas_Object* (*create)(Evas*, int);
-    struct drawing_api* draw_api;
-    int support_colors; /* FIXME: temporary */
-};
-
 struct frontend {
     Evas_Object *window;
     Evas_Object *area;
@@ -68,15 +55,28 @@ struct frontend {
     int first_time;
 };
 
+typedef struct gamelist_t gamelist_t;
+struct gamelist_t {
+    const char* name;
+    /* canonical name, use to help and othre, upstream naming sucks due
+       capitalizing first leter */
+    struct game* puzzle;
+    const char* hint;
+    void (*ctxmenu)(struct frontend *, const gamelist_t *);
+    Evas_Object* (*create)(Evas*, int);
+    struct drawing_api* draw_api;
+    int support_colors; /* FIXME: temporary */
+};
+
 struct game * lookup_game_by_name(const char * name);
 void terminate(struct frontend *);
 
 
 void
-epuzzles_help(Evas_Object* obj, const char* puzzle);
+epuzzles_help(struct frontend *fe, const char* puzzle);
 
-void epuzzles_ctxmenu_by_name(Evas_Object*, const char* name);
-const char* epuzzles_hint_by_name(const char* name);
+void epuzzles_ctxmenu_by_name(struct frontend *fe);
+const char* epuzzles_hint_by_name(struct frontend *fe);
 void epuzzle_create_canvas(struct frontend* fe, Evas*, int xy);
 
 #endif

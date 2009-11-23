@@ -1,3 +1,9 @@
+epuzzles (0.1+20090518-16) asimov; urgency=low
+
+  * Implement keys substitution in hinting and help
+
+ -- Alexander V. Nikolaev <avn@daemon.hole.ru>  Sat, 21 Nov 2009 20:21:08 +0200
+
 epuzzles (0.1+20090518-15) asimov; urgency=low
 
   * Convert help into .po, use oi-help-compiler

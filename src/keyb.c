@@ -35,7 +35,7 @@ static void _key_handler(void* param __attribute__((unused)),
 
     if(!strcmp(key, "Context")) {
         printf("Getting help/raising menu\n");
-        epuzzles_ctxmenu_by_name(fe->area, fe->name);
+        epuzzles_ctxmenu_by_name(fe);
         return;
     }
 
