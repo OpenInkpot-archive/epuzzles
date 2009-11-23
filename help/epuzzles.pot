@@ -17,18 +17,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.1\n"
 
+# For original help text refer to en.po
 msgid "bridges"
 msgstr "bridges"
 
+# For original help text refer to en.po
 msgid "fifteen"
 msgstr "fifteen"
 
+# For original help text refer to en.po
 msgid "solo"
 msgstr "solo"
 
+# For original help text refer to en.po
 msgid "pegs"
 msgstr "pegs"
 
+# For original help text refer to en.po
 msgid "flip"
 msgstr "flip"
 
