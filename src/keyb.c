@@ -58,7 +58,6 @@ static void _key_handler(void* param __attribute__((unused)),
     HANDLE_KEY("Clockwise", CURSOR_SELECT2) else
     HANDLE_KEY("CounterClockwise", CURSOR_SELECT)
 
-    printf("processing key %s (%s)  %d\n",ev->keyname, key, keyval);
     if(!strcmp(key, "Quit")) {
        ecore_main_loop_quit();
     }
