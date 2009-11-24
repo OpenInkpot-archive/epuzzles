@@ -115,7 +115,7 @@ msgstr ""
 "larger square group of tiles.</p>\n"
 "\n"
 "<h1>Controls</h1>\n"
-"<p>Joystick buttons move frame. Use \"OK\" button to rotate pieces inside"
+"<p>Joystick buttons move frame. Use @Clockwise@ button to rotate pieces inside"
 " the frame.</p>"
 
 msgid "pegs"
