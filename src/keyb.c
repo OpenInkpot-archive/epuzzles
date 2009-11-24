@@ -11,19 +11,17 @@
 static void _key_handler(void* param __attribute__((unused)),
          Evas* e __attribute__((unused)),
          Evas_Object *r, void* event_info) {
-    Evas_Event_Key_Down* ev = (Evas_Event_Key_Down*)event_info;
+    Evas_Event_Key_Up* ev = (Evas_Event_Key_Down*)event_info;
     struct frontend *fe = (struct frontend *)param;
 
     assert(fe);
 
-    unsigned int lp = evas_key_modifier_is_set(ev->modifiers, "Alt");
-
-    const char *trykey = keys_lookup(fe->keys, fe->name, ev->keyname);
+    const char *trykey = keys_lookup_by_event(fe->keys, fe->name, ev);
     const char *key;
     if(*trykey)
         key = trykey;
     else
-        key = keys_lookup(fe->keys, "default", ev->keyname);
+        key = keys_lookup_by_event(fe->keys, "default", ev);
 
     if(!*key)
     {
@@ -66,8 +64,6 @@ static void _key_handler(void* param __attribute__((unused)),
     }
 
     if (keyval) {
-        if (lp)
-            keyval |= MOD_SHFT;
         midend_process_key(fe->me, 0, 0, keyval);
     } else {
         printf("No keyval\n");

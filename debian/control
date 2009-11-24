@@ -13,6 +13,12 @@ Architecture: any
 Depends: ${shlibs:Depends}, droid-fonts
 Description: Simple puzzles
 
+Package: epuzzles-settings-n516
+Priority: optional
+Architecture: any
+Depends: epuzzles
+Description: Simple puzzles -- keybindings for N516
+
 Package: epuzzles-dbg
 Priority: optional
 Architecture: any
