@@ -37,3 +37,6 @@ msgstr "pegs"
 msgid "flip"
 msgstr "flip"
 
+# For original help text refer to en.po
+msgid "twiddle"
+msgstr "twiddle"
