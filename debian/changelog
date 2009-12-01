@@ -1,3 +1,22 @@
+epuzzles (0.1+20090518-18) UNRELEASED; urgency=low
+
+  [ Mikhail Gusarov ]
+  * l10n: Updates to Russian (ru) translation
+  * l10n: Updates to Ukrainian (uk) translation
+
+  [ Alexander V. Nikolaev ]
+  * Remove trailing \n
+  * Remove all trailing \n
+  * Switch to new help system
+  * Strip direct reference to M for solo
+  * Add refer-to-en texts
+  * Twiddles now can rotate both Clockwise and CounterClockwise
+  * Split keyboard configuration
+  * n516 version of config (currently a copy)
+  * Update frames to "fat" for twiddles
+
+ -- Alexander V. Nikolaev <avn@daemon.hole.ru>  Tue, 01 Dec 2009 19:06:19 +0200
+
 epuzzles (0.1+20090518-17) asimov; urgency=low
 
   * Twiddles now can rotate both Clockwise and CounterClockwise (#605)
