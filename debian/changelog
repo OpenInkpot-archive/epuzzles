@@ -1,3 +1,10 @@
+epuzzles (0.1+20090518-19) asimov; urgency=low
+
+  [ Artem Naluzhnyy ]
+  * l10n: Updates to Ukrainian (uk) translation
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Thu, 03 Dec 2009 13:16:24 +0600
+
 epuzzles (0.1+20090518-18) asimov; urgency=low
 
   [ Mikhail Gusarov ]
