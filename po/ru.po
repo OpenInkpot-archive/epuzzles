@@ -58,7 +58,7 @@ msgstr "Использовано авторешение"
 
 #: src/puzzles/flip.c:1279
 msgid "Flip"
-msgstr ""
+msgstr "Перевёртыш"
 
 #: src/puzzles/bridges.c:2777
 msgid "Bridges"

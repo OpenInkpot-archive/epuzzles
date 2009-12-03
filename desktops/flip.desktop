@@ -3,6 +3,7 @@ Version=1.0
 Type=Application
 Name=Flip puzzle
 Name[pl]=Odwracanie
+Name[ru]=Перевёртыш
 Name[zh]=反转方块
 Exec=/usr/bin/epuzzles flip
 Categories=Games
