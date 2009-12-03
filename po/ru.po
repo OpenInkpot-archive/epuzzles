@@ -73,10 +73,5 @@ msgid "Puzzles"
 msgstr "Головоломки"
 
 #: src/gamelist.c:28
-msgid "Press \"0\" to get help"
-msgstr "Нажмите \"0\" для подсказки"
-
-#: src/gamelist.c:29
-msgid "Press \"M\" to get help"
-msgstr "Нажмите \"M\" для подсказки"
-
+msgid "Press @Context@ to get help"
+msgstr "Нажмите @Context@ для подсказки"

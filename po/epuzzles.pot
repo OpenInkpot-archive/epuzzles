@@ -73,9 +73,5 @@ msgid "Puzzles"
 msgstr ""
 
 #: src/gamelist.c:28
-msgid "Press \"0\" to get help"
-msgstr ""
-
-#: src/gamelist.c:29
-msgid "Press \"M\" to get help"
+msgid "Press @Context@ to get help"
 msgstr ""
