@@ -249,3 +249,14 @@ sprites_sprite_hide(Evas_Object *obj, int index)
         evas_object_hide(sprite);
 }
 
+void
+sprites_sprite_size_get(Evas_Object *obj, int index, int *w, int *h)
+{
+
+    sprites_t *drawable  = evas_object_smart_data_get(obj);
+    if(!drawable)
+        return;
+    Evas_Object *sprite = (Evas_Object *) eina_list_nth(drawable->sprites, index);
+    if(sprite)
+        evas_object_image_size_get(sprite, w, h);
+}

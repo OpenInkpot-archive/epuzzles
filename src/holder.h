@@ -18,7 +18,7 @@ epuzzle_ob_insert_object(object_holder* ob, const char* filename,
 
 void
 epuzzle_oh_put_object(object_holder* oh, int fx, int fy, int rx, int ry,
-                      const char* filename);
+                      const char* filename, int align);
 
 void
 epuzzle_oh_drop_object(object_holder* oh, int fx, int fy);

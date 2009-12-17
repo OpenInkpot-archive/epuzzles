@@ -21,4 +21,7 @@ sprites_sprite_show(Evas_Object *obj, int index);
 void
 sprites_sprite_hide(Evas_Object *obj, int index);
 
+void
+sprites_sprite_size_get(Evas_Object *obj, int index, int *w, int *h);
+
 #endif

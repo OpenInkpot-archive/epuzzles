@@ -5,7 +5,7 @@
 #include <Evas.h>
 #include "sprites.h"
 #include "holder.h"
-
+#include "puzzles.h"
 
 struct object_holder {
     Evas_Object* canvas; /* drawable canvas */
@@ -60,24 +60,26 @@ epuzzle_oh_find_object_by_filename(object_holder* oh, const char* filename,
     return NULL;
 }
 
-void
-epuzzle_ob_insert_object(object_holder* oh, const char* filename,
-                        int fx, int fy, int rx, int ry)
+
+_object*
+epuzzle_oh_insert_object(object_holder* oh, const char* filename,
+                        int fx, int fy)
 {
     _object* object = calloc(sizeof(_object), 1);
     object->x = fx;
     object->y = fy;
     object->used = true;
     object->id = sprites_add_sprite(oh->canvas, filename, NULL);
-    sprites_sprite_move(oh->canvas, object->id, rx, ry);
     object->filename = eina_stringshare_add(filename);
     oh->objects = eina_list_append(oh->objects, object);
+    return object;
 }
 
 void
 epuzzle_oh_put_object(object_holder* oh, int fx, int fy, int rx, int ry,
-                      const char* filename)
+                      const char* filename, int align)
 {
+    int h, w;
     _object* object = epuzzle_oh_find_object(oh, fx, fy, filename);
     if(object)
         sprites_sprite_move(oh->canvas, object->id, rx, ry);
@@ -86,12 +88,17 @@ epuzzle_oh_put_object(object_holder* oh, int fx, int fy, int rx, int ry,
         object = epuzzle_oh_find_object_by_filename(oh, filename, false);
         if(object)
         {
-            sprites_sprite_move(oh->canvas, object->id, rx, ry);
             sprites_sprite_show(oh->canvas, object->id);
             object->used = true;
         }
         else
-            epuzzle_oh_insert_object(oh, filename, fx, fy, rx, ry);
+            object = epuzzle_oh_insert_object(oh, filename, fx, fy);
+        sprites_sprite_size_get(oh->canvas, object->id, &w, &h);
+        if(align & ALIGN_VCENTRE)
+            ry += h / 2;
+        if(align & ALIGN_HCENTRE)
+            rx += w / 2;
+        sprites_sprite_move(oh->canvas, object->id, rx, ry);
     }
 }
 
