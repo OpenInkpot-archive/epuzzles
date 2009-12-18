@@ -1,3 +1,9 @@
+epuzzles (0.1+20090518-21) asimov; urgency=low
+
+  * Implement sprite engine for pegs (Close #594)
+
+ -- Alexander V. Nikolaev <avn@daemon.hole.ru>  Sat, 19 Dec 2009 01:14:30 +0200
+
 epuzzles (0.1+20090518-20) asimov; urgency=low
 
   * Fix keybindings
