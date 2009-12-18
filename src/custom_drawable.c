@@ -62,47 +62,45 @@ custom_drawable_twiddle(Evas *evas, int xy)
     return sprites;
 }
 
+
+typedef struct pegs_private pegs_private;
+struct pegs_private {
+    int cursor;
+    int pegs[7*7];
+};
+
 void
-custom_drawable_pegs_show(object_holder* oh, int fx, int fy)
+custom_drawable_pegs_show(drawing* dr, int fx, int fy, int x, int y)
 {
-    epuzzle_oh_put_object(oh, fx, fy, fx, fy, PEGS "peg.png", 0);
+    struct frontend * fe = (struct frontend *) drawing_handle(dr);
+    pegs_private* private = evas_object_data_get(fe->area, "pegs-private");
+    sprites_sprite_move(fe->area, private->pegs[7*fy+fx], x, y);
+    sprites_sprite_show(fe->area, private->pegs[7*fy+fx]);
 }
 
 void
-custom_drawable_pegs_hide(object_holder* oh, int fx, int fy)
+custom_drawable_pegs_hide(drawing* dr, int fx, int fy)
 {
-    epuzzle_oh_drop_object(oh, fx, fy);
+    struct frontend * fe = (struct frontend *) drawing_handle(dr);
+    pegs_private* private = evas_object_data_get(fe->area, "pegs-private");
+    sprites_sprite_hide(fe->area, private->pegs[7*fy+fx]);
 }
 
 void
-custom_drawable_pegs_cursor_move(drawing* dr, int cursor, int x, int y)
+custom_drawable_pegs_cursor_move(drawing* dr, int x, int y)
 {
     int w, h;
     struct frontend * fe = (struct frontend *) drawing_handle(dr);
-    sprites_sprite_size_get(fe->area, cursor, &w, &h);
-    x-= w / 2;
-    h-= h / 2;
-    sprites_sprite_move(fe->area, cursor, x, y);
+    pegs_private* private = evas_object_data_get(fe->area, "pegs-private");
+    sprites_sprite_move(fe->area, private->cursor, x, y);
 }
 
-int
-custom_drawable_pegs_cursor_create(drawing* dr)
-{
-    struct frontend * fe = (struct frontend *) drawing_handle(dr);
-    return sprites_add_sprite(fe->area, PEGS "cursor.png", NULL);
-}
-
-object_holder*
-custom_drawable_object_holder_create(drawing* dr)
-{
-    struct frontend * fe = (struct frontend *) drawing_handle(dr);
-    return epuzzle_oh_new(fe->area);
-}
 
 void
-custom_drawable_object_holder_destroy(object_holder* oh)
+_private_cleanup(void *data, Evas* e, Evas_Object *obj, void *event_info)
 {
-    epuzzle_oh_del(oh);
+    pegs_private* private = (pegs_private*) data;
+    free(private);
 }
 
 Evas_Object *
@@ -112,5 +110,17 @@ custom_drawable_pegs_create(Evas *evas, int xy, int n)
     if(!sprites)
         err(1, "Can't alloc sprites\n");
     sprites_bg_file_set(sprites, PEGS "bg.png", NULL);
+    pegs_private* private = calloc(1, sizeof(pegs_private));
+    private->cursor = sprites_add_sprite(sprites, PEGS "cursor.png", NULL);
+    evas_object_data_set(sprites, "pegs-private", private);
+    evas_object_event_callback_add(sprites, EVAS_CALLBACK_DEL, _private_cleanup,
+        private);
+    int x, y;
+    for(x=0; x < 7; x++)
+        for(y=0; y< 7; y++)
+        {
+            private->pegs[7*y+x] = sprites_add_sprite(sprites, PEGS "peg.png", NULL);
+            sprites_sprite_hide(sprites, private->pegs[7*y+x]);
+        }
     return sprites;
 }

@@ -12,6 +12,11 @@
 #include "puzzles.h"
 #include "tree234.h"
 
+#define HIDE_EVAS 1
+#include "holder.h"
+#include "custom_drawable.h"
+
+
 #define _(x) x
 
 #define GRID_HOLE 0
@@ -48,7 +53,7 @@ static char const *const pegs_titletypes[] = { TYPELIST(TITLE) };
 static char const *const pegs_lowertypes[] = { TYPELIST(LOWER) };
 #define TYPECONFIG TYPELIST(CONFIG)
 
-#define FLASH_FRAME 0.13F
+#define FLASH_FRAME 0.0F
 
 struct game_params {
     int w, h;
@@ -746,6 +751,8 @@ struct game_ui {
     int sx, sy;			       /* grid coords of drag start cell */
     int dx, dy;			       /* pixel coords of current drag posn */
     int cur_x, cur_y, cur_visible, cur_jumping;
+    int cursor;
+    object_holder *holder;
 };
 
 static game_ui *new_ui(game_state *state)
@@ -797,18 +804,22 @@ static void game_changed_state(game_ui *ui, game_state *oldstate,
     ui->dragging = FALSE;
 }
 
-#define PREFERRED_TILE_SIZE 33
+//#define PREFERRED_TILE_SIZE 33
+#define PREFERRED_TILE_SIZE 56
 #define TILESIZE (ds->tilesize)
-#define BORDER (TILESIZE / 2)
+#define HBORDER (TILESIZE / 2)
+#define VBORDER (TILESIZE / 2)
+#define BORDER HBORDER
 
 #define HIGHLIGHT_WIDTH (TILESIZE / 16)
 
-#define COORD(x)     ( BORDER + (x) * TILESIZE )
+#define HCOORD(x)     ( HBORDER + (x) * TILESIZE )
+#define VCOORD(x)     ( VBORDER + (x) * TILESIZE )
+#define COORD(x) HCOORD(x)
 #define FROMCOORD(x) ( ((x) + TILESIZE - BORDER) / TILESIZE - 1 )
 
 struct game_drawstate {
     int tilesize;
-    blitter *drag_background;
     int dragging, dragx, dragy;
     int w, h;
     unsigned char *grid;
@@ -1013,12 +1024,11 @@ static void game_compute_size(game_params *params, int tilesize,
 static void game_set_size(drawing *dr, game_drawstate *ds,
 			  game_params *params, int tilesize)
 {
-    ds->tilesize = tilesize;
-
+//    ds->tilesize = tilesize;
+//    printf("set tilesize=%d\n", tilesize);
+    ds->tilesize = PREFERRED_TILE_SIZE;
     assert(TILESIZE > 0);
 
-    assert(!ds->drag_background);      /* set_size is never called twice */
-    ds->drag_background = blitter_new(dr, TILESIZE, TILESIZE);
 }
 
 static float *game_colours(frontend *fe, int *ncolours)
@@ -1048,7 +1058,6 @@ static game_drawstate *game_new_drawstate(drawing *dr, game_state *state)
 
     /* We can't allocate the blitter rectangle for the drag background
      * until we know what size to make it. */
-    ds->drag_background = NULL;
     ds->dragging = FALSE;
 
     ds->w = w;
@@ -1058,48 +1067,13 @@ static game_drawstate *game_new_drawstate(drawing *dr, game_state *state)
 
     ds->started = FALSE;
     ds->bgcolour = -1;
-
     return ds;
 }
 
 static void game_free_drawstate(drawing *dr, game_drawstate *ds)
 {
-    if (ds->drag_background)
-	blitter_free(dr, ds->drag_background);
     sfree(ds->grid);
     sfree(ds);
-}
-
-static void draw_tile(drawing *dr, game_drawstate *ds,
-		      int x, int y, int v, int bgcolour)
-{
-    int cursor = 0, jumping = 0, bg;
-
-    if (bgcolour >= 0) {
-	draw_rect(dr, x, y, TILESIZE, TILESIZE, bgcolour);
-    }
-    if (v >= GRID_JUMPING) {
-        jumping = 1; v -= GRID_JUMPING;
-    }
-    if (v >= GRID_CURSOR) {
-        cursor = 1; v -= GRID_CURSOR;
-    }
-
-    if (v == GRID_HOLE) {
-        bg = cursor ? COL_HIGHLIGHT : COL_LOWLIGHT;
-        assert(!jumping); /* can't jump from a hole! */
-	draw_circle(dr, x+TILESIZE/2, y+TILESIZE/2, TILESIZE/4,
-                    bg, bg);
-    } else if (v == GRID_PEG) {
-        bg = (cursor || jumping) ? COL_CURSOR : COL_PEG;
-	draw_circle(dr, x+TILESIZE/2, y+TILESIZE/2, TILESIZE/3,
-		    bg, bg);
-        bg = (!cursor || jumping) ? COL_PEG : COL_CURSOR;
-        draw_circle(dr, x+TILESIZE/2, y+TILESIZE/2, TILESIZE/4,
-                    bg, bg);
-    }
-
-    draw_update(dr, x, y, TILESIZE, TILESIZE);
 }
 
 static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
@@ -1110,112 +1084,6 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
     int x, y;
     int bgcolour;
 
-    if (flashtime > 0) {
-        int frame = (int)(flashtime / FLASH_FRAME);
-        bgcolour = (frame % 2 ? COL_LOWLIGHT : COL_HIGHLIGHT);
-    } else
-        bgcolour = COL_BACKGROUND;
-
-    /*
-     * Erase the sprite currently being dragged, if any.
-     */
-    if (ds->dragging) {
-	assert(ds->drag_background);
-        blitter_load(dr, ds->drag_background, ds->dragx, ds->dragy);
-        draw_update(dr, ds->dragx, ds->dragy, TILESIZE, TILESIZE);
-	ds->dragging = FALSE;
-    }
-
-    if (!ds->started) {
-	draw_rect(dr, 0, 0,
-		  TILESIZE * state->w + 2 * BORDER,
-		  TILESIZE * state->h + 2 * BORDER, COL_BACKGROUND);
-
-	/*
-	 * Draw relief marks around all the squares that aren't
-	 * GRID_OBST.
-	 */
-	for (y = 0; y < h; y++)
-	    for (x = 0; x < w; x++)
-		if (state->grid[y*w+x] != GRID_OBST) {
-		    /*
-		     * First pass: draw the full relief square.
-		     */
-		    int coords[6];
-		    coords[0] = COORD(x+1) + HIGHLIGHT_WIDTH - 1;
-		    coords[1] = COORD(y) - HIGHLIGHT_WIDTH;
-		    coords[2] = COORD(x) - HIGHLIGHT_WIDTH;
-		    coords[3] = COORD(y+1) + HIGHLIGHT_WIDTH - 1;
-		    coords[4] = COORD(x) - HIGHLIGHT_WIDTH;
-		    coords[5] = COORD(y) - HIGHLIGHT_WIDTH;
-		    draw_polygon(dr, coords, 3, COL_HIGHLIGHT, COL_HIGHLIGHT);
-		    coords[4] = COORD(x+1) + HIGHLIGHT_WIDTH - 1;
-		    coords[5] = COORD(y+1) + HIGHLIGHT_WIDTH - 1;
-		    draw_polygon(dr, coords, 3, COL_LOWLIGHT, COL_LOWLIGHT);
-		}
-	for (y = 0; y < h; y++)
-	    for (x = 0; x < w; x++)
-		if (state->grid[y*w+x] != GRID_OBST) {
-		    /*
-		     * Second pass: draw everything but the two
-		     * diagonal corners.
-		     */
-		    draw_rect(dr, COORD(x) - HIGHLIGHT_WIDTH,
-			      COORD(y) - HIGHLIGHT_WIDTH,
-			      TILESIZE + HIGHLIGHT_WIDTH,
-			      TILESIZE + HIGHLIGHT_WIDTH, COL_HIGHLIGHT);
-		    draw_rect(dr, COORD(x),
-			      COORD(y),
-			      TILESIZE + HIGHLIGHT_WIDTH,
-			      TILESIZE + HIGHLIGHT_WIDTH, COL_LOWLIGHT);
-		}
-	for (y = 0; y < h; y++)
-	    for (x = 0; x < w; x++)
-		if (state->grid[y*w+x] != GRID_OBST) {
-		    /*
-		     * Third pass: draw a trapezium on each edge.
-		     */
-		    int coords[8];
-		    int dx, dy, s, sn, c;
-
-		    for (dx = 0; dx < 2; dx++) {
-			dy = 1 - dx;
-			for (s = 0; s < 2; s++) {
-			    sn = 2*s - 1;
-			    c = s ? COL_LOWLIGHT : COL_HIGHLIGHT;
-
-			    coords[0] = COORD(x) + (s*dx)*(TILESIZE-1);
-			    coords[1] = COORD(y) + (s*dy)*(TILESIZE-1);
-			    coords[2] = COORD(x) + (s*dx+dy)*(TILESIZE-1);
-			    coords[3] = COORD(y) + (s*dy+dx)*(TILESIZE-1);
-			    coords[4] = coords[2] - HIGHLIGHT_WIDTH * (dy-sn*dx);
-			    coords[5] = coords[3] - HIGHLIGHT_WIDTH * (dx-sn*dy);
-			    coords[6] = coords[0] + HIGHLIGHT_WIDTH * (dy+sn*dx);
-			    coords[7] = coords[1] + HIGHLIGHT_WIDTH * (dx+sn*dy);
-			    draw_polygon(dr, coords, 4, c, c);
-			}
-		    }
-		}
-	for (y = 0; y < h; y++)
-	    for (x = 0; x < w; x++)
-		if (state->grid[y*w+x] != GRID_OBST) {
-		    /*
-		     * Second pass: draw everything but the two
-		     * diagonal corners.
-		     */
-		    draw_rect(dr, COORD(x),
-			      COORD(y),
-			      TILESIZE,
-			      TILESIZE, COL_BACKGROUND);
-		}
-
-	ds->started = TRUE;
-
-	draw_update(dr, 0, 0,
-		    TILESIZE * state->w + 2 * BORDER,
-		    TILESIZE * state->h + 2 * BORDER);
-    }
-
     /*
      * Loop over the grid redrawing anything that looks as if it
      * needs it.
@@ -1225,35 +1093,18 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
 	    int v;
 
 	    v = state->grid[y*w+x];
-	    /*
-	     * Blank the source of a drag so it looks as if the
-	     * user picked the peg up physically.
-	     */
-	    if (ui->dragging && ui->sx == x && ui->sy == y && v == GRID_PEG)
-		v = GRID_HOLE;
 
-            if (ui->cur_visible && ui->cur_x == x && ui->cur_y == y)
-                v += ui->cur_jumping ? GRID_JUMPING : GRID_CURSOR;
+        if (ui->cur_visible && ui->cur_x == x && ui->cur_y == y)
+        {
+            custom_drawable_pegs_cursor_move(dr, HCOORD(x), VCOORD(y));
+        }
 
-	    if (v != GRID_OBST &&
-                (bgcolour != ds->bgcolour || /* always redraw when flashing */
-                 v != ds->grid[y*w+x])) {
-		draw_tile(dr, ds, COORD(x), COORD(y), v, bgcolour);
-	    }
+        if (v == GRID_HOLE) {
+            custom_drawable_pegs_hide(dr, x, y);
+        } else if (v == GRID_PEG) {
+            custom_drawable_pegs_show(dr, x, y, HCOORD(x), VCOORD(y));
+        }
 	}
-
-    /*
-     * Draw the dragging sprite if any.
-     */
-    if (ui->dragging) {
-	ds->dragging = TRUE;
-	ds->dragx = ui->dx - TILESIZE/2;
-	ds->dragy = ui->dy - TILESIZE/2;
-	blitter_save(dr, ds->drag_background, ds->dragx, ds->dragy);
-	draw_tile(dr, ds, ds->dragx, ds->dragy, GRID_PEG, -1);
-    }
-
-    ds->bgcolour = bgcolour;
 }
 
 static float game_anim_length(game_state *oldstate, game_state *newstate,
@@ -1265,10 +1116,7 @@ static float game_anim_length(game_state *oldstate, game_state *newstate,
 static float game_flash_length(game_state *oldstate, game_state *newstate,
 			       int dir, game_ui *ui)
 {
-    if (!oldstate->completed && newstate->completed)
-        return 2 * FLASH_FRAME;
-    else
-        return 0.0F;
+    return 0.0F;
 }
 
 static int game_timing_state(game_state *state, game_ui *ui)

@@ -35,7 +35,7 @@ static gamelist_t _gamelist[] = {
     { "twiddle", &twiddle, stdhelp, epuzzle_run_help , &custom_drawable_twiddle,
        &fake_drawing_api, 0 },
     { "pegs", &pegs, stdhelp, epuzzle_run_help ,
-        &custom_drawable_edrawable,  &e_drawing_api, 1},
+        &custom_drawable_pegs_create,  &fake_drawing_api, 1},
     { "bridges", &bridges, stdhelp, epuzzle_run_help ,
         &custom_drawable_edrawable,  &e_drawing_api, 1},
     { "unequal", &unequal, stdhelp, epuzzle_run_help ,

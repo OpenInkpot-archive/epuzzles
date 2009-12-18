@@ -24,6 +24,7 @@ struct _object {
 object_holder*
 epuzzle_oh_new(Evas_Object* drawable)
 {
+    printf("Create new holder\n");
     object_holder* oh = calloc(sizeof(object_holder), 1);
     oh->canvas = drawable;
     return oh;
@@ -34,14 +35,18 @@ epuzzle_oh_find_object(object_holder* oh, int fx, int fy, const char* filename)
 {
     Eina_List* tmp;
     _object* each;
+    if(!oh->objects)
+        return NULL;
     EINA_LIST_FOREACH(oh->objects, tmp, each)
     {
         if(each->x == fx && each->y == fy && each->used)
-            if(filename)
-                if(!strcmp(each->filename, filename))
-                    return each;
-            else
+        {
+            if(!filename)
                 return each;
+            printf("foo %s %d %d %p\n", each->filename, fx, fy, filename);
+            if(!strcmp(each->filename, filename))
+                return each;
+        }
     }
     return NULL;
 }
@@ -82,23 +87,39 @@ epuzzle_oh_put_object(object_holder* oh, int fx, int fy, int rx, int ry,
     int h, w;
     _object* object = epuzzle_oh_find_object(oh, fx, fy, filename);
     if(object)
-        sprites_sprite_move(oh->canvas, object->id, rx, ry);
-    else
     {
-        object = epuzzle_oh_find_object_by_filename(oh, filename, false);
-        if(object)
-        {
+        printf("Already has %s at %d %d\n", filename, fx, fy);
+        return;
+    }
+    object = epuzzle_oh_find_object_by_filename(oh, filename, false);
+    if(object)
+    {
             sprites_sprite_show(oh->canvas, object->id);
             object->used = true;
-        }
-        else
+            printf("reuse recycled object at %d %d\n", fx, fy);
+    }
+    else
+    {
+            printf("Insert new object at %d %d\n", fx, fy);
             object = epuzzle_oh_insert_object(oh, filename, fx, fy);
-        sprites_sprite_size_get(oh->canvas, object->id, &w, &h);
-        if(align & ALIGN_VCENTRE)
-            ry += h / 2;
-        if(align & ALIGN_HCENTRE)
-            rx += w / 2;
-        sprites_sprite_move(oh->canvas, object->id, rx, ry);
+    }
+    sprites_sprite_size_get(oh->canvas, object->id, &w, &h);
+    if(align & ALIGN_VCENTRE)
+        ry += h / 2;
+    if(align & ALIGN_HCENTRE)
+        rx += w / 2;
+    sprites_sprite_move(oh->canvas, object->id, rx, ry);
+}
+
+static void
+_dump(object_holder* oh)
+{
+    Eina_List* tmp;
+    _object* object;
+    EINA_LIST_FOREACH(oh->objects, tmp, object)
+    {
+        if(object->used)
+            printf("still alive: %d %d \n", object->x, object->y);
     }
 }
 
@@ -108,13 +129,15 @@ epuzzle_oh_drop_object(object_holder* oh, int fx, int fy)
     while(1)
     {
         _object* object = epuzzle_oh_find_object(oh, fx, fy, NULL);
-        if(object)
+        if(!object)
         {
-            sprites_sprite_hide(oh->canvas, object->id);
-            object->used = false;
-        }
-        else
+            printf("No more objects at  %d %d\n", fx, fy);
+            _dump(oh);
             return;
+        }
+        printf("really hide %d %d\n", fx, fy);
+        sprites_sprite_hide(oh->canvas, object->id);
+        object->used = false;
     }
 }
 

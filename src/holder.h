@@ -5,12 +5,17 @@
 #define EPUZZLE_HOLDER_H 1
 
 #include <stdbool.h>
+
+#ifndef HIDE_EVAS
 #include <Evas.h>
+#endif
 
 typedef struct object_holder object_holder;
 
+#ifndef HIDE_EVAS
 object_holder*
 epuzzle_oh_new(Evas_Object* drawable);
+#endif
 
 void
 epuzzle_ob_insert_object(object_holder* ob, const char* filename,

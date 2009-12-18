@@ -24,6 +24,7 @@ AC_OUTPUT([
     desktops/Makefile data/Makefile
     theme/sprites/fifteen/Makefile
     theme/sprites/twiddle/Makefile
+    theme/sprites/pegs/Makefile
     po/Makefile
 ])
 
