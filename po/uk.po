@@ -5,13 +5,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: epuzzles 0.1\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-20 13:48+0000\n"
+"Report-Msgid-Bugs-To: avn@openinkpot.org\n"
+"POT-Creation-Date: 2009-12-03 15:54+0600\n"
 "PO-Revision-Date: 2009-11-30 20:26+0200\n"
 "Last-Translator: Artem Naluzhnyy <tut@nhamon.com.ua>\n"
 "Language-Team: Ukrainian <openinkpot-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/puzzles/pegs.c:1292
@@ -22,21 +22,18 @@ msgstr "Кілочки"
 msgid "Solo"
 msgstr "Судоку"
 
-#: src/puzzles/twiddle.c:1254
-#: src/puzzles/fifteen.c:826
+#: src/puzzles/twiddle.c:1254 src/puzzles/fifteen.c:826
 #, c-format
 msgid "Moves since auto-solve: %d"
 msgstr "Кроків після автоматичного розв’язання: %d"
 
-#: src/puzzles/twiddle.c:1257
-#: src/puzzles/flip.c:1234
+#: src/puzzles/twiddle.c:1257 src/puzzles/flip.c:1236
 #: src/puzzles/fifteen.c:829
 #, c-format
 msgid "%sMoves: %d"
 msgstr "%sКроків: %d"
 
-#: src/puzzles/twiddle.c:1258
-#: src/puzzles/flip.c:1236
+#: src/puzzles/twiddle.c:1258 src/puzzles/flip.c:1238
 #: src/puzzles/fifteen.c:830
 msgid "COMPLETED! "
 msgstr "РОЗВ’ЯЗАНО!"
@@ -50,13 +47,17 @@ msgstr " (ціль %d)"
 msgid "Twiddle"
 msgstr "Круть-Верть"
 
-#: src/puzzles/flip.c:1236
+#: src/puzzles/flip.c:1238
 msgid "Auto-solved. "
 msgstr "Розв’язано автоматично."
 
-#: src/puzzles/flip.c:1237
+#: src/puzzles/flip.c:1239
 msgid "Auto-solver used. "
 msgstr "Використано автоматичне розв’язання."
+
+#: src/puzzles/flip.c:1279
+msgid "Flip"
+msgstr ""
 
 #: src/puzzles/bridges.c:2777
 msgid "Bridges"
@@ -66,19 +67,14 @@ msgstr "Містки"
 msgid "Fifteen"
 msgstr "П’ятнашки"
 
-#: src/help.c:49
+#: src/help.c:18
 msgid "Puzzles: Help"
 msgstr "Головоломки: Допомога"
 
-#: src/main.c:145
+#: src/main.c:135
 msgid "Puzzles"
 msgstr "Головоломки"
 
 #: src/gamelist.c:28
-msgid "Press \"0\" to get help"
-msgstr "Натисніть «OK» щоб отримати допомогу."
-
-#: src/gamelist.c:29
-msgid "Press \"M\" to get help"
-msgstr "Натисніть «M» щоб отримати допомогу."
-
+msgid "Press @Context@ to get help"
+msgstr "Натисніть @Context@ щоб отримати допомогу."

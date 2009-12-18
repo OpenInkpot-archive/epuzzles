@@ -10,6 +10,8 @@
 #include <ctype.h>
 #include <math.h>
 
+#define _(x) x
+
 #include "puzzles.h"
 #include "tree234.h"
 
@@ -1274,7 +1276,7 @@ static void game_print(drawing *dr, game_state *state, int tilesize)
 #endif
 
 const struct game thegame = {
-    "Flip", "games.flip", "flip",
+    _("Flip"), "games.flip", "flip",
     default_params,
     game_fetch_preset,
     decode_params,

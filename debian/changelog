@@ -1,8 +1,13 @@
 epuzzles (0.1+20090518-20) asimov; urgency=low
 
   * Fix keybindings
+  * Mark "Flip" name as translateable
+  * Updates to Russian translation
+  * Adjust keybindings to fix hint string in "Flip" puzzle
 
- -- Alexander V. Nikolaev <avn@daemon.hole.ru>  Thu, 03 Dec 2009 11:05:57 +0200
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Thu, 03 Dec 2009 15:59:56 +0600
+
+epuzzles (0.1+20090518-19) asimov; urgency=low
 
   [ Artem Naluzhnyy ]
   * l10n: Updates to Ukrainian (uk) translation
