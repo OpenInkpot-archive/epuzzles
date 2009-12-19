@@ -762,10 +762,11 @@ static game_ui *new_ui(game_state *state)
 
     ui->sx = ui->sy = ui->dx = ui->dy = 0;
     ui->dragging = FALSE;
-    ui->cur_visible = ui->cur_jumping = 0;
+    ui->cur_visible = 1;  ui->cur_jumping = 0;
+
 
     /* make sure we start the cursor somewhere on the grid. */
-    for (x = 0; x < state->w; x++) {
+/*    for (x = 0; x < state->w; x++) {
         for (y = 0; y < state->h; y++) {
             v = state->grid[y*state->w+x];
             if (v == GRID_PEG || v == GRID_HOLE) {
@@ -777,6 +778,8 @@ static game_ui *new_ui(game_state *state)
     assert(!"new_ui found nowhere for cursor");
 found:
 
+    return ui; */
+    ui->cur_x = ui->cur_y = 3;
     return ui;
 }
 
