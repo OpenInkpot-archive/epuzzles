@@ -1,4 +1,4 @@
-epuzzles (0.1+20090518-21) asimov; urgency=low
+epuzzles (0.1+20090518-21) zelazny; urgency=low
 
   * Implement sprite engine for pegs (Close #594)
 
