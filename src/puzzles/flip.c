@@ -9,6 +9,7 @@
 #include <assert.h>
 #include <ctype.h>
 #include <math.h>
+#include <libintl.h>
 
 #define _(x) x
 
@@ -877,7 +878,7 @@ struct game_ui {
 static game_ui *new_ui(game_state *state)
 {
     game_ui *ui = snew(game_ui);
-    ui->cx = ui->cy = ui->cdraw = 0;
+    ui->cx = ui->cy = 2; ui->cdraw = 1;
     return ui;
 }
 
@@ -1093,32 +1094,24 @@ static void draw_tile(drawing *dr, game_drawstate *ds,
     int bx = x * TILE_SIZE + BORDER, by = y * TILE_SIZE + BORDER;
     int i, j, dcol = (tile & 4) ? COL_CURSOR : COL_DIAG;
 
-    clip(dr, bx+1, by+1, TILE_SIZE-1, TILE_SIZE-1);
-
-    draw_rect(dr, bx+1, by+1, TILE_SIZE-1, TILE_SIZE-1,
-              anim ? COL_BACKGROUND : tile & 1 ? COL_WRONG : COL_RIGHT);
-    if (anim) {
-	/*
-	 * Draw a polygon indicating that the square is diagonally
-	 * flipping over.
-	 */
-	int coords[8], colour;
-
-	coords[0] = bx + TILE_SIZE;
-	coords[1] = by;
-	coords[2] = bx + (int)((float)TILE_SIZE * animtime);
-	coords[3] = by + (int)((float)TILE_SIZE * animtime);
-	coords[4] = bx;
-	coords[5] = by + TILE_SIZE;
-	coords[6] = bx + TILE_SIZE - (int)((float)TILE_SIZE * animtime);
-	coords[7] = by + TILE_SIZE - (int)((float)TILE_SIZE * animtime);
-
-	colour = (tile & 1 ? COL_WRONG : COL_RIGHT);
-	if (animtime < 0.5)
-	    colour = COL_WRONG + COL_RIGHT - colour;
-
-	draw_polygon(dr, coords, 4, colour, COL_GRID);
+    #define Z 8
+    #define ZZ 64
+    int black, white;
+    black = tile & 1 ? COL_WRONG : COL_RIGHT;
+    white = tile & 1 ? COL_RIGHT : COL_WRONG;
+    if(tile & 4)
+    {
+        draw_rect(dr, bx+1, by+1, TILE_SIZE-1, TILE_SIZE-1, white);
+        clip(dr, bx+1, by+1, ZZ-1, ZZ-1);
+        draw_rect(dr, bx+1+Z, by+1+Z, ZZ-Z, ZZ-Z, black);
     }
+    else
+    {
+        clip(dr, bx+1, by+1, TILE_SIZE-1, TILE_SIZE-1);
+        draw_rect(dr, bx+1, by+1, TILE_SIZE-1, TILE_SIZE-1,
+              tile & 1 ? COL_WRONG : COL_RIGHT);
+    }
+
 
     /*
      * Draw a little diagram in the tile which indicates which
@@ -1128,7 +1121,7 @@ static void draw_tile(drawing *dr, game_drawstate *ds,
 	for (j = 0; j < w; j++)
 	    if (state->matrix->matrix[(y*w+x)*wh + i*w+j]) {
 		int ox = j - x, oy = i - y;
-		int td = TILE_SIZE / 16;
+		int td = TILE_SIZE / 12;
 		int cx = (bx + TILE_SIZE/2) + (2 * ox - 1) * td;
 		int cy = (by + TILE_SIZE/2) + (2 * oy - 1) * td;
 		if (ox == 0 && oy == 0)
