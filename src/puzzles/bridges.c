@@ -2547,17 +2547,20 @@ static void island_redraw(drawing *dr,
     int ox = COORD(is->x) + half, oy = COORD(is->y) + half;
     int orad = ISLAND_RADIUS, irad = orad - LINE_WIDTH;
     int updatesz = orad*2+1;
-    int tcol = (v & G_FLASH) ? COL_HIGHLIGHT :
-              (v & G_WARN)  ? COL_WARNING : COL_FOREGROUND;
+    int tcol = COL_FOREGROUND;
     int col = (v & G_ISSEL) ? COL_SELECTED : tcol;
     int bg = (v & G_CURSOR) ? COL_CURSOR :
         (v & G_MARK) ? COL_MARK : COL_BACKGROUND;
     char str[10];
+    int poly[16];
 
-#ifdef DRAW_GRID
-    draw_rect_outline(dr, COORD(is->x), COORD(is->y),
-                      TILE_SIZE, TILE_SIZE, COL_GRID);
-#endif
+
+
+    if(v & G_CURSOR)
+    {
+        bg = COL_FOREGROUND;
+        tcol = COL_BACKGROUND;
+    }
 
     /* draw a thick circle */
     draw_circle(dr, ox, oy, orad, col, col);
@@ -2566,6 +2569,42 @@ static void island_redraw(drawing *dr,
     sprintf(str, "%d", is->count);
     draw_text(dr, ox, oy, FONT_FIXED, ISLAND_NUMSIZE(is),
               ALIGN_VCENTRE | ALIGN_HCENTRE, tcol, str);
+
+    if(v & G_WARN)
+    {
+/*        draw_line(dr, COORD(is->x), COORD(is->y),
+            COORD(is->x) + TILE_SIZE, COORD(is->y) + TILE_SIZE,
+            COL_FOREGROUND);
+        draw_line(dr, COORD(is->x), COORD(is->y) + TILE_SIZE,
+            COORD(is->x) + TILE_SIZE, COORD(is->y),
+            COL_FOREGROUND);
+*/
+         int oc, fc;
+         fc = (v & G_CURSOR) ? COL_BACKGROUND  : COL_FOREGROUND;
+         oc = COL_FOREGROUND;
+#define CROSS 4
+         poly[0]=COORD(is->x)-CROSS;
+         poly[1]=COORD(is->y);
+         poly[2]=COORD(is->x);
+         poly[3]=COORD(is->y)-CROSS;
+
+         poly[4]=COORD(is->x) + TILE_SIZE + CROSS;
+         poly[5]=COORD(is->y) + TILE_SIZE;
+         poly[6]=COORD(is->x) + TILE_SIZE;
+         poly[7]=COORD(is->y) + TILE_SIZE + CROSS;
+         draw_polygon(dr, &poly, 4, fc, oc);
+
+         poly[0]=COORD(is->x) + TILE_SIZE - CROSS;
+         poly[1]=COORD(is->y);
+         poly[2]=COORD(is->x) + TILE_SIZE;
+         poly[3]=COORD(is->y) + CROSS;
+
+         poly[4]=COORD(is->x) + CROSS ;
+         poly[5]=COORD(is->y) + TILE_SIZE;
+         poly[6]=COORD(is->x) ;
+         poly[7]=COORD(is->y) + TILE_SIZE - CROSS;
+         draw_polygon(dr, &poly, 4, fc, oc);
+    }
 
     dsf_debug_draw(dr, state, ds, is->x, is->y);
     draw_update(dr, ox - orad, oy - orad, updatesz, updatesz);
