@@ -2499,9 +2499,9 @@ static void lines_redraw(drawing *dr,
     }
 
     draw_rect(dr, ox, oy, TILE_SIZE, TILE_SIZE, COL_BACKGROUND);
-    /*if (v & G_CURSOR)
+    if (v & G_CURSOR)
         draw_rect(dr, ox+TILE_SIZE/4, oy+TILE_SIZE/4,
-                  TILE_SIZE/2, TILE_SIZE/2, COL_CURSOR);*/
+                  TILE_SIZE/2, TILE_SIZE/2, COL_CURSOR);
 
 
     if (ui->show_hints) {
@@ -2575,32 +2575,21 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
 			game_state *state, int dir, game_ui *ui,
 			float animtime, float flashtime)
 {
-    int x, y, force = 0, i, j, redraw, lv, lh;
+    int x, y, force = 1, i, j, redraw, lv, lh;
     grid_type v, dsv, flash = 0;
     struct island *is, *is_drag_src = NULL, *is_drag_dst = NULL;
 
-    if (flashtime) {
-        int f = (int)(flashtime * 5 / FLASH_TIME);
-        if (f == 1 || f == 3) flash = G_FLASH;
-    }
 
-    /* Clear screen, if required. */
-    if (!ds->started) {
-        draw_rect(dr, 0, 0,
-                  TILE_SIZE * ds->w + 2 * BORDER,
-                  TILE_SIZE * ds->h + 2 * BORDER, COL_BACKGROUND);
+    /* Always clear screen */
+    draw_rect(dr, 0, 0,
+                TILE_SIZE * ds->w + 2 * BORDER,
+                TILE_SIZE * ds->h + 2 * BORDER, COL_BACKGROUND);
 #ifdef DRAW_GRID
-        draw_rect_outline(dr,
-                          COORD(0)-1, COORD(0)-1,
-                          TILE_SIZE * ds->w + 2, TILE_SIZE * ds->h + 2,
-                          COL_GRID);
+    draw_rect_outline(dr,
+                COORD(0)-1, COORD(0)-1,
+                TILE_SIZE * ds->w + 2, TILE_SIZE * ds->h + 2,
+                COL_GRID);
 #endif
-        draw_update(dr, 0, 0,
-                    TILE_SIZE * ds->w + 2 * BORDER,
-                    TILE_SIZE * ds->h + 2 * BORDER);
-        ds->started = 1;
-        force = 1;
-    }
 
     if (ui->dragx_src != -1 && ui->dragy_src != -1) {
         ds->dragging = 1;
@@ -2633,8 +2622,8 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
             }
             lines_lvlh(state, ui, x, y, v, &lv, &lh);
 
-            /*if (ui->cur_visible && ui->cur_x == x && ui->cur_y == y)
-                v |= G_CURSOR;*/
+            if (ui->cur_visible && ui->cur_x == x && ui->cur_y == y)
+                v |= G_CURSOR;
 
             if (v != dsv ||
                 lv != INDEX(ds,lv,x,y) ||
@@ -2678,6 +2667,9 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
             island_redraw(dr, state, ds, is, v);
         }
     }
+    draw_update(dr, 0, 0,
+                TILE_SIZE * ds->w + 2 * BORDER,
+                TILE_SIZE * ds->h + 2 * BORDER);
 }
 
 static float game_anim_length(game_state *oldstate, game_state *newstate,
