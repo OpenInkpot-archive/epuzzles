@@ -2582,7 +2582,7 @@ static void island_redraw(drawing *dr,
          int oc, fc;
          fc = (v & G_CURSOR) ? COL_BACKGROUND  : COL_FOREGROUND;
          oc = COL_FOREGROUND;
-#define CROSS 4
+#define CROSS 3
          poly[0]=COORD(is->x)-CROSS;
          poly[1]=COORD(is->y);
          poly[2]=COORD(is->x);
@@ -2594,15 +2594,15 @@ static void island_redraw(drawing *dr,
          poly[7]=COORD(is->y) + TILE_SIZE + CROSS;
          draw_polygon(dr, &poly, 4, fc, oc);
 
-         poly[0]=COORD(is->x) + TILE_SIZE - CROSS;
+         poly[0]=COORD(is->x) + TILE_SIZE + CROSS;
          poly[1]=COORD(is->y);
          poly[2]=COORD(is->x) + TILE_SIZE;
-         poly[3]=COORD(is->y) + CROSS;
+         poly[3]=COORD(is->y) - CROSS;
 
-         poly[4]=COORD(is->x) + CROSS ;
+         poly[4]=COORD(is->x) - CROSS ;
          poly[5]=COORD(is->y) + TILE_SIZE;
          poly[6]=COORD(is->x) ;
-         poly[7]=COORD(is->y) + TILE_SIZE - CROSS;
+         poly[7]=COORD(is->y) + TILE_SIZE + CROSS;
          draw_polygon(dr, &poly, 4, fc, oc);
     }
 
