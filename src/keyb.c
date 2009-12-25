@@ -54,6 +54,9 @@ static void _key_handler(void* param __attribute__((unused)),
     HANDLE_KEY("Down",  CURSOR_DOWN) else
     HANDLE_KEY("Select", CURSOR_SELECT) else
 
+    /* for bridges */
+    HANDLE_KEY("BridgesMark", CURSOR_SELECT2) else
+
     /* for twiddle */
     HANDLE_KEY("Clockwise", CURSOR_SELECT2) else
     HANDLE_KEY("CounterClockwise", CURSOR_SELECT)

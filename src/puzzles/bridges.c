@@ -2572,13 +2572,6 @@ static void island_redraw(drawing *dr,
 
     if(v & G_WARN)
     {
-/*        draw_line(dr, COORD(is->x), COORD(is->y),
-            COORD(is->x) + TILE_SIZE, COORD(is->y) + TILE_SIZE,
-            COL_FOREGROUND);
-        draw_line(dr, COORD(is->x), COORD(is->y) + TILE_SIZE,
-            COORD(is->x) + TILE_SIZE, COORD(is->y),
-            COL_FOREGROUND);
-*/
          int oc, fc;
          fc = (v & G_CURSOR) ? COL_BACKGROUND  : COL_FOREGROUND;
          oc = COL_FOREGROUND;
@@ -2604,7 +2597,11 @@ static void island_redraw(drawing *dr,
          poly[6]=COORD(is->x) ;
          poly[7]=COORD(is->y) + TILE_SIZE + CROSS;
          draw_polygon(dr, &poly, 4, fc, oc);
-    }
+    } else
+        if(v & G_MARK)
+            draw_text(dr, COORD(is->x), COORD(is->y), FONT_FIXED,
+                TILE_SIZE / 16, ALIGN_VNORMAL | ALIGN_HLEFT,
+                COL_FOREGROUND, "!");
 
     dsf_debug_draw(dr, state, ds, is->x, is->y);
     draw_update(dr, ox - orad, oy - orad, updatesz, updatesz);
