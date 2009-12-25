@@ -69,12 +69,15 @@ struct pegs_private {
     int pegs[7*7];
 };
 
+static int pegs_x[7] = { 27, 83, 138, 196, 254, 309, 365, };
+
 void
-custom_drawable_pegs_show(drawing* dr, int fx, int fy, int x, int y)
+custom_drawable_pegs_show(drawing* dr, int fx, int fy)
 {
     struct frontend * fe = (struct frontend *) drawing_handle(dr);
     pegs_private* private = evas_object_data_get(fe->area, "pegs-private");
-    sprites_sprite_move(fe->area, private->pegs[7*fy+fx], x, y);
+    sprites_sprite_move(fe->area, private->pegs[7*fy+fx],
+                        pegs_x[fx], pegs_x[fy]);
     sprites_sprite_show(fe->area, private->pegs[7*fy+fx]);
 }
 
@@ -92,7 +95,7 @@ custom_drawable_pegs_cursor_move(drawing* dr, int x, int y)
     int w, h;
     struct frontend * fe = (struct frontend *) drawing_handle(dr);
     pegs_private* private = evas_object_data_get(fe->area, "pegs-private");
-    sprites_sprite_move(fe->area, private->cursor, x, y);
+    sprites_sprite_move(fe->area, private->cursor, pegs_x[x], pegs_x[y]);
 }
 
 

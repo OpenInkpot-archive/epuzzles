@@ -28,7 +28,7 @@ void custom_drawable_hide_unneeded(drawing *dr, int tile);
 
 
 void
-custom_drawable_pegs_show(drawing*, int fx, int fy, int x, int y);
+custom_drawable_pegs_show(drawing*, int fx, int fy);
 void
 custom_drawable_pegs_hide(drawing*, int fx, int fy);
 void

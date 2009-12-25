@@ -1099,13 +1099,13 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
 
         if (ui->cur_visible && ui->cur_x == x && ui->cur_y == y)
         {
-            custom_drawable_pegs_cursor_move(dr, HCOORD(x), VCOORD(y));
+            custom_drawable_pegs_cursor_move(dr, x, y);
         }
 
         if (v == GRID_HOLE) {
             custom_drawable_pegs_hide(dr, x, y);
         } else if (v == GRID_PEG) {
-            custom_drawable_pegs_show(dr, x, y, HCOORD(x), VCOORD(y));
+            custom_drawable_pegs_show(dr, x, y);
         }
 	}
 }
