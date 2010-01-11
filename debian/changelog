@@ -1,3 +1,10 @@
+epuzzles (0.1.1) UNRELEASED; urgency=low
+
+  * Use eoi_battery instead of copy-pasted code
+    - bump eoi-dev dependency
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Mon, 11 Jan 2010 07:00:49 +0600
+
 epuzzles (0.1+20090518-25) zelazny; urgency=low
 
   * Manualy adjust pegs layout
