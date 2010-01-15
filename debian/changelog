@@ -1,7 +1,8 @@
-epuzzles (0.1.1) UNRELEASED; urgency=low
+epuzzles (0.1.1) zelazny; urgency=low
 
   * Use eoi_battery instead of copy-pasted code
     - bump eoi-dev dependency
+  * Add Spanish translation of puzzle names (OI#755)
 
  -- Mikhail Gusarov <dottedmag@dottedmag.net>  Mon, 11 Jan 2010 07:00:49 +0600
 
