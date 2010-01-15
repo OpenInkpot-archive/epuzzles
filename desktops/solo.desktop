@@ -2,6 +2,7 @@
 Version=1.0
 Type=Application
 Name=Solo (Sudoku like) puzzle
+Name[es]=Puzzle Solo (estilo Sudoku)
 Name[pl]=Solo (podobne do sudoku)
 Name[ru]=Соло (аналог судоку)
 Name[uk]=Соло (аналог судоку)

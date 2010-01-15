@@ -2,5 +2,6 @@
 Version=1.0
 Type=Application
 Name=Fifteen puzzle
+Name[es]=Puzzle Desigual
 Exec=/usr/bin/epuzzles unequal
 Categories=Games

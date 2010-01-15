@@ -2,6 +2,7 @@
 Version=1.0
 Type=Application
 Name=Fifteen puzzle
+Name[es]=Puzzle Quince
 Name[pl]=Piętnastka
 Name[ru]=Пятнашки
 Name[uk]=П'ятнашки

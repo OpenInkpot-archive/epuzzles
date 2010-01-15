@@ -2,6 +2,7 @@
 Version=1.0
 Type=Application
 Name=Flip puzzle
+Name[es]=Puzzle Rotar
 Name[pl]=Odwracanie
 Name[ru]=Перевёртыш
 Name[zh]=反转方块
