@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=Fifteen puzzle
+Name=Unequal puzzle
 Name[es]=Puzzle Desigual
 Exec=/usr/bin/epuzzles unequal
 Categories=Games
