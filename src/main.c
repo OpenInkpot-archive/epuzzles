@@ -11,6 +11,8 @@
 #include <Edje.h>
 #include <Ecore_Evas.h>
 #include <libeoi.h>
+#include <libeoi_battery.h>
+#include <libeoi_clock.h>
 #include <edrawable.h>
 #include "frontend.h"
 #include "puzzles.h"
@@ -112,8 +114,8 @@ create_edjes(Evas* canvas)
     edje_object_part_swallow(main_edje, "contents", contents);
     Evas_Object* area = evas_object_name_find(canvas, "puzzle");
     edje_object_part_swallow(contents, "epuzzle/drawable",  area );
-    init_clock(main_edje);
-    init_battery(main_edje);
+    eoi_run_battery(main_edje);
+    eoi_run_clock(main_edje);
     evas_object_show(main_edje);
     evas_object_show(contents);
 }
@@ -152,9 +154,8 @@ static void main_win_close_handler(Ecore_Evas* main_win __attribute__((unused)))
    ecore_main_loop_quit();
 }
 
-static void main_win_resize_handler(Ecore_Evas* main_win)
+static void main_win_resize_handler(Evas *evas, int w, int h)
 {
-    Evas* evas = ecore_evas_get(main_win);
     evas_event_freeze(evas);
     create_edjes(evas);
     fill_texts(evas);
@@ -165,6 +166,7 @@ static void main_win_resize_handler(Ecore_Evas* main_win)
 static void run(const char* gamename) {
     struct frontend * fe;
     Ecore_Evas* main_win = ecore_evas_software_x11_new(0, 0, 0, 0, 600, 800);
+    Evas* main_canvas = ecore_evas_get(main_win);
 
     fe = calloc(1, sizeof(struct frontend));
     fe->name = gamename;
@@ -174,16 +176,13 @@ static void run(const char* gamename) {
     ecore_evas_title_set(main_win, "EPuzzles");
     ecore_evas_name_class_set(main_win, "EPuzzles", "Epuzzles");
     ecore_evas_callback_delete_request_set(main_win, main_win_close_handler);
-    ecore_evas_callback_resize_set(main_win, main_win_resize_handler);
+    eoi_resize_callback_add(main_canvas, main_win_resize_handler);
 
     fe->first_time = 1;
     fe->me = NULL;
     fe->colours = NULL;
     fe->timer_id = NULL;
     fe->timer_active = 0;
-
-    Evas* main_canvas = ecore_evas_get(main_win);
-
 
     epuzzle_create_canvas(fe, main_canvas, CANVAS_SIZE);
     evas_object_data_set(fe->area, "frontend", fe);
@@ -193,11 +192,9 @@ static void run(const char* gamename) {
     evas_object_name_set(fe->area, "puzzle");
     evas_object_show(fe->area);
 
-
     create_game(fe);
 
     gui_redraw(fe);
-
 
     create_edjes(main_canvas);
 
@@ -247,10 +244,10 @@ int main(int argc, char ** argv) {
         printf("game name required");
     };
     efreet_shutdown();
-    edje_shutdown();
     ecore_evas_shutdown();
     ecore_shutdown();
     evas_shutdown();
+    edje_shutdown();
     return 0;
 }
 
