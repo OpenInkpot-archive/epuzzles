@@ -55,11 +55,11 @@ collections {
                     color, 0 0 0 255;
                     text {
                         font, "sans-serif";
-                        size, 23;
+                        size, 25;
                         text, "Puzzles";
                     }
-                    rel1 { relative, 0.0 0.0; offset, 11 38; to, "epuzzle/image"; }
-                    rel2 { relative, 0.0 0.0; offset, 590 60; to, "epuzzle/image"; }
+                    rel1 { relative, 0.0 0.0; offset, 11 5; to, "epuzzle/image"; }
+                    rel2 { relative, 0.0 0.0; offset, 590 40; to, "epuzzle/image"; }
                     align, 0.0 0.0;
                 }
             }
@@ -68,8 +68,8 @@ collections {
                type, SWALLOW;
                description {
                   state, "default" 0.0;
-                  rel1 { relative, 0.0 0.0; offset, 80 100; }
-                  rel2 { relative, 0.0 0.0; offset, 520 540; }
+                  rel1 { relative, 0.0 0.0; offset, 80 80; }
+                  rel2 { relative, 0.0 0.0; offset, 520 520; }
                }
             }
             part {

@@ -1,5 +1,15 @@
 SUBDIRS = sprites/fifteen sprites/twiddle sprites/pegs
-EDJS = epuzzle.edj
+EDC = epuzzle.edc
+EDJ = $(EDC:%.edc=%.edj)
+
+EXTRA_DIST = $(EDC)
+CLEANFILES = $(EDJ)
+
 themedir = $(pkgdatadir)/themes/
-theme_DATA = $(EDJS)
+theme_DATA = $(EDJ)
+
+all: $(EDJ)
+%.edj: %.edc
+	edje_cc -o $@ $<
+
 
