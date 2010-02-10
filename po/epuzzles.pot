@@ -6,17 +6,25 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: epuzzles 0.1\n"
-"Report-Msgid-Bugs-To: avn@openinkpot.org\n"
-"POT-Creation-Date: 2009-12-03 15:54+0600\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-10 17:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/puzzles/pegs.c:1292
+#: src/puzzles/pegs.c:1143
 msgid "Pegs"
+msgstr ""
+
+#: src/puzzles/rect.c:2933
+msgid "Rectangles"
+msgstr ""
+
+#: src/puzzles/slant.c:2160
+msgid "Slant"
 msgstr ""
 
 #: src/puzzles/solo.c:5364
@@ -28,13 +36,13 @@ msgstr ""
 msgid "Moves since auto-solve: %d"
 msgstr ""
 
-#: src/puzzles/twiddle.c:1257 src/puzzles/flip.c:1236
+#: src/puzzles/twiddle.c:1257 src/puzzles/flip.c:1229
 #: src/puzzles/fifteen.c:829
 #, c-format
 msgid "%sMoves: %d"
 msgstr ""
 
-#: src/puzzles/twiddle.c:1258 src/puzzles/flip.c:1238
+#: src/puzzles/twiddle.c:1258 src/puzzles/flip.c:1231
 #: src/puzzles/fifteen.c:830
 msgid "COMPLETED! "
 msgstr ""
@@ -48,19 +56,19 @@ msgstr ""
 msgid "Twiddle"
 msgstr ""
 
-#: src/puzzles/flip.c:1238
+#: src/puzzles/flip.c:1231
 msgid "Auto-solved. "
 msgstr ""
 
-#: src/puzzles/flip.c:1239
+#: src/puzzles/flip.c:1232
 msgid "Auto-solver used. "
 msgstr ""
 
-#: src/puzzles/flip.c:1279
+#: src/puzzles/flip.c:1272
 msgid "Flip"
 msgstr ""
 
-#: src/puzzles/bridges.c:2777
+#: src/puzzles/bridges.c:2808
 msgid "Bridges"
 msgstr ""
 
@@ -76,6 +84,6 @@ msgstr ""
 msgid "Puzzles"
 msgstr ""
 
-#: src/gamelist.c:28
+#: src/gamelist.c:30
 msgid "Press @Context@ to get help"
 msgstr ""

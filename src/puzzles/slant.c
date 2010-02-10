@@ -32,6 +32,8 @@
 
 #include "puzzles.h"
 
+#define _(x) x
+
 enum {
     COL_BACKGROUND,
     COL_GRID,
@@ -2155,7 +2157,7 @@ static void game_print(drawing *dr, game_state *state, int tilesize)
 #endif
 
 const struct game thegame = {
-    "Slant", "games.slant", "slant",
+    _("Slant"), "games.slant", "slant",
     default_params,
     game_fetch_preset,
     decode_params,

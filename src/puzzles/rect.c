@@ -30,6 +30,8 @@
 
 #include "puzzles.h"
 
+#define _(x) x
+
 enum {
     COL_BACKGROUND,
     COL_CORRECT,
@@ -2928,7 +2930,7 @@ static void game_print(drawing *dr, game_state *state, int tilesize)
 #endif
 
 const struct game thegame = {
-    "Rectangles", "games.rectangles", "rectangles",
+    _("Rectangles"), "games.rectangles", "rectangles",
     default_params,
     game_fetch_preset,
     decode_params,
