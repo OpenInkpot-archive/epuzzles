@@ -18,6 +18,8 @@ extern game flip;
 extern game pegs;
 extern game unequal;
 extern game solo;
+extern game slant;
+extern game rect;
 
 void
 epuzzle_run_help(struct frontend * fe, const gamelist_t* item)
@@ -41,6 +43,10 @@ static gamelist_t _gamelist[] = {
     { "unequal", &unequal, stdhelp, epuzzle_run_help ,
         &custom_drawable_edrawable,  &e_drawing_api, 1},
     { "solo", &solo, stdhelp, epuzzle_run_help ,
+        &custom_drawable_edrawable,  &e_drawing_api, 1},
+    { "rect", &rect, stdhelp, epuzzle_run_help ,
+        &custom_drawable_edrawable,  &e_drawing_api, 1},
+    { "slant", &slant, stdhelp, epuzzle_run_help ,
         &custom_drawable_edrawable,  &e_drawing_api, 1},
     { NULL, NULL, NULL, NULL, NULL, NULL, 1 }
 };

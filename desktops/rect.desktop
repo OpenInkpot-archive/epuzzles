@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Rectangles puzzle
+Name[es]=Puzzle Rectángulos
+Exec=/usr/bin/epuzzles rect
+Categories=Games

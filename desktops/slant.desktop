@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Slant puzzle
+Name[es]=Puzzle Diagonales
+Exec=/usr/bin/epuzzles slant
+Categories=Games

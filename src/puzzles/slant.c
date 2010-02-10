@@ -1810,7 +1810,7 @@ static float *game_colours(frontend *fe, int *ncolours)
     float *ret = snewn(3 * NCOLOURS, float);
 
     /* CURSOR colour is a background highlight. LOWLIGHT is unused. */
-    game_mkhighlight(fe, ret, COL_BACKGROUND, COL_CURSOR, COL_LOWLIGHT);
+    game_mkhighlight(fe, ret, COL_BACKGROUND, COL_LOWLIGHT, COL_CURSOR);
 
     ret[COL_GRID * 3 + 0] = ret[COL_BACKGROUND * 3 + 0] * 0.7F;
     ret[COL_GRID * 3 + 1] = ret[COL_BACKGROUND * 3 + 1] * 0.7F;
