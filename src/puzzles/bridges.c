@@ -2706,6 +2706,9 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
     draw_update(dr, 0, 0,
                 TILE_SIZE * ds->w + 2 * BORDER,
                 TILE_SIZE * ds->h + 2 * BORDER);
+    if (state->completed)
+        status_bar(dr, "COMPLETED!");
+
 }
 
 static float game_anim_length(game_state *oldstate, game_state *newstate,

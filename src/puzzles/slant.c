@@ -2054,6 +2054,8 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
 	    }
 	}
     }
+    if (state->completed)
+        status_bar(dr, "COMPLETED!");
 }
 
 static float game_anim_length(game_state *oldstate, game_state *newstate,
