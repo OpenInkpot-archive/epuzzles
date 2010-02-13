@@ -1,0 +1,80 @@
+# Czech translation file for epuzzles.mainline.
+# This file is put in the public domain.
+# ben1981 <ben1981@centrum.cz>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: epuzzles 0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-20 13:48+0000\n"
+"PO-Revision-Date:  2010-02-12 10:55+0100\n"
+"Last-Translator: ben1981 <ben1981@centrum.cz>\n"
+"Language-Team: Czech <openinkpot-l10n@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/puzzles/pegs.c:1292
+msgid "Pegs"
+msgstr "Kolíky"
+
+#: src/puzzles/solo.c:5364
+msgid "Solo"
+msgstr "Solo"
+
+#: src/puzzles/twiddle.c:1254 src/puzzles/fifteen.c:826
+#, c-format
+msgid "Moves since auto-solve: %d"
+msgstr "Tahy od automatického řešení:  %d"
+
+#: src/puzzles/twiddle.c:1257 src/puzzles/flip.c:1234
+#: src/puzzles/fifteen.c:829
+#, c-format
+msgid "%sMoves: %d"
+msgstr "%sTahy: %d"
+
+#: src/puzzles/twiddle.c:1258 src/puzzles/flip.c:1236
+#: src/puzzles/fifteen.c:830
+msgid "COMPLETED! "
+msgstr "DOKONČENO! "
+
+#: src/puzzles/twiddle.c:1261
+#, c-format
+msgid " (target %d)"
+msgstr " (cíl %d)"
+
+#: src/puzzles/twiddle.c:1287
+msgid "Twiddle"
+msgstr "Twiddle"
+
+#: src/puzzles/flip.c:1236
+msgid "Auto-solved. "
+msgstr "Automaticky vyřešeno. "
+
+#: src/puzzles/flip.c:1237
+msgid "Auto-solver used. "
+msgstr "Použito automatické řešené. "
+
+#: src/puzzles/bridges.c:2777
+msgid "Bridges"
+msgstr "Mosty"
+
+#: src/puzzles/fifteen.c:871
+msgid "Fifteen"
+msgstr "Patnáct"
+
+#: src/help.c:49
+msgid "Puzzles: Help"
+msgstr "Hlavolamy: Nápověda"
+
+#: src/main.c:145
+msgid "Puzzles"
+msgstr "Hlavolamy"
+
+#: src/gamelist.c:28
+msgid "Press \"0\" to get help"
+msgstr "Stiskni \"0\" pro nápovědu"
+
+#: src/gamelist.c:29
+msgid "Press \"M\" to get help"
+msgstr "Stiskni \"M\" pro nápovědu"
