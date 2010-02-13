@@ -1,0 +1,32 @@
+# Czech translation file for epuzzles.help-mainline.
+# This file is distributed under the same license as the OpenInkpot project.
+# ben1981 <ben1981@centrum.cz>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2009-11-20 21:32+0000\n"
+"PO-Revision-Date: 2010-02-12 10:32+0100\n"
+"Last-Translator: ben1981 <ben1981@centrum.cz>\n"
+"Language-Team: Czech <openinkpot-l10n@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.1\n"
+
+msgid "bridges"
+msgstr "mosty"
+
+msgid "fifteen"
+msgstr "patnáct"
+
+msgid "solo"
+msgstr "solo (sudoku)"
+
+msgid "pegs"
+msgstr "kolíky"
+
+msgid "flip"
+msgstr "otáčení"
+
