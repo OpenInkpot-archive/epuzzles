@@ -13,6 +13,7 @@
 #include <libeoi.h>
 #include <libeoi_battery.h>
 #include <libeoi_clock.h>
+#include <libeoi_themes.h>
 #include <edrawable.h>
 #include "frontend.h"
 #include "puzzles.h"
@@ -25,18 +26,6 @@ static char * theme_file = THEME_DIR "epuzzle.edj";
 
 /* globals */
 struct frontend *_frontend = NULL;
-
-
-static void die(const char* fmt, ...)
-{
-   va_list ap;
-   va_start(ap, fmt);
-   vfprintf(stderr, fmt, ap);
-   va_end(ap);
-   exit(EXIT_FAILURE);
-}
-
-
 
 void
 destroy_game(struct frontend *fe) {
@@ -84,47 +73,19 @@ create_game(struct frontend *fe) {
     gui_set_key_handler(fe);
 }
 
-static void
-create_edjes(Evas* canvas)
+static const char *
+epuzzle_orientation(int w, int h)
 {
-    Evas_Object* main_edje = evas_object_name_find(canvas, "main_edje");
-    if(main_edje)
-        evas_object_del(main_edje);
-    Evas_Object* contents = evas_object_name_find(canvas, "contents");
-    if(contents)
-        evas_object_del(contents);
-    contents = edje_object_add(canvas);
-    int w, h;
-    evas_output_size_get(canvas, &w, &h);
-    if(w > h)
-    {
-        edje_object_file_set(contents, THEME_DIR "/epuzzle.edj", "horizontal");
-        main_edje = edje_object_add(canvas);
-        edje_object_file_set(main_edje, THEME_DIR "/epuzzle.edj", "main_edje");
-    }
+    if (w > h)
+        return "horizontal";
     else
-    {
-        edje_object_file_set(contents, THEME_DIR "/epuzzle.edj", "vertical");
-        main_edje = eoi_main_window_create(canvas);
-    }
-    evas_object_name_set(main_edje, "main_edje");
-    evas_object_move(main_edje, 0, 0);
-    evas_object_resize(main_edje, w, h);
-    evas_object_name_set(contents, "contents");
-    edje_object_part_swallow(main_edje, "contents", contents);
-    Evas_Object* area = evas_object_name_find(canvas, "puzzle");
-    edje_object_part_swallow(contents, "epuzzle/drawable",  area );
-    eoi_run_battery(main_edje);
-    eoi_run_clock(main_edje);
-    evas_object_show(main_edje);
-    evas_object_show(contents);
+        return "vertical";
 }
 
-void fill_texts(Evas* canvas)
+static void fill_texts(Evas *canvas)
 {
-
-    Evas_Object* main_edje = evas_object_name_find(canvas, "main_edje");
     Evas_Object* area = evas_object_name_find(canvas, "puzzle");
+    Evas_Object* main_edje = evas_object_name_find(canvas, "main_edje");
     Evas_Object* contents = evas_object_name_find(canvas, "contents");
     struct frontend * fe = (struct frontend *)
                         evas_object_data_get(area, "frontend");
@@ -143,6 +104,65 @@ void fill_texts(Evas* canvas)
     fe->window = main_edje;
 }
 
+
+static void epuzzle_edje_resize(Ecore_Evas *ee __attribute__((unused)),
+                                Evas_Object *edje,
+                                int w, int h,
+                                void *param)
+{
+    const char *file;
+    const char *collection;
+    const char *replacement = epuzzle_orientation(w, h);
+    edje_object_file_get(edje, &file, &collection);
+    if(!strcmp(collection, replacement))
+        return;
+    edje_object_file_set(edje, file, replacement);
+    Evas *evas = (Evas *) param;
+    fill_texts(evas);
+}
+
+static void main_edje_resize(Ecore_Evas *ee __attribute__((unused)),
+                             Evas_Object *main_edje,
+                             int w, int h,
+                             void *param __attribute__((unused)))
+{
+    if (w > h)
+        eoi_main_window_footer_hide(main_edje);
+    else
+        eoi_main_window_footer_show(main_edje);
+
+}
+
+static void
+create_edjes(Evas *canvas, Ecore_Evas *main_win)
+{
+    int w, h;
+    evas_output_size_get(canvas, &w, &h);
+    Evas_Object *main_edje = eoi_main_window_create(canvas);
+    Evas_Object *contents = eoi_create_themed_edje(canvas, "epuzzle",
+                                                   epuzzle_orientation(w, h));
+    if(w > h)
+    {
+        eoi_main_window_footer_hide(main_edje);
+    }
+    evas_object_name_set(main_edje, "main_edje");
+    evas_object_move(main_edje, 0, 0);
+    evas_object_resize(main_edje, w, h);
+    evas_object_name_set(contents, "contents");
+    edje_object_part_swallow(main_edje, "contents", contents);
+    Evas_Object* area = evas_object_name_find(canvas, "puzzle");
+    edje_object_part_swallow(contents, "epuzzle/drawable",  area );
+    eoi_fullwindow_object_register(main_win, main_edje);
+    eoi_resize_object_register(main_win, main_edje, main_edje_resize, canvas);
+    eoi_resize_object_register(main_win, contents, epuzzle_edje_resize, canvas);
+    eoi_run_battery(main_edje);
+    eoi_run_clock(main_edje);
+    evas_object_show(main_edje);
+    evas_object_show(contents);
+    fill_texts(canvas);
+}
+
+
 void terminate ( struct frontend * fe)
 {
     destroy_game(fe);
@@ -153,15 +173,6 @@ static void main_win_close_handler(Ecore_Evas* main_win __attribute__((unused)))
 {
    ecore_main_loop_quit();
 }
-
-static void main_win_resize_handler(Evas *evas, int w, int h)
-{
-    evas_event_freeze(evas);
-    create_edjes(evas);
-    fill_texts(evas);
-    evas_event_thaw(evas);
-}
-
 
 static void run(const char* gamename) {
     struct frontend * fe;
@@ -176,7 +187,6 @@ static void run(const char* gamename) {
     ecore_evas_title_set(main_win, "EPuzzles");
     ecore_evas_name_class_set(main_win, "EPuzzles", "Epuzzles");
     ecore_evas_callback_delete_request_set(main_win, main_win_close_handler);
-    eoi_resize_callback_add(main_canvas, main_win_resize_handler);
 
     fe->first_time = 1;
     fe->me = NULL;
@@ -196,9 +206,8 @@ static void run(const char* gamename) {
 
     gui_redraw(fe);
 
-    create_edjes(main_canvas);
+    create_edjes(main_canvas, main_win);
 
-    fill_texts(main_canvas);
 
     ecore_evas_show(main_win);
     ecore_main_loop_begin();
@@ -223,15 +232,15 @@ int main(int argc, char ** argv) {
     setlocale(LC_ALL, "");
     textdomain("epuzzles");
     if(!evas_init())
-       die("Unable to initialize Evas\n");
+       err(1, "Unable to initialize Evas\n");
     if(!ecore_init())
-       die("Unable to initialize Ecore\n");
+       err(1, "Unable to initialize Ecore\n");
     if(!ecore_evas_init())
-       die("Unable to initialize Ecore_Evas\n");
+       err(1, "Unable to initialize Ecore_Evas\n");
     if(!edje_init())
-       die("Unable to initialize Edje\n");
+       err(1, "Unable to initialize Edje\n");
     if(!efreet_init())
-       die("Unable to initialize Efreet\n");
+       err(1, "Unable to initialize Efreet\n");
 
     ecore_x_io_error_handler_set(exit_all, NULL);
     ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_handler, NULL);
