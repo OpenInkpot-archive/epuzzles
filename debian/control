@@ -2,7 +2,7 @@ Source: epuzzles
 Section: gui
 Maintainer: Alexander V. Nikolaev <avn@daemon.hole.ru>
 Build-Depends: debhelper (>= 7), automake, libtool
-XCS-Cross-Host-Build-Depends: debhelper (>= 7), cdbs, cdbs-embedded, automake, libtool, pkg-config, oi-help-compiler
+XCS-Cross-Host-Build-Depends: debhelper (>= 7), cdbs, cdbs-embedded, automake, libtool, pkg-config, oi-help-compiler, libedje-bin
 XCS-Cross-Build-Depends: libedrawable-dev, libevas-dev, libedje-dev, libxcb-aux0-dev, libefreet-dev, libeoi-dev (>= 0.2.1), libkeys-dev, libchoicebox-dev
 Priority: optional
 Standards-Version: 3.8.0
