@@ -24,3 +24,9 @@ Priority: optional
 Architecture: any
 Depends: epuzzles
 Description: Simple puzzles -- debug symbols
+
+Package: epuzzles-extra
+Priority: extra
+Architecture: any
+Depends: epuzzles
+Description: Extra puzzles
