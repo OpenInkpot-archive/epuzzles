@@ -18,7 +18,7 @@ struct _object {
     int y;
     int id; /* id inside canvas */
     bool used;
-    const char* filename;
+    const char *filename;
 };
 
 object_holder*
@@ -30,8 +30,9 @@ epuzzle_oh_new(Evas_Object* drawable)
     return oh;
 }
 
-_object*
-epuzzle_oh_find_object(object_holder* oh, int fx, int fy, const char* filename)
+static _object*
+epuzzle_oh_find_object(object_holder *oh, int fx, int fy,
+                       const char * filename)
 {
     Eina_List* tmp;
     _object* each;
@@ -39,34 +40,31 @@ epuzzle_oh_find_object(object_holder* oh, int fx, int fy, const char* filename)
         return NULL;
     EINA_LIST_FOREACH(oh->objects, tmp, each)
     {
-        if(each->x == fx && each->y == fy && each->used)
+        if(each->x == fx && each->y == fy && each->used &&
+            !strcmp(each->filename, filename))
         {
-            if(!filename)
-                return each;
-            printf("foo %s %d %d %p\n", each->filename, fx, fy, filename);
-            if(!strcmp(each->filename, filename))
-                return each;
+            printf("match %s %d %d %d\n", each->filename, fx, fy, each->used);
+            return each;
         }
     }
     return NULL;
 }
 
-_object*
-epuzzle_oh_find_object_by_filename(object_holder* oh, const char* filename,
-                                    bool used)
+static _object *
+epuzzle_oh_find_unused(object_holder *oh, const char *filename)
 {
     Eina_List* tmp;
     _object* each;
+    if(!oh->objects)
+        return NULL;
     EINA_LIST_FOREACH(oh->objects, tmp, each)
     {
-        if(!strcmp(each->filename, filename) && each->used == used)
+        if(!each->used && !strcmp(each->filename, filename))
             return each;
     }
-    return NULL;
 }
 
-
-_object*
+static _object*
 epuzzle_oh_insert_object(object_holder* oh, const char* filename,
                         int fx, int fy)
 {
@@ -80,8 +78,25 @@ epuzzle_oh_insert_object(object_holder* oh, const char* filename,
     return object;
 }
 
+static void
+epuzzle_oh_move(Evas_Object *canvas, _object *obj, int fx, int fy, int align)
+{
+    int w, h;
+    int rx = fx;
+    int ry = fy;
+    obj->x = fx;
+    obj->y = fy;
+    sprites_sprite_size_get(canvas, obj->id, &w, &h);
+    if(align & ALIGN_VCENTRE)
+        ry += h / 2;
+    if(align & ALIGN_HCENTRE)
+        rx += w / 2;
+    sprites_sprite_move(canvas, obj->id, rx, ry);
+
+}
+
 void
-epuzzle_oh_put_object(object_holder* oh, int fx, int fy, int rx, int ry,
+epuzzle_oh_put_object(object_holder* oh, int fx, int fy,
                       const char* filename, int align)
 {
     int h, w;
@@ -91,7 +106,7 @@ epuzzle_oh_put_object(object_holder* oh, int fx, int fy, int rx, int ry,
         printf("Already has %s at %d %d\n", filename, fx, fy);
         return;
     }
-    object = epuzzle_oh_find_object_by_filename(oh, filename, false);
+    object = epuzzle_oh_find_unused(oh, filename);
     if(object)
     {
             sprites_sprite_show(oh->canvas, object->id);
@@ -103,12 +118,7 @@ epuzzle_oh_put_object(object_holder* oh, int fx, int fy, int rx, int ry,
             printf("Insert new object at %d %d\n", fx, fy);
             object = epuzzle_oh_insert_object(oh, filename, fx, fy);
     }
-    sprites_sprite_size_get(oh->canvas, object->id, &w, &h);
-    if(align & ALIGN_VCENTRE)
-        ry += h / 2;
-    if(align & ALIGN_HCENTRE)
-        rx += w / 2;
-    sprites_sprite_move(oh->canvas, object->id, rx, ry);
+    epuzzle_oh_move(oh->canvas, object, fx, fy, align);
 }
 
 static void
@@ -124,7 +134,19 @@ _dump(object_holder* oh)
 }
 
 void
-epuzzle_oh_drop_object(object_holder* oh, int fx, int fy)
+epuzzle_oh_drop_all(object_holder *oh)
+{
+    Eina_List* tmp;
+    _object* object;
+    EINA_LIST_FOREACH(oh->objects, tmp, object)
+    {
+        object->used = false;
+        sprites_sprite_hide(oh->canvas, object->id);
+    }
+}
+
+void
+epuzzle_oh_drop_object(object_holder *oh, int fx, int fy)
 {
     while(1)
     {

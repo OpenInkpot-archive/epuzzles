@@ -171,6 +171,16 @@ sprites_bg_file_set(Evas_Object *obj, const char *file, const char *key) {
     evas_object_image_file_set(drawable->bg, file, key);
 }
 
+void
+sprites_bg_object_set(Evas_Object *obj, Evas_Object *bg)
+{
+    sprites_t *drawable  = evas_object_smart_data_get(obj);
+    if(!drawable)
+        return;
+    evas_object_del(drawable->bg);
+    drawable->bg = bg;
+}
+
 static void
 _move_sprite_relative(Evas_Object *obj, int x, int y)
 {
