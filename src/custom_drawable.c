@@ -138,8 +138,27 @@ custom_drawable_bridges_number(drawing *dr, int x, int y, int n)
     object_holder *holder = evas_object_data_get(fe->area, "holder");
     assert(holder);
     char *image = xasprintf(BRIDGES "%d.png", n);
-    epuzzle_oh_put_object(holder, x, y, image, ALIGN_VCENTRE | ALIGN_HCENTRE);
+    epuzzle_oh_put_object(holder, x, y, image, 0); //ALIGN_VCENTRE | ALIGN_HCENTRE);
     free(image);
+}
+
+void
+custom_drawable_bridges_rectangle(drawing *dr, int x, int y, int w, int h,
+    int color)
+{
+    struct frontend * fe = (struct frontend *) drawing_handle(dr);
+    Evas_Object *rect = evas_object_rectangle_add(evas_object_evas_get(fe->area));
+    evas_object_resize(rect, w, h);
+    int sx, sy;
+    evas_object_geometry_get(fe->area, &sx, &sy, NULL, NULL);
+    evas_object_move(rect, x + sx, y + sy);
+    gui_apply_object_color(fe, color, rect);
+    sprites_stack_external_object_lower(fe->area, rect);
+    evas_object_show(rect);
+    evas_object_data_set(fe->area, "rectangles",
+        eina_list_append(evas_object_data_get(fe->area, "rectangles"),
+                         rect));
+
 }
 
 void
@@ -147,8 +166,12 @@ custom_drawable_bridges_cursor(drawing *dr, int x, int y)
 {
     struct frontend * fe = (struct frontend *) drawing_handle(dr);
     int cursor = (int) evas_object_data_get(fe->area, "cursor");
-    Evas_Object *sprites = evas_object_data_get(fe->area, "sprites");
-    sprites_sprite_move(sprites, cursor, x, y);
+  //  int w, h;
+  //  sprites_sprite_size_get(fe->area, cursor, &w, &h);
+  //  sprites_sprite_move(fe->area, cursor, x + w /2 , y + h /2);
+    sprites_sprite_show(fe->area, cursor);
+    sprites_sprite_move(fe->area, cursor, x , y);
+    sprites_sprite_raise(fe->area,  cursor);
 }
 
 void
@@ -156,6 +179,8 @@ custom_drawable_bridges_cross(drawing *dr, int x, int y)
 {
     struct frontend * fe = (struct frontend *) drawing_handle(dr);
     object_holder *holder = evas_object_data_get(fe->area, "holder");
+    epuzzle_oh_put_object(holder, x, y, BRIDGES "cross.png", 0);
+//        ALIGN_VCENTRE | ALIGN_HCENTRE);
 }
 
 void
@@ -164,18 +189,18 @@ custom_drawable_bridges_reset(drawing *dr)
     struct frontend * fe = (struct frontend *) drawing_handle(dr);
     object_holder *holder = evas_object_data_get(fe->area, "holder");
     epuzzle_oh_drop_all(holder);
+    sprites_del_externals(fe->area);
 }
 
 Evas_Object *
 custom_drawable_bridges_create(Evas *evas, int xy)
 {
     Evas_Object *sprites = sprites_add(evas, xy, xy);
-    Evas_Object *drawable = edrawable_add(evas, xy, xy);
-    sprites_bg_object_set(sprites, drawable);
+    sprites_bg_file_set(sprites, FIFTEEN "bg.png", NULL);
     int cursor = sprites_add_sprite(sprites, BRIDGES "cursor.png", NULL);
+    sprites_sprite_hide(sprites, cursor);
     object_holder *holder = epuzzle_oh_new(sprites);
-    evas_object_data_set(drawable, "sprites", sprites);
-    evas_object_data_set(drawable, "holder", holder);
-    evas_object_data_set(drawable, "cursor", (void *) cursor);
-    return drawable;
+    evas_object_data_set(sprites, "holder", holder);
+    evas_object_data_set(sprites, "cursor", (void *) cursor);
+    return sprites;
 }

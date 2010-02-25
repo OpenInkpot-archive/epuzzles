@@ -2411,9 +2411,9 @@ static void lines_vert(drawing *dr, game_drawstate *ds,
         gw--;
     loff = OFFSET(bw);
     if (v & G_MARKV)
-        draw_rect(dr, ox + loff, oy, bw, TILE_SIZE, COL_MARK);
+        custom_drawable_bridges_rectangle(dr, ox + loff, oy, bw, TILE_SIZE, COL_MARK);
     for (i = 0; i < lv; i++, loff += lw + gw)
-        draw_rect(dr, ox + loff + gw, oy, lw, TILE_SIZE, col);
+        custom_drawable_bridges_rectangle(dr, ox + loff + gw, oy, lw, TILE_SIZE, col);
 }
 
 static void lines_horiz(drawing *dr, game_drawstate *ds,
@@ -2424,9 +2424,9 @@ static void lines_horiz(drawing *dr, game_drawstate *ds,
         gw--;
     loff = OFFSET(bw);
     if (v & G_MARKH)
-        draw_rect(dr, ox, oy + loff, TILE_SIZE, bw, COL_MARK);
+        custom_drawable_bridges_rectangle(dr, ox, oy + loff, TILE_SIZE, bw, COL_MARK);
     for (i = 0; i < lh; i++, loff += lw + gw)
-        draw_rect(dr, ox, oy + loff + gw, TILE_SIZE, lw, col);
+        custom_drawable_bridges_rectangle(dr, ox, oy + loff + gw, TILE_SIZE, lw, col);
 }
 
 static void line_cross(drawing *dr, game_drawstate *ds,
@@ -2501,10 +2501,10 @@ static void lines_redraw(drawing *dr,
         todraw |= ui->todraw;
     }
 
-    draw_rect(dr, ox, oy, TILE_SIZE, TILE_SIZE, COL_BACKGROUND);
-    if (v & G_CURSOR)
-        draw_rect(dr, ox+TILE_SIZE/4, oy+TILE_SIZE/4,
-                  TILE_SIZE/2, TILE_SIZE/2, COL_CURSOR);
+    //custom_drawable_bridges_rectangle(dr, ox, oy, TILE_SIZE, TILE_SIZE, COL_BACKGROUND);
+//    if (v & G_CURSOR)
+//        custom_drawable_bridges_rectangle(dr, ox+TILE_SIZE/4, oy+TILE_SIZE/4,
+//                  TILE_SIZE/2, TILE_SIZE/2, COL_CURSOR);
 
 
     if (ui->show_hints) {
@@ -2563,7 +2563,7 @@ static void island_redraw(drawing *dr,
 
     if(v & G_CURSOR)
     {
-        custom_drawable_bridges_cursor(dr, is->x, is->y);
+        custom_drawable_bridges_cursor(dr, COORD(is->x), COORD(is->y));
 //        bg = COL_FOREGROUND;
 //        tcol = COL_BACKGROUND;
     }
@@ -2630,9 +2630,11 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
     custom_drawable_bridges_reset(dr);
 
     /* Always clear screen */
-    draw_rect(dr, 0, 0,
+    /*
+    custom_drawable_bridges_rectangle(dr, 0, 0,
                 TILE_SIZE * ds->w + 2 * BORDER,
                 TILE_SIZE * ds->h + 2 * BORDER, COL_BACKGROUND);
+    */
 #ifdef DRAW_GRID
     draw_rect_outline(dr,
                 COORD(0)-1, COORD(0)-1,

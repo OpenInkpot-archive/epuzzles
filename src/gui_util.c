@@ -51,6 +51,15 @@ gui_apply_color(struct frontend *fe, int color)
 }
 
 void
+gui_apply_object_color(struct frontend *fe, int color, Evas_Object *obj)
+{
+    if(color > fe->ncolours)
+        fatal("requested color %d index greater then total num of colors: %d\n",
+            color, fe->ncolours);
+    evas_object_color_set(obj, fe->colours[color].r, fe->colours[color].g, fe->colours[color].b, fe->colours[color].a);
+}
+
+void
 gui_delete_colors(struct frontend *fe)
 {
     if(fe->colours)

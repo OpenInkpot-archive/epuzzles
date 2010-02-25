@@ -9,6 +9,11 @@ struct sprites_t {
     Eina_List *sprites;
     Evas_Object *bg;
     Evas_Object *clip;
+
+    // Stacking
+    Evas_Object *first;
+    Evas_Object *last;
+    Eina_List *externals;
 };
 
 static void
@@ -50,7 +55,7 @@ _sprites_init(Evas_Object *obj, Evas *evas, int w, int h) {
     evas_object_resize(sprites->bg, w, h);
     evas_object_image_size_set(sprites->bg, w, h);
     evas_object_image_fill_set(sprites->bg, 0, 0, w, h);
-    //evas_object_color_set(sprites->bg, 255, 0, 0, 255);
+    evas_object_color_set(sprites->bg, 255, 255, 255, 255);
     evas_object_show(sprites->bg);
 
     sprites->clip = evas_object_rectangle_add(evas);
@@ -223,6 +228,9 @@ sprites_add_sprite(Evas_Object *obj, const char *file, const char *key) {
     evas_object_show(sprite);
     evas_imaging_image_free(im);
     drawable->sprites = eina_list_append(drawable->sprites, sprite);
+    drawable->last = sprite;
+    if(!drawable->first)
+        drawable->first = sprite;
     return drawable->counter++;
 }
 
@@ -269,4 +277,45 @@ sprites_sprite_size_get(Evas_Object *obj, int index, int *w, int *h)
     Evas_Object *sprite = (Evas_Object *) eina_list_nth(drawable->sprites, index);
     if(sprite)
         evas_object_image_size_get(sprite, w, h);
+}
+
+void
+sprites_stack_external_object_lower(Evas_Object *obj, Evas_Object *other)
+{
+    sprites_t *drawable  = evas_object_smart_data_get(obj);
+    if(!drawable)
+        return;
+     evas_object_smart_member_add(other, obj);
+     evas_object_stack_above(other,  drawable->bg);
+     evas_object_stack_below(other,  drawable->first);
+     drawable->first = other;
+     drawable->externals = eina_list_append(drawable->externals, other);
+}
+
+void
+sprites_del_externals(Evas_Object *obj)
+{
+    sprites_t *drawable  = evas_object_smart_data_get(obj);
+    if(!drawable)
+        return;
+    Evas_Object *item;
+    EINA_LIST_FREE(drawable->externals, item)
+    {
+        evas_object_smart_member_del(item);
+        evas_object_del(item);
+    }
+    drawable->externals = NULL;
+    if(drawable->sprites)
+        drawable->first = eina_list_nth(drawable->sprites, 0);
+}
+
+void
+sprites_sprite_raise(Evas_Object *obj, int index)
+{
+    sprites_t *drawable  = evas_object_smart_data_get(obj);
+    if(!drawable)
+        return;
+    Evas_Object *sprite = (Evas_Object *) eina_list_nth(drawable->sprites, index);
+    if(sprite)
+        evas_object_stack_above(sprite, drawable->last);
 }

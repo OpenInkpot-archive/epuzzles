@@ -52,4 +52,8 @@ custom_drawable_bridges_cross(drawing *dr, int x, int y);
 void
 custom_drawable_bridges_number(drawing *dr, int x, int y, int n);
 
+void
+custom_drawable_bridges_rectangle(drawing *dr, int x, int y, int w, int h,
+    int color);
+
 #endif

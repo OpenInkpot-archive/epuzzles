@@ -5,6 +5,8 @@ void gui_redraw ( struct frontend *fe);
 void gui_apply_color(struct frontend *fe, int color);
 void gui_setup_colors(struct frontend *fe);
 void gui_delete_colors(struct frontend *fe);
+void
+gui_apply_object_color(struct frontend *fe, int color, Evas_Object *obj);
 
 void gui_set_key_handler(struct frontend *fe);
 
