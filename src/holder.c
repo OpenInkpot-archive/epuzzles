@@ -62,6 +62,7 @@ epuzzle_oh_find_unused(object_holder *oh, const char *filename)
         if(!each->used && !strcmp(each->filename, filename))
             return each;
     }
+    return NULL;
 }
 
 static _object*

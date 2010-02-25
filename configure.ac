@@ -22,6 +22,7 @@ PKG_CHECK_MODULES(LIBEOI, [libeoi])
 AC_OUTPUT([
     Makefile theme/Makefile src/Makefile src/puzzles/Makefile 
     desktops/Makefile data/Makefile
+    theme/sprites/bridges/Makefile
     theme/sprites/fifteen/Makefile
     theme/sprites/twiddle/Makefile
     theme/sprites/pegs/Makefile

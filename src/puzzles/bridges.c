@@ -15,6 +15,9 @@
 
 #include "puzzles.h"
 
+#define HIDE_EVAS 1
+#include "custom_drawable.h"
+
 #define _(x) x
 
 /* Turn this on for hints about which lines are considered possibilities. */
@@ -2545,6 +2548,8 @@ static void island_redraw(drawing *dr,
      * squares of each other. */
     int half = TILE_SIZE/2;
     int ox = COORD(is->x) + half, oy = COORD(is->y) + half;
+
+#if 0
     int orad = ISLAND_RADIUS, irad = orad - LINE_WIDTH;
     int updatesz = orad*2+1;
     int tcol = COL_FOREGROUND;
@@ -2553,15 +2558,17 @@ static void island_redraw(drawing *dr,
         (v & G_MARK) ? COL_MARK : COL_BACKGROUND;
     char str[10];
     int poly[16];
-
+#endif
 
 
     if(v & G_CURSOR)
     {
-        bg = COL_FOREGROUND;
-        tcol = COL_BACKGROUND;
+        custom_drawable_bridges_cursor(dr, is->x, is->y);
+//        bg = COL_FOREGROUND;
+//        tcol = COL_BACKGROUND;
     }
 
+#if 0
     /* draw a thick circle */
     draw_circle(dr, ox, oy, orad, col, col);
     draw_circle(dr, ox, oy, irad, bg, bg);
@@ -2569,8 +2576,11 @@ static void island_redraw(drawing *dr,
     sprintf(str, "%d", is->count);
     draw_text(dr, ox, oy, FONT_FIXED, ISLAND_NUMSIZE(is),
               ALIGN_VCENTRE | ALIGN_HCENTRE, tcol, str);
-
+#endif
+    custom_drawable_bridges_number(dr, COORD(is->x), COORD(is->y), is->count);
     if(v & G_WARN)
+        custom_drawable_bridges_cross(dr, COORD(is->x), COORD(is->y));
+#if 0
     {
          int oc, fc;
          fc = (v & G_CURSOR) ? COL_BACKGROUND  : COL_FOREGROUND;
@@ -2598,13 +2608,15 @@ static void island_redraw(drawing *dr,
          poly[7]=COORD(is->y) + TILE_SIZE + CROSS;
          draw_polygon(dr, &poly, 4, fc, oc);
     } else
+
         if(v & G_MARK)
             draw_text(dr, COORD(is->x), COORD(is->y), FONT_FIXED,
                 TILE_SIZE / 16, ALIGN_VNORMAL | ALIGN_HLEFT,
                 COL_FOREGROUND, "!");
+#endif
 
-    dsf_debug_draw(dr, state, ds, is->x, is->y);
-    draw_update(dr, ox - orad, oy - orad, updatesz, updatesz);
+//    dsf_debug_draw(dr, state, ds, is->x, is->y);
+//    draw_update(dr, ox - orad, oy - orad, updatesz, updatesz);
 }
 
 static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
@@ -2615,6 +2627,7 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
     grid_type v, dsv, flash = 0;
     struct island *is, *is_drag_src = NULL, *is_drag_dst = NULL;
 
+    custom_drawable_bridges_reset(dr);
 
     /* Always clear screen */
     draw_rect(dr, 0, 0,

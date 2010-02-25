@@ -1,10 +1,13 @@
 #define _GNU_SOIRCE 1
+#include <assert.h>
 #include <err.h>
 #include <Evas.h>
+#include <libeoi_utils.h>
 #include "custom_drawable.h"
 #include "frontend.h"
 #include "sprites.h"
 
+#define BRIDGES "/usr/share/epuzzles/sprites/bridges/"
 #define FIFTEEN "/usr/share/epuzzles/sprites/fifteen/"
 #define TWIDDLE "/usr/share/epuzzles/sprites/twiddle/"
 #define PEGS "/usr/share/epuzzles/sprites/pegs/"
@@ -126,4 +129,53 @@ custom_drawable_pegs_create(Evas *evas, int xy, int n)
             sprites_sprite_hide(sprites, private->pegs[7*y+x]);
         }
     return sprites;
+}
+
+void
+custom_drawable_bridges_number(drawing *dr, int x, int y, int n)
+{
+    struct frontend * fe = (struct frontend *) drawing_handle(dr);
+    object_holder *holder = evas_object_data_get(fe->area, "holder");
+    assert(holder);
+    char *image = xasprintf(BRIDGES "%d.png", n);
+    epuzzle_oh_put_object(holder, x, y, image, ALIGN_VCENTRE | ALIGN_HCENTRE);
+    free(image);
+}
+
+void
+custom_drawable_bridges_cursor(drawing *dr, int x, int y)
+{
+    struct frontend * fe = (struct frontend *) drawing_handle(dr);
+    int cursor = (int) evas_object_data_get(fe->area, "cursor");
+    Evas_Object *sprites = evas_object_data_get(fe->area, "sprites");
+    sprites_sprite_move(sprites, cursor, x, y);
+}
+
+void
+custom_drawable_bridges_cross(drawing *dr, int x, int y)
+{
+    struct frontend * fe = (struct frontend *) drawing_handle(dr);
+    object_holder *holder = evas_object_data_get(fe->area, "holder");
+}
+
+void
+custom_drawable_bridges_reset(drawing *dr)
+{
+    struct frontend * fe = (struct frontend *) drawing_handle(dr);
+    object_holder *holder = evas_object_data_get(fe->area, "holder");
+    epuzzle_oh_drop_all(holder);
+}
+
+Evas_Object *
+custom_drawable_bridges_create(Evas *evas, int xy)
+{
+    Evas_Object *sprites = sprites_add(evas, xy, xy);
+    Evas_Object *drawable = edrawable_add(evas, xy, xy);
+    sprites_bg_object_set(sprites, drawable);
+    int cursor = sprites_add_sprite(sprites, BRIDGES "cursor.png", NULL);
+    object_holder *holder = epuzzle_oh_new(sprites);
+    evas_object_data_set(drawable, "sprites", sprites);
+    evas_object_data_set(drawable, "holder", holder);
+    evas_object_data_set(drawable, "cursor", (void *) cursor);
+    return drawable;
 }

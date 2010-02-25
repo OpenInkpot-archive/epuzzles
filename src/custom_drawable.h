@@ -36,5 +36,20 @@ custom_drawable_pegs_cursor_move(drawing*, int x, int y);
 #ifndef HIDE_EVAS
 Evas_Object *
 custom_drawable_pegs_create(Evas *evas, int xy, int n);
+
+Evas_Object *
+custom_drawable_bridges_create(Evas *evas, int xy);
 #endif
+void
+custom_drawable_bridges_reset(drawing *dr);
+
+void
+custom_drawable_bridges_cursor(drawing *dr, int x, int y);
+
+void
+custom_drawable_bridges_cross(drawing *dr, int x, int y);
+
+void
+custom_drawable_bridges_number(drawing *dr, int x, int y, int n);
+
 #endif

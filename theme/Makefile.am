@@ -1,4 +1,4 @@
-SUBDIRS = sprites/fifteen sprites/twiddle sprites/pegs
+SUBDIRS = sprites/fifteen sprites/twiddle sprites/pegs sprites/bridges
 EDC = epuzzle.edc
 EDJ = $(EDC:%.edc=%.edj)
 
