@@ -186,8 +186,8 @@ sprites_bg_object_set(Evas_Object *obj, Evas_Object *bg)
     drawable->bg = bg;
 }
 
-static void
-_move_sprite_relative(Evas_Object *obj, int x, int y)
+void
+sprites_sprite_relative_move(Evas_Object *obj, int x, int y)
 {
     Evas_Object *clip = evas_object_clip_get(obj);
     if(!clip) {
@@ -223,7 +223,14 @@ sprites_add_sprite(Evas_Object *obj, const char *file, const char *key) {
     // evas_object_stack_above(sprite, drawable->bg);
     Evas_Object* lower = eina_list_nth(drawable->sprites, drawable->counter);
     evas_object_stack_above(sprite, lower);
-    _move_sprite_relative(sprite, 0, 0);
+
+#if 0
+    Evas_Object *each;
+    Eina_List *tmp;
+    EINA_LIST_FOREACH(drawable->sprites, tmp, each)
+        evas_object_stack_above(each, sprite);
+#endif
+    sprites_sprite_relative_move(sprite, 0, 0);
     evas_object_resize(sprite, w, h);
     evas_object_show(sprite);
     evas_imaging_image_free(im);
@@ -242,7 +249,7 @@ sprites_sprite_move(Evas_Object *obj, int index, int x, int y)
         return;
     Evas_Object *sprite = (Evas_Object *) eina_list_nth(drawable->sprites, index);
     if(sprite)
-        _move_sprite_relative(sprite, x, y);
+        sprites_sprite_relative_move(sprite, x, y);
 }
 
 void
@@ -287,7 +294,14 @@ sprites_stack_external_object_lower(Evas_Object *obj, Evas_Object *other)
         return;
      evas_object_smart_member_add(other, obj);
      evas_object_stack_above(other,  drawable->bg);
-     evas_object_stack_below(other,  drawable->first);
+    evas_object_clip_set(other, drawable->clip);
+#if 0
+     //evas_object_stack_below(other,  drawable->first);
+     Evas_Object *each;
+     Eina_List *tmp;
+     EINA_LIST_FOREACH(drawable->sprites, tmp, each)
+        evas_object_stack_below(other, each);
+#endif
      drawable->first = other;
      drawable->externals = eina_list_append(drawable->externals, other);
 }

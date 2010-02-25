@@ -142,6 +142,9 @@ custom_drawable_bridges_number(drawing *dr, int x, int y, int n)
     free(image);
 }
 
+// I know --it hack
+#define FIX_OFFSET 6
+
 void
 custom_drawable_bridges_rectangle(drawing *dr, int x, int y, int w, int h,
     int color)
@@ -149,21 +152,19 @@ custom_drawable_bridges_rectangle(drawing *dr, int x, int y, int w, int h,
     struct frontend * fe = (struct frontend *) drawing_handle(dr);
     Evas_Object *rect = evas_object_rectangle_add(evas_object_evas_get(fe->area));
     evas_object_resize(rect, w, h);
-    int sx, sy;
-    evas_object_geometry_get(fe->area, &sx, &sy, NULL, NULL);
-    evas_object_move(rect, x + sx, y + sy);
+    //int sx, sy;
+    //evas_object_geometry_get(fe->area, &sx, &sy, NULL, NULL);
+    //evas_object_move(rect, x + sx, y + sy);
     gui_apply_object_color(fe, color, rect);
     sprites_stack_external_object_lower(fe->area, rect);
+    sprites_sprite_relative_move(rect, x + FIX_OFFSET, y + FIX_OFFSET);
     evas_object_show(rect);
-    evas_object_data_set(fe->area, "rectangles",
-        eina_list_append(evas_object_data_get(fe->area, "rectangles"),
-                         rect));
-
 }
 
 void
 custom_drawable_bridges_cursor(drawing *dr, int x, int y)
 {
+    printf("Cursor: %d %d\n", x, y);
     struct frontend * fe = (struct frontend *) drawing_handle(dr);
     int cursor = (int) evas_object_data_get(fe->area, "cursor");
   //  int w, h;

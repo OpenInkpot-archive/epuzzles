@@ -24,7 +24,7 @@ struct _object {
 object_holder*
 epuzzle_oh_new(Evas_Object* drawable)
 {
-    printf("Create new holder\n");
+    //printf("Create new holder\n");
     object_holder* oh = calloc(sizeof(object_holder), 1);
     oh->canvas = drawable;
     return oh;
@@ -43,7 +43,7 @@ epuzzle_oh_find_object(object_holder *oh, int fx, int fy,
         if(each->x == fx && each->y == fy && each->used &&
             !strcmp(each->filename, filename))
         {
-            printf("match %s %d %d %d\n", each->filename, fx, fy, each->used);
+            //printf("match %s %d %d %d\n", each->filename, fx, fy, each->used);
             return each;
         }
     }
@@ -93,7 +93,7 @@ epuzzle_oh_move(Evas_Object *canvas, _object *obj, int fx, int fy, int align)
     if(align & ALIGN_HCENTRE)
         rx += w / 2;
     sprites_sprite_move(canvas, obj->id, rx, ry);
-
+    sprites_sprite_raise(canvas, obj->id);
 }
 
 void
@@ -104,7 +104,8 @@ epuzzle_oh_put_object(object_holder* oh, int fx, int fy,
     _object* object = epuzzle_oh_find_object(oh, fx, fy, filename);
     if(object)
     {
-        printf("Already has %s at %d %d\n", filename, fx, fy);
+        //printf("Already has %s at %d %d\n", filename, fx, fy);
+        sprites_sprite_raise(oh->canvas, object->id);
         return;
     }
     object = epuzzle_oh_find_unused(oh, filename);
@@ -112,16 +113,17 @@ epuzzle_oh_put_object(object_holder* oh, int fx, int fy,
     {
             sprites_sprite_show(oh->canvas, object->id);
             object->used = true;
-            printf("reuse recycled object at %d %d\n", fx, fy);
+            //printf("reuse recycled object %s at %d %d\n", filename, fx, fy);
     }
     else
     {
-            printf("Insert new object at %d %d\n", fx, fy);
+            //printf("Insert new object %s at %d %d\n", filename, fx, fy);
             object = epuzzle_oh_insert_object(oh, filename, fx, fy);
     }
     epuzzle_oh_move(oh->canvas, object, fx, fy, align);
 }
 
+#if 0
 static void
 _dump(object_holder* oh)
 {
@@ -133,6 +135,7 @@ _dump(object_holder* oh)
             printf("still alive: %d %d \n", object->x, object->y);
     }
 }
+#endif
 
 void
 epuzzle_oh_drop_all(object_holder *oh)
@@ -154,11 +157,11 @@ epuzzle_oh_drop_object(object_holder *oh, int fx, int fy)
         _object* object = epuzzle_oh_find_object(oh, fx, fy, NULL);
         if(!object)
         {
-            printf("No more objects at  %d %d\n", fx, fy);
-            _dump(oh);
+    //        printf("No more objects at  %d %d\n", fx, fy);
+    //        _dump(oh);
             return;
         }
-        printf("really hide %d %d\n", fx, fy);
+      //  printf("really hide %d %d\n", fx, fy);
         sprites_sprite_hide(oh->canvas, object->id);
         object->used = false;
     }

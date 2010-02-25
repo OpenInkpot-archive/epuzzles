@@ -2561,13 +2561,6 @@ static void island_redraw(drawing *dr,
 #endif
 
 
-    if(v & G_CURSOR)
-    {
-        custom_drawable_bridges_cursor(dr, COORD(is->x), COORD(is->y));
-//        bg = COL_FOREGROUND;
-//        tcol = COL_BACKGROUND;
-    }
-
 #if 0
     /* draw a thick circle */
     draw_circle(dr, ox, oy, orad, col, col);
@@ -2614,6 +2607,13 @@ static void island_redraw(drawing *dr,
                 TILE_SIZE / 16, ALIGN_VNORMAL | ALIGN_HLEFT,
                 COL_FOREGROUND, "!");
 #endif
+    if(v & G_CURSOR)
+    {
+        custom_drawable_bridges_cursor(dr, COORD(is->x), COORD(is->y));
+//        bg = COL_FOREGROUND;
+//        tcol = COL_BACKGROUND;
+    }
+
 
 //    dsf_debug_draw(dr, state, ds, is->x, is->y);
 //    draw_update(dr, ox - orad, oy - orad, updatesz, updatesz);
@@ -2718,9 +2718,10 @@ static void game_redraw(drawing *dr, game_drawstate *ds, game_state *oldstate,
             island_redraw(dr, state, ds, is, v);
         }
     }
-    draw_update(dr, 0, 0,
-                TILE_SIZE * ds->w + 2 * BORDER,
-                TILE_SIZE * ds->h + 2 * BORDER);
+
+//    draw_update(dr, 0, 0,
+//                TILE_SIZE * ds->w + 2 * BORDER,
+//                TILE_SIZE * ds->h + 2 * BORDER);
     if (state->completed)
         status_bar(dr, "COMPLETED!");
 

@@ -9,6 +9,8 @@ sprites_add(Evas *evas, int w, int h);
 void
 sprites_bg_file_set(Evas_Object *obj, const char *file, const char *key);
 
+void
+sprites_sprite_relative_move(Evas_Object *single_sprite, int x, int y);
 
 void
 sprites_bg_object_set(Evas_Object *obj, Evas_Object *bg);
