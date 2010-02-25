@@ -164,7 +164,7 @@ custom_drawable_bridges_rectangle(drawing *dr, int x, int y, int w, int h,
 void
 custom_drawable_bridges_cursor(drawing *dr, int x, int y)
 {
-    printf("Cursor: %d %d\n", x, y);
+//    printf("Cursor: %d %d\n", x, y);
     struct frontend * fe = (struct frontend *) drawing_handle(dr);
     int cursor = (int) evas_object_data_get(fe->area, "cursor");
   //  int w, h;

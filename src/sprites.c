@@ -331,5 +331,6 @@ sprites_sprite_raise(Evas_Object *obj, int index)
         return;
     Evas_Object *sprite = (Evas_Object *) eina_list_nth(drawable->sprites, index);
     if(sprite)
-        evas_object_stack_above(sprite, drawable->last);
+        evas_object_raise(sprite);
+//        evas_object_stack_above(sprite, drawable->last);
 }
