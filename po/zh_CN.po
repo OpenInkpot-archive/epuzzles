@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # This file is put in the public domain.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: epuzzles 0.1\n"
@@ -22,38 +22,14 @@ msgstr "孔明棋"
 msgid "Solo"
 msgstr "Solo"
 
-#: src/puzzles/twiddle.c:1254 src/puzzles/fifteen.c:826
-#, c-format
-msgid "Moves since auto-solve: %d"
-msgstr ""
-
-#: src/puzzles/twiddle.c:1257 src/puzzles/flip.c:1234
-#: src/puzzles/fifteen.c:829
-#, c-format
-msgid "%sMoves: %d"
-msgstr ""
-
 #: src/puzzles/twiddle.c:1258 src/puzzles/flip.c:1236
 #: src/puzzles/fifteen.c:830
 msgid "COMPLETED! "
 msgstr "完成！"
 
-#: src/puzzles/twiddle.c:1261
-#, c-format
-msgid " (target %d)"
-msgstr ""
-
 #: src/puzzles/twiddle.c:1287
 msgid "Twiddle"
 msgstr "旋转方块"
-
-#: src/puzzles/flip.c:1236
-msgid "Auto-solved. "
-msgstr ""
-
-#: src/puzzles/flip.c:1237
-msgid "Auto-solver used. "
-msgstr ""
 
 #: src/puzzles/bridges.c:2777
 msgid "Bridges"
@@ -78,3 +54,27 @@ msgstr "按“0”获取帮助"
 #: src/gamelist.c:29
 msgid "按“M”获取帮助"
 msgstr ""
+
+#: src/puzzles/twiddle.c:1254 src/puzzles/fifteen.c:826
+#, c-format
+msgid "Moves since auto-solve: %d"
+msgstr "自动解决之后的步数：%d"
+
+#: src/puzzles/twiddle.c:1257 src/puzzles/flip.c:1234
+#: src/puzzles/fifteen.c:829
+#, c-format
+msgid "%sMoves: %d"
+msgstr "%s移动：%d"
+
+#: src/puzzles/twiddle.c:1261
+#, c-format
+msgid " (target %d)"
+msgstr "（目标 %d）"
+
+#: src/puzzles/flip.c:1237
+msgid "Auto-solver used. "
+msgstr "自动解决已用"
+
+#: src/puzzles/flip.c:1236
+msgid "Auto-solved. "
+msgstr "自动解决"
