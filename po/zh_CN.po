@@ -52,8 +52,8 @@ msgid "Press \"0\" to get help"
 msgstr "按“0”获取帮助"
 
 #: src/gamelist.c:29
-msgid "按“M”获取帮助"
-msgstr ""
+msgid "Press \"M\" to get help"
+msgstr "按“M”获取帮助"
 
 #: src/puzzles/twiddle.c:1254 src/puzzles/fifteen.c:826
 #, c-format
