@@ -1,6 +1,7 @@
 epuzzles (0.1.5) zelazny; urgency=low
 
   * Added icons to .desktop files
+  * Translations updated: Russian, Czech, Chinese, Polish.
 
  -- Mikhail Gusarov <dottedmag@dottedmag.net>  Mon, 22 Mar 2010 07:36:23 +0600
 
