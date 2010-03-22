@@ -9,3 +9,4 @@ Name[uk]=Круть-верть
 Name[zh]=旋转方块
 Exec=/usr/bin/epuzzles twiddle
 Categories=Games
+Icon=twiddle

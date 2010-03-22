@@ -5,3 +5,4 @@ Name=Unequal puzzle
 Name[es]=Puzzle Desigual
 Exec=/usr/bin/epuzzles unequal
 Categories=Games
+Icon=unequal

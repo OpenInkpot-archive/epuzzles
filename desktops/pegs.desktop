@@ -9,3 +9,4 @@ Name[uk]=Кілочки
 Name[zh]=孔明棋
 Exec=/usr/bin/epuzzles pegs
 Categories=Games
+Icon=pegs

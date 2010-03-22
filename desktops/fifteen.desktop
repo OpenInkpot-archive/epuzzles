@@ -9,3 +9,4 @@ Name[uk]=П'ятнашки
 Name[zh]=数字拼图
 Exec=/usr/bin/epuzzles fifteen
 Categories=Games
+Icon=fifteen

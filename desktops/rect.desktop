@@ -5,3 +5,4 @@ Name=Rectangles puzzle
 Name[es]=Puzzle Rectángulos
 Exec=/usr/bin/epuzzles rect
 Categories=Games
+Icon=rect
