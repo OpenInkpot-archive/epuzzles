@@ -1,3 +1,9 @@
+epuzzles (0.1.6) zelazny; urgency=low
+
+  * Translations updated: Ukrainian
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Tue, 23 Mar 2010 01:58:31 +0600
+
 epuzzles (0.1.5) zelazny; urgency=low
 
   * Added icons to .desktop files
