@@ -65,7 +65,7 @@ msgstr "Použito automatické řešené. "
 
 #: src/puzzles/flip.c:1272
 msgid "Flip"
-msgstr ""
+msgstr "Otáčení"
 
 #: src/puzzles/bridges.c:2808
 msgid "Bridges"
