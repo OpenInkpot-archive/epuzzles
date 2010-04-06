@@ -87,5 +87,3 @@ msgstr "Hlavolamy"
 msgid "Press @Context@ to get help"
 msgstr "Stiskni @Context@ pro nápovědu"
 
-#~ msgid "Press \"M\" to get help"
-#~ msgstr "Stiskni \"M\" pro nápovědu"
