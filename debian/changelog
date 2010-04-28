@@ -1,3 +1,9 @@
+epuzzles (0.1.7) zelazny; urgency=low
+
+  * Replace one of sprites in "pegs" to more contrast
+
+ -- Alexander V. Nikolaev <avn@daemon.hole.ru>  Wed, 28 Apr 2010 18:35:35 +0300
+
 epuzzles (0.1.6) zelazny; urgency=low
 
   * Translations updated: Ukrainian
