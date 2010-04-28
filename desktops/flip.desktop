@@ -8,3 +8,4 @@ Name[ru]=Перевёртыш
 Name[zh]=反转方块
 Exec=/usr/bin/epuzzles flip
 Categories=Games
+Icon=flip

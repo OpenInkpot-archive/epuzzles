@@ -23,3 +23,8 @@ po/*.mo
 src/drt
 stamp-h1
 debian/stamp-*
+src/epuzzles
+config.h
+config.h.in
+*.edj
+
