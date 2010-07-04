@@ -11,7 +11,7 @@ void get_random_seed(void **randseed, int *randseedsize)
     *randseedsize = sizeof(struct timeval);
 }
 
-static int timer_func(void *data)
+static Eina_Bool timer_func(void *data)
 {
     frontend *fe = (frontend *)data;
 
