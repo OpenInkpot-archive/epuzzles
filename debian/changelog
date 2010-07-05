@@ -1,3 +1,9 @@
+epuzzles (0.1.8) zelazny; urgency=low
+
+  * Adjustment to new ecore API
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Mon, 05 Jul 2010 07:26:34 +0200
+
 epuzzles (0.1.7) zelazny; urgency=low
 
   * Replace one of sprites in "pegs" to more contrast
