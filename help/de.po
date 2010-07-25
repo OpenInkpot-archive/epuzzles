@@ -1,0 +1,44 @@
+# Translations template for PROJECT.
+# Copyright (C) 2009 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2009-11-20 21:32+0000\n"
+"PO-Revision-Date: 2010-07-26 05:05+0700\n"
+"Last-Translator: ookujam <ookujam@googlemail.com>\n"
+"Language-Team: ookujam\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.1\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+
+# For original help text refer to en.po
+msgid "bridges"
+msgstr "Brücken"
+
+# For original help text refer to en.po
+msgid "fifteen"
+msgstr "Fünfzehn"
+
+# For original help text refer to en.po
+msgid "solo"
+msgstr "Einzeln"
+
+# For original help text refer to en.po
+msgid "pegs"
+msgstr "Dübel"
+
+# For original help text refer to en.po
+msgid "flip"
+msgstr "Wenden"
+
+# For original help text refer to en.po
+msgid "twiddle"
+msgstr "Drehen"
+
