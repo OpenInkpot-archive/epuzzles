@@ -176,7 +176,7 @@ static void main_win_close_handler(Ecore_Evas* main_win __attribute__((unused)))
 
 static void run(const char* gamename) {
     struct frontend * fe;
-    Ecore_Evas* main_win = ecore_evas_software_x11_new(0, 0, 0, 0, 600, 800);
+    Ecore_Evas* main_win = ecore_evas_software_x11_8_new(0, 0, 0, 0, 600, 800);
     Evas* main_canvas = ecore_evas_get(main_win);
 
     fe = calloc(1, sizeof(struct frontend));
